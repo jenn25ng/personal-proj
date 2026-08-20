@@ -9,6 +9,8 @@ data/series.json   # 시리즈 60편 (카드 메타데이터 + 무료 컷 지점
 data/episodes.json # 회차별 시놉시스 889회차 (시리즈 id로 키잉)
 data/slots.json    # 조합형 생성 슬롯 테이블 + 유료 전환 규칙
 scripts/render_catalog.py  # series.json -> CATALOG.md 렌더링
+scripts/style_check.py     # 초고 문체 지표 측정 (기준은 STYLE.md)
+drafts/                    # 본문 초고
 CATALOG.md         # 사람이 읽는 카탈로그 (자동 생성물, 직접 수정 금지)
 ```
 
@@ -143,3 +145,13 @@ python3 scripts/audit.py --show-reviewed   # 검토 완료 항목까지 보기
 ```
 
 이유 없이 끄는 것은 안 된다. reviewed.json 의 값은 판정 근거이지 무시 목록이 아니다.
+
+## 본문 초고
+
+`drafts/` 에 회차 본문을 쓴다. 파일명은 `<시리즈 id>-<회차 2자리>.md`.
+
+```bash
+python3 scripts/style_check.py     # 분량·문장·대사·문단 지표 측정
+```
+
+기준과 그 근거는 `STYLE.md`. 업계 관행인 공백 포함 5,000자에 맞춘다.
