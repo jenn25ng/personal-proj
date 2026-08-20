@@ -1,0 +1,6349 @@
+{
+  "version": 1,
+  "episodeCount": 889,
+  "episodes": {
+    "S001": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "이혼 도장을 찍은 지 3개월, 서지우 앞으로 청첩장이 온다. 신랑은 전남편 강민석, 신부는 전 시어머니 오말순이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "속이 뒤집혀 찾은 내과에서 임신 8주 진단을 받는다. 마지막으로 민석을 만난 날짜와 정확히 맞아떨어진다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "오말순을 찾아가지만 대문 앞에서 물세례를 맞는다. \"너는 이제 이 집 사람이 아니다.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "민석이 찾아와 무릎을 꿇는다. 결혼식 날 하루만 모른 척해달라는 부탁, 이유는 끝내 말하지 않는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "결혼식장. 주례가 이의 있는 사람을 묻는 순간 지우가 자리에서 일어선다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "하객 200명 앞에서 임신 사실이 터진다. 오말순이 그 자리에서 쓰러지고 식은 중단된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "전개",
+        "synopsis": "병실에서 깨어난 오말순이 수표를 내민다. \"지우면 10억, 낳으면 아무것도 없다.\"",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "지우는 그 다급함의 이유를 캔다. 죽은 시아버지의 유언장에 '손자가 태어나면'이라는 조건이 붙어 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "오말순 역시 같은 조항을 알고 있었다. 그녀가 아들과 혼인신고를 서두른 진짜 이유가 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "지우가 법무법인을 찾아가 유언장 원본 열람을 신청한다. 담당 변호사는 지우의 대학 동기였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "위기",
+        "synopsis": "원본에는 '혼인 중 출생한 손자'라고 적혀 있다. 이혼한 지우의 아이는 조건에서 빠진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "위기",
+        "synopsis": "민석이 재결합을 제안한다. 사랑이 아니라 조항 하나를 채우기 위해서다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "지우는 제안을 받아들이는 척하며 혼인신고서를 들고 구청 앞에 선다. 그리고 그대로 찢는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "오말순의 과거가 드러난다. 30년 전 그녀도 같은 방식으로 이 집에 들어온 후처였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "절정",
+        "synopsis": "출산 예정일 D-30. 오말순이 지우의 주치의를 매수해 조기 유도분만을 시도한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "절정",
+        "synopsis": "수술실 앞 대치. 지우가 녹음기를 켜 둔 채 의사에게 처방 근거를 묻는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 17,
+        "act": "절정",
+        "synopsis": "아이가 태어난다. 출생신고서의 부(父)란을 두고 병원 복도에서 몸싸움이 벌어진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 18,
+        "act": "결말",
+        "synopsis": "유언장 집행일. 시아버지가 남긴 두 번째 봉투가 열린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 19,
+        "act": "결말",
+        "synopsis": "영상 속 시아버지는 며느리 지우를 유일한 수익자로 지정해 두었다. 조건부 조항은 두 사람을 시험하려던 함정이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 20,
+        "act": "결말",
+        "synopsis": "3년 후. 지우는 지분 전부를 아이 명의 재단으로 돌린다. 요양원 마당에서 오말순이 혼자 김치를 담그고 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S002": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "윤세라의 장례식장. 관 속에서 그녀는 남편이 조문객에게 새 여자를 소개하는 소리를 듣는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "세라는 죽지 않았다. 수면제 과다 진단은 주치의와 남편이 짜고 만든 것이었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "화장 예정 시각 12시간 전, 세라가 관 뚜껑을 안에서 민다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "영정 사진 앞에서 마주친 남편이 처음 보는 얼굴로 웃는다. \"당신, 죽은 걸로 해두는 게 서로 편해.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "세라는 사망 신고가 이미 접수된 것을 확인한다. 법적으로 그녀는 존재하지 않는 사람이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "재산의 71%가 아직 그녀 명의라는 사실을 남편도 알고 있다. 그래서 서둘렀던 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "세라가 옛 비서를 찾아가지만, 비서가 바로 그 '새 여자'였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "사망 진단서에 서명한 의사의 계좌로 3억이 입금된 기록을 확보한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "세라는 죽은 사람으로 남기로 결심한다. 유령이 가장 자유롭다는 것을 깨닫는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "가명으로 자기 회사에 계약직으로 입사한다. 면접관은 남편이었고 그는 알아보지 못한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "위기",
+        "synopsis": "비밀 계좌의 존재를 알게 된다. 명의자는 죽은 세라의 어머니였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "상속 개시 D-14. 남편이 서류를 위조해 명의 이전을 시도한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "세라가 주주총회에 나타난다. 사망 신고 취소 결정문을 들고서.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "장내가 얼어붙는다. 남편은 서류를 떨어뜨리고, 비서는 문 쪽으로 뒷걸음질친다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "절정",
+        "synopsis": "어머니 명의 계좌의 진짜 주인이 밝혀진다. 20년 전 세라를 이 집에 들여보낸 사람도 어머니였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "세라는 남편을 고소하는 대신 회사에서 지운다. 지분 전량 매각, 그리고 해고 통지서 한 장.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 17,
+        "act": "결말",
+        "synopsis": "법정에서 의사와 비서가 서로를 지목한다. 남편은 끝까지 아무 말도 하지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 18,
+        "act": "결말",
+        "synopsis": "1년 후. 세라는 자기 장례식 사진을 액자에 걸어두고 산다. \"한 번 죽어봐야 아는 게 있더라.\"",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S003": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "태성가 삼형제 앞으로 친자 확인서 세 통이 동시에 배달된다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "세 통 모두 결과가 같다. 불일치. 회장이 서류를 쥔 채 창밖 주차장을 오래 내려다본다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "주차장에는 20년째 이 집 차를 모는 기사 박준호가 서 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "회장이 준호를 서재로 부른다. \"자네, 어머니 성함이 어떻게 되나.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "준호의 어머니는 30년 전 이 집 가정부였다. 그리고 회장이 유일하게 사랑했던 여자였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "삼형제가 검사 결과를 조작하려 든다. 표본을 바꿔치기한 사람은 어머니 쪽 주치의였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "어머니가 무너진다. 세 아들 모두 다른 남자의 아이였다는 사실이 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "주주총회 D-3. 후계자 지명 안건이 상정된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "준호는 후계를 거부한다. 그가 원한 건 어머니 산소의 위치 하나였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "어머니가 준호의 어머니를 내쫓은 날의 기록이 발견된다. 그날 준호는 다섯 살이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "장남이 준호의 차 브레이크에 손을 댄다. 사고는 나지 않는다, 준호가 그날 운전을 하지 않았기 때문에.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "대신 그 차에 탄 사람은 회장이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "중환자실. 회장은 의식 없이 준호의 손만 붙잡고 놓지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "주주총회 당일, 준호가 위임장을 들고 단상에 오른다. 회장이 20년 전 서명해 둔 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "삼형제는 각자의 친아버지에게 돌아간다. 어머니는 아무도 따라가지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "준호는 회사를 전문경영인에게 넘기고 다시 운전대를 잡는다. 이번엔 자기 차다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S004": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "아버지의 장례가 끝나고 유언장이 개봉된다. 장녀 한서연의 이름이 두 번 나온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "한 번은 상속인으로, 한 번은 채권자로. 아버지는 죽기 전 딸에게 47억을 빌렸다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "서연은 그런 돈을 빌려준 적이 없다. 차용증의 서명은 분명히 자기 필체였다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "변호사가 두 번째 문서를 꺼낸다. \"이건 따님이 아니라, 채권자분께 드리는 겁니다.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "계모가 상속 포기를 종용한다. 회사 부채가 자산을 넘어선다는 이유다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "서연은 3개월의 상속 포기 기한 안에 장부를 뜯어보기로 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "47억은 실제로 존재했다. 서연 명의로 개설된 계좌에서 나간 돈이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "계좌를 만든 사람은 아버지, 입금한 사람은 계모의 오빠였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "아버지가 딸을 채권자로 세운 이유 — 채권자는 부채보다 먼저 변제받는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "계모가 차용증 원본을 태우려다 서연에게 붙잡힌다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "법정에서 필적 감정 결과가 나온다. 서명은 서연의 것이 맞았다, 열아홉 살 때의 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "아버지는 20년 전부터 이 순간을 준비하고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "서연은 채권을 행사해 회사가 아닌 아버지의 오래된 인쇄소만 되찾는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "인쇄소 금고 안에는 아버지가 매년 딸에게 쓰고 부치지 못한 편지 스무 통이 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S005": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "회장의 장례식장에서 유언장이 낭독된다. 상속인란의 이름은 가정부의 딸 정하윤이었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "부엌에 있던 어머니가 접시를 놓친다. 어머니는 놀라지 않았다, 다만 슬퍼했다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "형제들이 유류분 소송을 준비한다. 소장에는 '가정부의 딸'이라는 표현이 열네 번 나온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "하윤이 어머니에게 묻는다. \"엄마, 나 저 집 딸이야?\" 어머니가 처음으로 앞치마를 벗는다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "30년 전 같은 날 두 아이가 이 집에서 태어났다는 기록이 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "하윤은 자신이 바꿔치기된 아이일 가능성을 처음 의심한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "고문변호사가 형제 편에 선다. 30년간 이 집 비밀을 관리해온 사람이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "어머니가 입을 연다. 바꾼 사람은 사모님이 아니라 어머니 자신이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "딸을 좋은 집에서 키우려던 선택이 30년 뒤 소송이 되어 돌아온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "진짜 이 집 딸은 지금 어디 있는가. 하윤이 찾아 나선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "진짜 딸은 이미 죽었다. 열일곱 살, 하윤이 다니던 학교 옆 골목에서.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "회장은 그 사실을 알고도 20년간 하윤을 지켜봤다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "유류분 소송 D-30. 하윤이 법정에서 상속 전부를 포기하겠다고 말한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "단, 조건이 하나 있다. 죽은 딸의 이름을 회사 재단명으로 쓸 것.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "형제들이 그 이름을 발음하지 못한다. 아무도 여동생의 이름을 기억하지 못했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "어머니가 30년 만에 그 집 대문을 걸어 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 17,
+        "act": "결말",
+        "synopsis": "재단 현판식. 하윤은 이사장이 아니라 조리실 앞에 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 18,
+        "act": "결말",
+        "synopsis": "어머니와 하윤이 재단 급식소에서 국을 뜬다. 첫 손님은 회장의 막내아들이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S006": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "시한부 6개월 판정을 받은 이주안의 병실에, 매주 목요일 낯선 노인이 찾아온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "노인은 두 시간을 말없이 앉아 있다 간다. 간호사들은 그가 태성그룹 회장이라고 수군댄다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "주안은 보육원 출신이다. 찾아올 사람이 있을 리 없다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "여섯 번째 목요일, 그가 처음으로 입을 연다. \"네 어머니 이름을, 내가 지어줬다.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "어머니는 회장 집 가정부가 아니라 회장의 첫 부인이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "입양 서류가 위조돼 있다. 주안을 보육원에 보낸 사람은 현 사모님이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "병원장이 주안의 치료 계획을 갑자기 변경한다. 이사회 지시였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "회장이 병원 앞에서 쓰러진다. 주안이 그를 받아 안는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "두 사람의 병실이 나란히 붙는다. 목요일이 매일이 된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "사모님이 주안에게 합의서를 내민다. 상속 포기 대가는 신약 임상 자격.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "주안이 서명한다. 살고 싶어서가 아니라, 아버지 곁에 6개월 더 있고 싶어서.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "회장이 먼저 떠난다. 마지막 말은 어머니의 이름이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "장례식장에서 주안은 상주 완장을 거절한다. 대신 조문객 명부에 어머니 이름을 적는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "6개월이 지난 목요일, 주안은 아직 살아 있다. 임상은 성공했다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S007": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "강력계 형사 문가영이 태성가 셋째 며느리로 들어간다. 혼인신고 대신 3년짜리 계약서에 서명한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "계약을 제안한 사람은 시아버지다. 조건은 하나, 장남의 죽음을 밝힐 것.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "장남은 2년 전 별장 계단에서 떨어져 죽었다. 사고사로 종결됐다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "가영은 별장 CCTV 서버가 사고 다음 날 교체된 것을 확인한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "시아버지가 계약서를 태운다. \"이제 넌 진짜 이 집 사람이다. 나갈 수 없다는 뜻이야.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "남편이 가영의 정체를 눈치챈다. 신고하는 대신 손을 잡는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "둘째 며느리가 사고 당일 별장에 있었다는 통화 기록이 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "공소시효 D-365. 가영은 시간을 벌기 위해 사건을 다시 재분류시킨다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "교체된 서버의 원본이 폐기장이 아니라 시아버지 금고에 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "영상 속에서 장남을 민 사람은 아무도 없었다. 그는 스스로 몸을 던졌다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "자살의 이유가 남긴 녹음 파일에 담겨 있다. 상대는 아버지였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "시아버지가 진짜로 원한 건 진실이 아니라, 아들을 죽인 게 자신이 아니라는 증거였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "가영은 녹음 파일을 재생할지 말지 선택해야 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "거실에 온 가족이 모인 자리에서 재생 버튼을 누른다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "시아버지가 자수한다. 죄명은 없지만 그는 그렇게 부른다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "계약 만료일, 가영은 경찰서로 돌아간다. 남편은 정문 앞에 서 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S008": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "인턴 서다은이 정규직 전환 계약서에 서명한다. 읽지 않고 넘긴 3페이지가 문제였다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "\"본 계약의 목적은 혼인 관계의 성립에 있다.\" 다은은 계약 결혼을 한 상태가 된다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "상대는 대표 강준서. 그는 이 계약이 자기 뜻이 아니라고 주장한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "계약을 설계한 사람은 인사팀장, 지시한 사람은 회장이었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "준서가 펜을 돌려주며 말한다. \"3페이지, 다시 읽어보시겠어요?\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "회장의 유언에 조건이 붙어 있었다. 수습 3개월 내 혼인하지 않으면 경영권 상실.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "다은은 계약 무효 소송을 준비한다. 준서가 변호사 비용을 대겠다고 나선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "소송을 준비할수록 다은의 이름이 왜 하필 그 칸에 들어갔는지가 이상해진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "인사팀 서류철에서 다은의 어머니 이름이 나온다. 회장의 옛 비서였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "회장은 다은을 알고 뽑았다. 처음부터 계획된 인턴이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "다은이 계약 해지를 통보한다. 준서는 붙잡지 않는다, 대신 사직서를 쓴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "경영권이 사촌에게 넘어간다. 회사가 매각 절차에 들어간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "다은이 회장의 마지막 녹취를 발견한다. \"그 아이가 원하지 않으면, 다 없던 걸로 해라.\"",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "조건은 혼인이 아니라 '두 사람의 동의'였다. 인사팀장이 조항 한 줄을 지웠던 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "이사회에서 원본 조항이 복원된다. 사촌의 인수는 무산된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "다은이 새 계약서를 내민다. 이번엔 1페이지짜리고, 근로계약서다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S009": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "이별 통보 대행업자 한소리에게 388번 의뢰가 들어온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "통보 대상은 3년 전 소리를 떠난 남자 정우진이었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "카페에서 마주 앉았는데 우진이 소리를 알아보지 못한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "\"그쪽이 헤어지자고 전해달라던 분, 성함이 어떻게 되시죠?\" 우진이 소리의 이름을 말한다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "의뢰인 명의는 한소리. 3년 전 사고 이후 우진은 기억의 일부를 잃었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "우진은 매년 같은 날 같은 대행업체에 같은 의뢰를 넣고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "의뢰서를 대신 써 준 사람은 소리의 가장 친한 친구였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "3년 전 그날, 우진이 소리를 떠난 게 아니라 소리가 병원에서 사라졌다는 사실이 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "기억을 잃은 쪽이 하나가 아니었다. 소리도 그날의 세 시간을 기억하지 못한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "의뢰 마감 D-day. 소리는 통보문을 읽어야 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "소리가 봉투를 열고 읽는다. 안에는 이별 통보 대신 결혼식 날짜가 적혀 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "소리가 대행업체 간판을 내린다. 마지막 의뢰는 자기 자신이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S010": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "인수 실사 첫날, 회의실 반대편에 3년 전 자신을 찬 남자가 앉아 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "이번엔 재무팀장 윤가희가 그의 회사 자산 가치를 평가한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "장부 첫 장부터 숫자가 맞지 않는다. 회사는 이미 3년 전에 망했어야 했다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "가희가 첫 장을 넘긴다. \"자, 이제 대표님 회사가 왜 망했는지부터 설명해주시죠.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "구멍을 메워온 돈의 출처가 불분명하다. 매달 같은 날 같은 금액이 들어왔다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "입금 계좌의 명의자는 3년 전 헤어지던 날 가희가 남긴 통장이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "동업자가 가희의 통장을 그대로 쓰고 있었다. 대표는 몰랐다고 주장한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "딜 클로징 D-21. 인수를 강행하면 가희 본인이 횡령 공범이 된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "가희는 실사 보고서에 자기 이름을 그대로 적는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "이사회가 발칵 뒤집힌다. 가희는 보직 해임되고 조사를 받는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "대표가 조사실에 나타나 진술서를 낸다. 3년 전 이별의 이유도 함께 적혀 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "동업자가 가희를 협박했고, 대표는 그녀를 지키려고 떠났던 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "인수는 무산되고 회사는 청산된다. 동업자만 기소된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "1년 후, 가희가 작은 회계법인 문을 연다. 첫 손님이 문을 밀고 들어온다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S011": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "12년 차 대리 오지훈이 사표를 낸다. 인수인계까지 끝냈고 남은 건 3일이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "퇴사 이틀 전, 대표가 처음으로 지훈의 자리에 찾아온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "회사 매출의 40%를 차지하는 계약의 단독 담당자가 지훈이라는 사실이 뒤늦게 확인된다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "대표가 결재판을 연다. 마지막 장은 지훈의 사표였고, 반려 도장이 찍혀 있었다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "지훈은 반려를 거부한다. 12년간 여섯 번 밀린 승진 기록을 그대로 돌려준다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "승진에서 지훈을 뺀 사람이 매번 같은 인물이었다는 게 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "그 인물은 지훈의 입사 동기이자, 유일하게 밥을 같이 먹던 사람이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "동기는 지훈이 나가면 계약을 자기 이름으로 돌릴 계획이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "거래처가 지훈에게 직접 연락한다. \"담당자 바뀌면 계약 안 합니다.\"",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "대표가 두 사람을 회의실에 앉힌다. 지훈은 아무 말도 하지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "지훈은 예정대로 퇴사한다. 계약은 회사에 남기고, 인수인계서에 동기 이름을 적어준다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "6개월 후 지훈이 그 거래처의 임원으로 온다. 협상 테이블 반대편에 동기가 앉아 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S012": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "연말 회식 자리에서 과장 배진영이 A4 세 장을 꺼낸다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "12년치 야근 시간과 여섯 번의 승진 누락이 날짜별로 적혀 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "두 번째 장부터 부장이 울기 시작한다. 그 목록에 자기 이름이 계속 나오기 때문이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "\"마지막 장은 여러분께 드리는 게 아닙니다.\" 진영이 녹음기를 테이블 위에 올린다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "세 번째 장은 감사원 제출용이었다. 회사에 이중 장부가 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "진영이 그 장부를 12년간 직접 작성해왔다. 그래서 승진을 시킬 수 없었던 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "감사 착수 D-10. 회사가 진영에게 부장 자리를 제안한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "후배가 진영을 찾아온다. 다음 장부 담당자로 이미 지목돼 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "진영이 후배 이름만 자료에서 지운다. 자기 이름은 그대로 둔다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "감사가 시작된다. 진영은 첫 번째 참고인이자 첫 번째 피의자가 된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "부장이 법정에서 진영에게 유리한 진술을 한다. 회식 자리에서 울던 이유가 그것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "집행유예를 받고 나온 진영이 작은 세무사무소를 연다. 첫 직원은 그 후배다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S013": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "신입 채유나의 사수는 3년째 그녀를 가르쳐온 팀장 서명주다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "회사 창립기념 사진첩에서 유나가 아버지와 함께 찍힌 명주를 발견한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "사진의 날짜는 유나네 집이 부도난 그해 봄이었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "명주가 명함을 건넨다. 뒷면엔 유나네 옛 주소가 적혀 있었다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "명주는 유나가 누구인지 처음부터 알고 있었다. 3년간 일부러 가르친 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "부도의 원인은 백지 어음 한 장이었다. 배서인은 아버지, 소지인은 명주.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "유나가 명주를 고소하려 한다. 아버지의 재판 D-45.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "명주가 어음 원본을 내민다. 배서 필체가 아버지 것이 아니었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "위조한 사람은 아버지의 동업자, 지금 이 회사의 회장이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "명주가 회사에 들어온 이유가 밝혀진다. 그녀도 12년째 같은 것을 쫓고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "두 사람이 함께 어음 원본을 감정에 넘긴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "감정 전날 밤, 회장실 금고가 비워진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "유나가 3년간 사수에게 배운 것을 쓴다. 사본은 이미 세 곳에 나뉘어 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "아버지가 무죄로 나온다. 명주는 사표를 내고, 유나가 그 자리에 앉는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S014": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "전학 첫날, 반에서 제일 무서운 애가 내 책상에 앉아 있었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "그날부터 3년간 그 애는 매일 내 우유를 가져간다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "전교생이 다 아는 사실을 나만 모른다. 애들이 나를 볼 때마다 웃는 이유도.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "우유를 뺏기지 않으려고 처음으로 손을 잡아챈다. 그 애의 귀가 빨개진다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "우유갑 바닥에 유성펜으로 적혀 있었다. 3년 내내 같은 문장이었다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "버려진 우유갑을 모아온 사람이 있었다. 내 짝꿍이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "짝꿍이 3년 전 편지 한 통을 내민다. 내 사물함에 도착했어야 할 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "편지를 가로챈 이유는 질투가 아니라 보호였다. 그때 그 애는 다른 학교에서 사고를 냈다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "사고의 상대는 내 사촌이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "그 애가 3년 전 우리 학교로 온 이유가 사과하기 위해서였다는 게 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "사과할 방법을 몰라서 매일 우유를 가져간 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "졸업 D-7. 그 애가 전학 신청서를 낸다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "졸업식 날, 내가 우유를 두 개 사서 교문 앞에 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "3년치 우유갑 밑면을 순서대로 늘어놓으면 한 통의 편지가 된다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S015": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "2학기 전학생의 생활기록부가 백지다. 이름과 사진 말고는 아무것도 없다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "담임이 그 아이를 3년 전 죽은 학생의 자리에 앉힌다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "그 자리는 3년째 아무도 쓰지 않던 자리였다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그 애가 내 쪽으로 몸을 기울인다. \"이 자리, 원래 누구 자리였는지 알아?\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "3년 전 그 학생은 자살로 처리됐다. 유서는 공개된 적이 없다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "전학생은 죽은 학생의 동생이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "학부모회가 학교에 압력을 넣는다. 수시 원서 시즌에 시끄러워지면 안 된다는 이유다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "당시 같은 반이었던 아이들이 하나씩 전학을 갔다는 기록이 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "남은 사람은 나 하나다. 나는 그날 교실에 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "내가 기억하는 그날과 기록이 다르다. 종례 시간이 20분 당겨져 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "담임의 출석부 원본이 창고에서 나온다. 그날 결석 처리된 학생은 다섯 명이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "수시 원서 D-3. 학교가 전학생의 생활기록부를 급조한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "전학생이 교무실에서 원본 출석부를 복사한다. 도와준 사람은 담임이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "졸업식 날 그 자리에 국화 한 송이가 놓인다. 이번엔 이름표도 함께 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S016": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "급식실에서만 마주치는 애가 있다. 반도 학년도 이름도 모른다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "아는 건 하나, 그 애가 항상 내 바로 뒤에 선다는 것.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "어느 날 그 애가 내 식판에 자기 계란말이를 올려놓는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "급식 카드를 찍는 순간 화면에 뜬 이름은 내가 아는 사람이었다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "그 이름은 초등학교 때 전학 간 내 단짝이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "그런데 그 애 얼굴이 내 기억과 완전히 다르다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "급식 카드를 빌려 쓰고 있었다. 그 애는 이 학교 학생이 아니다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "진짜 카드 주인은 1년째 등교하지 않고 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "단짝은 아프고, 그 애는 매일 대신 밥을 먹으러 온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "두 사람은 남매였다. 급식비만이 유일하게 남은 한 끼였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "내가 카드를 뺏는 대신 내 카드를 내민다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "1년 뒤, 급식실 줄에 세 사람이 나란히 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S017": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "성녀 리엘이 이단 판정을 받고 화형대에 오른다. 불을 붙인 것은 그녀의 수호기사였다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "재 속에서 손이 올라온다. 신전의 종이 스스로 울린다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "리엘은 살아났지만 신성력이 사라졌다. 대신 다른 것이 몸에 들어와 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그녀를 살린 것은 교단이 3백 년간 봉인해온 두 번째 신이었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "신이 첫 계약을 제안한다. \"네가 태워진 그 신전을, 내게 다오.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "리엘은 죽은 것으로 처리된다. 신분을 감추고 신전 하급 사제로 들어간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "교황이 그녀의 이단 판결문을 직접 썼다는 기록을 찾는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "판결 근거는 신탁의 한 구절이었다. 원문은 서고 지하에 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "수호기사가 매일 밤 화형대 자리에 와서 무릎을 꿇는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "리엘이 그 앞에 선다. 기사는 그녀를 알아보고도 검을 뽑지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "위기",
+        "synopsis": "서고 지하에 도달한다. 신탁 원문은 번역과 정반대의 뜻이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "원문이 지목한 이단은 성녀가 아니라 교황이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "교황은 3백 년 전부터 같은 육체를 갈아입어 온 존재였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "성일 축제 D-7. 다음 육체로 지목된 사람은 수호기사다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "절정",
+        "synopsis": "기사가 그 사실을 알고도 축제에 나가겠다고 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "절정",
+        "synopsis": "리엘이 두 번째 신에게 계약 변경을 요구한다. 대가는 그녀의 남은 수명 전부.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 17,
+        "act": "절정",
+        "synopsis": "축제 당일, 신전 한가운데서 두 신이 마주 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 18,
+        "act": "절정",
+        "synopsis": "신전이 무너진다. 리엘은 약속대로 그것을 두 번째 신에게 바친다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 19,
+        "act": "결말",
+        "synopsis": "교황의 육체가 재가 된다. 3백 년치 이름들이 한꺼번에 쏟아진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 20,
+        "act": "결말",
+        "synopsis": "리엘의 수명이 다한다. 기사가 그녀를 안고 폐허를 걸어 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 21,
+        "act": "결말",
+        "synopsis": "두 번째 신이 계약의 마지막 조항을 읽는다. 대가는 수명이지, 죽음이 아니었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 22,
+        "act": "결말",
+        "synopsis": "폐허 위에 작은 예배당 하나가 선다. 성녀도 신도 없는, 사람만 있는 곳이다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S018": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "시녀 아린이 주인을 살리기 위해 용의 심장 조각을 훔친다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "주인은 살아나지 못했고, 심장은 아린의 가슴에서 뛰기 시작한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "창밖이 어두워진다. 구름이 아니라 날개였다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "용은 아린을 죽이지 않는다. 심장을 가진 자는 계약자가 되기 때문이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "계약서에는 조항이 하나뿐이다. \"보름달이 뜨면 하나를 돌려받는다.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "돌려받을 '하나'가 무엇인지 용도 말해주지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "기사단장이 아린을 용의 앞잡이로 지목한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "죽은 줄 알았던 주인이 살아 있었다. 심장을 훔치라고 시킨 사람이 그녀였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "주인은 용의 심장으로 왕좌를 노렸다. 아린은 실험이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "보름달 D-7. 아린의 몸에서 비늘이 돋기 시작한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "위기",
+        "synopsis": "기사단장이 아린을 숨겨준다. 그는 주인의 약혼자였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "용의 진짜 목적이 드러난다. 3백 년 전 빼앗긴 자기 딸의 심장을 찾는 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "아린이 훔친 것은 용의 심장이 아니라, 용의 딸의 심장이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "주인의 가문이 3백 년간 그것을 보관해온 이유가 밝혀진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "절정",
+        "synopsis": "보름달이 뜬다. 용이 돌려받으려는 '하나'는 심장이 아니라 아린이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "절정",
+        "synopsis": "주인이 성 전체를 인질로 잡고 아린을 넘기라 요구한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 17,
+        "act": "절정",
+        "synopsis": "아린이 스스로 용에게 걸어간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 18,
+        "act": "결말",
+        "synopsis": "용이 심장을 되찾는 대신 아린에게 이름을 준다. 딸의 이름이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 19,
+        "act": "결말",
+        "synopsis": "주인의 가문이 무너진다. 기사단장은 검을 반납한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 20,
+        "act": "결말",
+        "synopsis": "아린은 시녀도 계약자도 아닌 채로 산을 내려온다. 뒤에서 날개 소리가 따라온다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S019": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "인류 최후의 법정이 열린다. 피고인은 마왕, 증인은 그의 하녀 미르다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "미르는 3년간 마왕에게 밥을 지어준 사람이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "검사 측 용사가 미르에게 진술서를 미리 건넨다. 읽고 외우라는 것이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "\"증인은 피고인을 사랑했습니까.\" 법정 전체가 조용해진다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "미르는 대답하지 않는다. 대신 3년간의 식단표를 증거로 제출한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "식단표에 마왕이 인간의 음식만 먹었다는 기록이 남아 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "용사가 위증을 교사한 정황이 드러난다. 대법관도 알고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "전쟁을 끝내려면 누군가는 마왕이어야 했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "미르가 마왕의 방에서 찾은 일지가 제출된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "일지의 필체는 마왕의 것이 아니라 초대 용사의 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "마왕의 자리는 대대로 인간이 앉혀온 자리였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "선고 D-1. 대법관이 미르에게 증언 철회를 제안한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "미르가 증인석에 다시 선다. 이번엔 진술서를 찢고 올라간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "마왕은 무죄를 받지만 스스로 형을 받겠다고 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "다음 마왕으로 지목된 사람은 용사였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "미르가 새 주방에 선다. 밥 짓는 사람만 그대로다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S020": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "M&A 15년 차 구조조정 전문가 강도현이 1863년 한양에서 눈을 뜬다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "몸의 주인은 흥선군, 아들은 방금 왕이 되었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "국고는 비었고 세도가는 살쪄 있다. 도현이 장부부터 요구한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "도현이 장부를 덮는다. \"안동 김씨 지분, 오늘부로 전량 소각합니다.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "조정이 뒤집힌다. 아무도 '지분'이라는 말을 이해하지 못한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "도현은 서원 철폐를 부실 자회사 정리로 설계한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "외척이 반격한다. 도현의 말투와 지식이 사람의 것이 아니라는 상소가 올라간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "측근 중 한 명이 도현의 정체를 눈치챈다. 그도 같은 시대에서 왔다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "그는 도현이 15년 전 구조조정으로 잘라낸 회사의 직원이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "즉위 100일. 경복궁 중건 예산안을 두고 조정이 갈린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "도현이 원납전 대신 국채 발행을 제안한다. 조선 최초의 채권이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "측근이 그 계획을 외척에게 넘긴다. 복수였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "채권 시장이 폭락한다. 도현은 파산 직전의 나라를 떠안는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "도현이 자기 사재를 먼저 털어 상환한다. 15년간 한 번도 안 하던 짓이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "측근이 무너진다. 도현은 그를 처벌하지 않고 호조에 앉힌다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "10년 후. 도현은 자기가 아는 역사가 이미 어긋났다는 것을 깨닫는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S021": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "수율 98%를 만들던 공정 엔지니어 한재우가 1443년 집현전 앞에서 깨어난다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "주자소의 활자 불량률이 30%를 넘는다. 재우는 저도 모르게 공정도를 그린다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "석 달 만에 불량률이 4%로 떨어진다. 아무도 이유를 설명하지 못한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "세종이 도면을 짚는다. \"이 그림은 자네가 그린 것이 아니지.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "재우는 거짓말을 못 한다. 대신 남은 도면을 전부 내놓는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "세종은 그를 벌하지 않고 여섯 달의 어명을 준다. 소리를 적는 글자를 만들라는 것.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "동료 학사들이 재우를 요망한 자로 몰아간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "명나라 사신이 주자소 공정을 통째로 요구한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "재우가 도면 일부를 일부러 틀리게 그려 넘긴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "틀린 도면이 발각된다. 재우는 국문장에 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "세종이 직접 그 도면을 검토한다. 틀린 부분이 정확히 급소였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "어명 완수 D-3. 재우가 마지막 활자 주형을 붓는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "스물여덟 자가 찍혀 나온다. 재우가 처음으로 자기 이름을 그 글자로 쓴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "재우는 돌아가지 못한다. 대신 주자소에 남아 다음 사람을 가르친다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S022": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "유통 컨설턴트 출신 종사관 유정민이 1592년 4월의 조선에 도착한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "군량은 분명히 있다. 그런데 전선에 도착하지 않는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "정민이 첫 창고를 연다. 쌀가마 대신 모래가 쏟아진다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "장부와 실물의 차이가 40%다. 정민은 리드타임부터 다시 계산한다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "적 상륙 D-12. 보급로를 새로 그리는 데 필요한 시간은 20일이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "정민이 육로를 포기하고 해로와 강을 잇는 안을 낸다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "조정 대신들이 반대한다. 그 경로에 자기들 사유지가 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "수령들이 장부를 조작해온 12년치 기록이 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "정민이 그 장부를 덮는다. 지금 필요한 건 처벌이 아니라 쌀이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "횡령한 수령들에게 면책을 조건으로 쌀을 토해내게 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "상륙이 시작된다. 첫 보급이 하루 늦게 도착한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "그 하루 때문에 한 부대가 전멸한다. 정민이 무너진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "두 번째 보급부터는 하루 빨라진다. 정민이 재고를 앞으로 당겨 배치한 결과다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "대신들이 정민을 탄핵한다. 죄명은 국법을 어긴 면책 거래다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "전선의 장수들이 연명 상소를 올린다. 서명한 이름이 예순셋이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "정민은 관직을 잃고 보급창 서기로 남는다. 그가 원한 자리였다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S023": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "폐서인의 딸 윤소원이 중전이 된다. 그 자리에서 죽은 여자가 이미 둘이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "첫 잔은 어머니가, 둘째 잔은 언니가 마셨다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "소원은 열 살 때부터 조금씩 독을 먹어왔다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "대비가 세 번째 잔을 내린다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "중전이 잔을 비우고 웃는다. \"어마마마, 한 잔 더 주시지요.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "대비가 처음으로 겁을 먹는다. 궁 안의 판이 뒤집히기 시작한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "친정이 소원을 버린다. 중전이 오래 사는 것이 그들에게 불리하다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "세자 책봉 D-30. 소원에게는 아직 아이가 없다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "후궁이 아들을 낳는다. 대비가 그 아이를 중전의 아이로 올리자고 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "소원은 거절한다. 바꿔치기는 어머니가 당한 방식이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "위기",
+        "synopsis": "어머니가 폐서인이 된 진짜 이유가 밝혀진다. 아이를 바꾸기를 거부했기 때문이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "그렇다면 지금의 왕은 누구의 아들인가.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "왕이 스스로 그 질문을 꺼낸다. 그도 20년간 알고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "대비의 손에 세 번째 잔이 다시 들린다. 이번엔 자기 몫이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "절정",
+        "synopsis": "소원이 그 잔을 빼앗아 바닥에 붓는다. \"어마마마는 사셔야지요. 다 보셔야 하니까.\"",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "절정",
+        "synopsis": "세자 책봉일. 소원이 후궁의 아들을 직접 안고 나온다, 후궁의 아들로서.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 17,
+        "act": "결말",
+        "synopsis": "조정이 흔들린다. 처음으로 생모의 이름이 실록에 올라간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 18,
+        "act": "결말",
+        "synopsis": "대비가 유폐된다. 매일 같은 시각 소원이 문안을 온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 19,
+        "act": "결말",
+        "synopsis": "소원의 몸이 독을 이기지 못하고 무너지기 시작한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 20,
+        "act": "결말",
+        "synopsis": "소원은 자기 이름 석 자를 적어 세자에게 남긴다. 어머니와 언니의 이름과 나란히.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S024": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "상궁이 밤중에 대비의 침소 문을 연다. 안에 남자가 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "등불이 그의 얼굴을 비춘다. 20년 전 사약을 받고 죽은 세자였다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "상궁은 소리도 내지 못하고 주저앉는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "지금 왕좌에 앉은 자는 그의 동생이다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "사사 기록을 다시 뒤진다. 검시 기록만 유독 필체가 다르다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "20년 전 세자를 살린 사람은 어머니, 곧 지금의 대비였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "대비는 두 아들 중 하나를 골라야 했다. 그리고 둘 다 살리려 했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "세자는 20년간 궁 밖 절에서 승려로 살았다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "그가 돌아온 이유는 왕좌가 아니라, 죽은 세자빈의 무덤 때문이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "국문 D-9. 상궁이 사라진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "위기",
+        "synopsis": "왕이 형의 생존을 이미 알고 있었다는 정황이 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "왕은 20년간 형에게 매달 쌀을 보내왔다. 절 이름으로.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "조정이 이 사실을 알면 왕위 정통성이 무너진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "세자가 스스로 국문장에 나온다. 자기 이름을 대며.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "절정",
+        "synopsis": "대비가 위조된 사사 기록을 직접 내놓는다. 자기 손으로 쓴 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "왕은 형을 벌하지 않는다. 대신 실록에 형의 죽음을 정정해 올린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 17,
+        "act": "결말",
+        "synopsis": "세자는 다시 산으로 간다. 이번엔 세자빈의 위패를 안고서.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 18,
+        "act": "결말",
+        "synopsis": "대비는 유폐를 자청한다. 침소 문은 다시 열리지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S025": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "역모의 밤, 어의 강윤이 왕의 맥을 짚지 않고 승하를 적는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "왕은 아직 살아 있었다. 붓 한 번에 나라가 갈린다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "영의정이 그 기록을 들고 대궐 문을 연다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "왕이 눈을 뜬다. 어의는 이미 승정원으로 가는 중이었다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "강윤이 그렇게 쓴 이유가 협박이 아니었다는 게 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "왕은 이미 사흘 전 다른 사람으로 바뀌어 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "진짜 왕은 어디 있는가. 강윤만이 두 사람의 맥을 다 짚어봤다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "강윤의 제자가 스승을 고변한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "제자는 영의정의 사람이었다. 3년 전 강윤이 직접 받아준 아이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "진맥 기록 원본이 약방 천장에서 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "기록에는 두 사람의 맥이 나란히 적혀 있다. 왼쪽이 왕, 오른쪽이 가짜다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "가짜는 왕의 이복동생이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "진짜 왕은 이미 사흘 전에 죽었다. 강윤이 마지막까지 옆에 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "강윤이 승하를 적은 것은 거짓이 아니라, 사흘 늦은 진실이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "영의정이 자기 손으로 세운 왕을 끌어내린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "강윤은 관직을 버리고 약방으로 돌아간다. 제자의 자리는 비워둔다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S026": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "김성재가 아내의 통장에서 매달 500만 원의 입금 기록을 발견한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "발신인은 12년 전 교통사고로 죽은 그의 형이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "통장 마지막 줄의 입금이 오늘 새벽이었다. 형은 12년째 납골당에 있다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "아내는 그 사고 현장에 있었다고 한 번도 말한 적이 없다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "사고 기록을 떼어보니 목격자란에 아내의 처녀 적 이름이 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "보험금 시효 D-60. 형의 사망보험금은 아직 청구되지 않았다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "성재가 납골당에 간다. 유골함 안은 비어 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "형은 죽지 않았다. 12년간 다른 이름으로 살아 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "아내는 처음부터 알고 있었다. 그녀가 형의 도피를 도왔다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "형이 도망친 이유는 사고가 아니라 그 전날의 다른 사건이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "12년 전 죽은 사람은 따로 있다. 그 시신이 형의 이름으로 화장됐다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "성재가 아내에게 묻는다. \"나랑 결혼한 이유가 뭐야.\"",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "보험금 수익자란에 성재의 이름이 적혀 있었기 때문이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "시효 하루 전, 형이 집으로 찾아온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "성재가 경찰에 전화를 건다. 수화기 너머로 형이 12년 만에 이름을 말한다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S027": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "이사 온 지 3개월, 옆집 부부의 대화가 매일 밤 똑같다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "단어 하나 틀리지 않는다. 녹음해서 대조해봐도 같다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "어젯밤 처음으로 대사가 바뀌었고, 그 안에 내 이름이 나왔다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "벽 너머에서 여자가 말한다. \"오늘은 저쪽도 듣고 있어.\"",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "관리사무소 기록상 옆집은 2년째 공실이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "내 집 천장에서 도청 장치가 나온다. 설치 날짜는 내 입주 전날이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "경비원이 CCTV를 보여주지 않는다. 그는 옆집 남자와 같은 성을 쓴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "이 집의 전 세입자가 2년 전 실종됐다는 사실을 알게 된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "반복되던 대화는 실종 당일 그 집에서 있었던 대화였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "부부는 매일 밤 그날을 복기하며 실수를 찾고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "이사 D-1. 나는 짐 대신 녹음 파일을 챙긴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "경찰이 옆집 문을 연다. 안에는 스피커 두 개뿐이다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S028": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "아홉 살 딸의 일기장에 아빠의 사망일이 적혀 있다. 다음 주 금요일이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "필체는 분명히 아이 것인데 문장은 어른의 것이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "아이는 그 페이지를 쓴 기억이 없다고 한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "딸이 크레파스를 놓고 묻는다. \"아빠, 금요일에 우산 챙겨.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "일기장을 앞으로 넘겨보니 지난 사건들도 미리 적혀 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "아내가 정신과 상담을 권한다. 상담의는 아내의 대학 선배였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "아이의 진료 기록이 3년 전부터 있다. 아빠만 몰랐다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "기록 속 아이의 이름이 다르다. 지금 이름은 개명한 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "이 아이는 우리 아이가 아니다. 우리 아이는 세 살에 죽었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "아내가 데려온 아이였다. 죽은 아이의 친구, 사고의 유일한 생존자.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "일기장의 예언은 아이의 기억이었다. 사고 당시 어른들의 대화를 그대로 옮긴 것.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "금요일에 죽기로 되어 있는 사람은 아빠가 아니라, 3년 전의 아빠였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "금요일이 온다. 비가 오고, 아빠는 우산을 챙긴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "아이가 처음으로 일기에 미래가 아닌 오늘을 적는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S029": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "서인하가 세 번째로 같은 날 아침에 눈을 뜬다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "첫 번째 삶에서는 그를 사랑했고, 두 번째 삶에서는 도망쳤다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "두 번 다 같은 날 같은 계단에서 죽었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "이번엔 죽이기로 한다. 회귀 D-30, 인하가 남편의 일정표를 외운다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "계단 앞에서 그가 웃는다. \"이번엔 좀 다르네. 너, 기억하고 있구나.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "남편도 회귀자였다. 그는 인하보다 다섯 번 더 돌아왔다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "남편은 매번 인하를 살리려 했다고 주장한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "계단에서 인하를 민 사람은 매번 달랐다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "공통점은 하나, 모두 인하의 주치의에게 진료를 받았다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "주치의는 회귀를 알고 있는 세 번째 사람이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "회귀를 만드는 것은 인하의 죽음이 아니라 주치의의 실험이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "인하는 8회차 피험자다. 남편은 7회차였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "루프를 끊으려면 그날 계단에 아무도 없어야 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "그날, 남편이 먼저 계단으로 간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "인하가 그를 붙잡는다. 처음으로 두 사람 다 살아서 그 날짜를 넘긴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "다음 날 아침, 인하가 눈을 뜬다. 처음 보는 날짜다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S030": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "강도희가 5년 전으로 회귀한다. 그런데 세상이 한 칸 어긋나 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "자신을 죽인 남자가 결혼반지를 끼워주고 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "그가 반지를 밀어 넣으며 말한다. \"이번엔 도망가지 마.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그도 회귀자다. 그리고 이번 생에서는 도희의 남편이 되기를 택했다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "도희는 도망 대신 결혼을 받아들인다. 가까이 있어야 증거를 찾는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "전생의 사건 기록을 하나씩 미리 확보한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "기록 속 진범의 인상착의가 남편과 맞지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "남편은 그날 현장에 있었지만, 도희를 죽인 사람은 아니었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "진짜 범인은 도희의 절친이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "절친은 이번 생에도 같은 자리에서 같은 계획을 세우고 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "기일 D-30. 도희가 절친을 저녁 식사에 초대한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "남편이 전생에 도희를 안고 병원까지 뛰었다는 사실이 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "도희의 마지막 기억이 잘못돼 있었다. 피 묻은 손은 범인의 것이 아니었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "기일 당일, 도희가 절친 앞에 앉는다. 이번엔 도희가 먼저 이름을 부른다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "절친이 자백한다. 동기는 5년 전 도희가 기억조차 못 하는 하루였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "기일이 지나간다. 도희는 처음으로 다음 해 달력을 산다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S031": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "심장 이식 대기자 명단에 오른 지 2년, 한 남자가 병실로 찾아온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "그는 이미 심장 이식을 받았다고 말한다. 기증자는 나라고 한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "내 심장은 아직 내 가슴에서 뛰고 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그가 가슴에 손을 얹는다. \"여기, 당신 이름을 계속 부르는데요.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "그는 내가 여섯 살 때 묻은 강아지 이름을 알고 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "기증자 서류를 확인한다. 이름과 주민번호가 내 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "3년 전 사망 처리된 나와 같은 이름의 사람이 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "그 사람은 내 쌍둥이였다. 나는 쌍둥이가 있는 줄 몰랐다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "부모는 둘 중 하나만 키울 수 있었고, 아픈 아이를 병원에 남겼다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "병원장이 두 아이의 기록을 하나로 합쳐 관리해왔다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "거부반응 D-21. 남자의 몸이 심장을 밀어내기 시작한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "나는 그의 곁을 지킨다. 내 쌍둥이가 마지막으로 남긴 것이 그 안에 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "약이 듣는다. 심장은 남는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "둘이 함께 강아지를 묻은 자리에 간다. 남자가 길을 먼저 안다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S032": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "응급실 3번 베드에 매달 같은 날 같은 시간 같은 상처의 환자가 온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "차트의 이름만 매번 다르다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "전공의 백지호가 지난 1년치 차트를 몰래 대조한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "이번 달 차트의 이름을 본다. 3년 전 죽은 지호의 아버지였다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "아버지의 주민번호가 아직 살아서 보험 청구에 쓰이고 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "보험 사기 조직이 사망자 명의를 돌려쓰고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "원무과 직원이 명단을 넘겨준 사람이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "지호의 교수가 매달 그 서류에 서명해왔다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "당직 12시간. 지호가 3번 베드 옆에서 환자를 기다린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "이번 달 환자는 오지 않는다. 대신 교수가 온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "교수는 3년 전 아버지를 살리려다 실패한 의사였다. 죄책감이 시작이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "지호가 신고서를 낸다. 첫 줄에 아버지 이름을 적는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S033": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "영상의학과 과장 임세현이 오진 한 번으로 면허를 잃는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "6년이 지나 익명의 봉투가 도착한다. 안에는 그날의 원본 파일이 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "원본을 연다. 종양은 처음부터 거기 있었고, 세현의 판독 소견도 정확했다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "법정에 제출된 영상은 종양이 지워진 판본이었다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "지운 이유는 세현을 죽이기 위해서가 아니었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "환자는 제약사 신약 임상 대상자였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "종양의 존재가 확인되면 임상 데이터 전체가 무너진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "파일을 보낸 사람은 세현의 동료, 당시 함께 판독한 사람이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "동료는 6년간 그 영상을 지우지 못하고 보관해왔다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "재심 청구 D-15. 제약사가 세현에게 합의금을 제안한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "금액은 면허 회복 비용의 여덟 배다. 조건은 원본 폐기.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "세현이 유족을 먼저 찾아간다. 6년간 그를 원망해온 사람들이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "유족이 재심의 공동 청구인으로 이름을 올린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "면허가 회복된다. 세현은 큰 병원 대신 판독 자문실 한 칸을 연다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S034": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "7년 만에 다시 기소된 오재훈에게 국선 변호인이 배정된다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "명단에 뜬 이름은 7년 전 그를 감옥에 보낸 검사였다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "그는 검사복을 벗고 변호사가 되어 있었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그가 서류를 넘기며 말한다. \"그때 제가 뭘 감췄는지, 이제 말씀드리죠.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "7년 전 사건의 핵심 증거가 조작된 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "조작을 지시한 사람은 당시 부장검사, 지금은 국회의원이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "1심 선고 D-20. 이번 사건도 같은 구조로 짜여 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "재훈은 변호인을 믿지 못한다. 두 번 속을 수는 없다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "변호인이 7년치 자기 사건 기록을 통째로 넘긴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "그중 세 건이 같은 방식으로 조작돼 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "동료 변호사가 그 기록을 빼돌려 상대편에 넘긴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "법정에서 변호인이 자기 자신을 증인으로 신청한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "재훈은 무죄를 받고, 변호인은 변호사 자격을 잃는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "출소한 재훈이 그의 사무실 문을 대신 연다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S035": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "공소시효 D-7, 12년 전 살인 사건의 진범이 자수한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "자수한 남자는 피해자의 아들이었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "그가 조서에 지장을 찍고 변호사를 본다. \"이제 변호사님 차례입니다.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그가 자백한 시각에 그는 변호사 사무실에 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "허위 자백이다. 시효를 소진시키려는 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "진범이 기소되면 진짜 범인은 영영 처벌받지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "변호사는 12년 전 그 사건의 첫 변호인이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "당시 그가 무죄를 받아준 사람이 진짜 범인이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "아들은 그 사실을 알고 변호사를 끌어들이려 자수한 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "D-2. 변호사가 12년 전 자기 변론 기록을 검찰에 제출한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "시효 만료 12시간 전, 진짜 범인이 체포된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "아들의 무고죄 재판이 시작된다. 변호인석에 그 변호사가 앉는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S036": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "주치의 문서진이 자기 병실에서 죽은 소녀의 사망 진단서에 서명한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "소녀는 대선 후보의 딸이었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "다음 날 진단서의 사인이 조용히 다른 글씨로 바뀐다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "기자회견장에서 후보가 말한다. \"제 딸은 살아 있습니다.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "딸은 요양 중이라는 공식 입장이 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "서진의 병원 접근 권한이 정지된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "투표일 D-19. 사망 사실이 공개되면 동정표와 의혹이 동시에 터진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "병원 이사장이 후보의 후원회장이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "서진이 원본 차트를 백업해둔 사실이 새어나간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "소녀의 사인이 약물 과다였다. 처방한 사람은 아버지의 주치의다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "소녀는 아버지의 선거를 막으려 했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "그녀가 남긴 녹음 파일이 서진에게 도착한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "파일을 언론에 넘길지 유족에게 넘길지 서진이 선택해야 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "투표 전날, 서진이 후보를 직접 찾아가 파일을 재생한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "후보가 스스로 사퇴한다. 사퇴문 첫 줄이 딸의 이름이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "서진은 진단서를 다시 쓴다. 이번엔 아무도 고치지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S037": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "데스크 정하영이 8년 전 자기가 묻은 기사를 다른 매체에서 본다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "제보자 이름은 그때 그를 따르던 후배였다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "기사를 덮은 대가로 하영은 데스크가 됐다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "후배가 노트북을 돌려 보여준다. 8년 전 원본에 하영의 서명이 그대로 있다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "삭제된 줄 알았던 원고가 사내 서버에 남아 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "국장이 하영에게 후배의 취재를 막으라고 지시한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "보도 D-2. 하영은 두 번째로 같은 선택 앞에 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "8년 전 기사의 피해자가 그사이 세 명 더 늘어났다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "후배가 하영에게 최종 검수를 맡긴다. 시험이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "하영이 기사에 자기 이름을 공동 바이라인으로 넣는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "기사에 8년 전 은폐 경위를 실명으로 덧붙인다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "국장이 발행 직전 서버를 잠근다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "후배가 다른 매체로 원고를 넘긴다. 하영이 직접 보낸다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "하영은 해고된다. 8년 만에 처음으로 취재수첩을 다시 산다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S038": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "10년 전 해체한 그룹의 리더가 신입사원으로 입사한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "그의 사수는 그의 팬클럽 1기 회원이었던 대리 김수민이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "그가 인사한다. \"잘 부탁드립니다.\" 수민은 열여섯 살로 돌아간 기분이 든다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그는 정산을 한 푼도 받지 못하고 업계를 떠났다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "수습 평가 3개월. 그는 누구보다 성실하지만 엑셀을 못 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "회사가 그를 홍보 모델로 쓰려 한다는 계획이 새어나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "전 소속사가 그의 이름 사용권을 아직 갖고 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "멤버 한 명이 지금 그 소속사의 이사로 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "10년 전 정산 서류에 그 멤버의 서명이 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "수민이 팬클럽 시절 모아둔 자료를 꺼낸다. 계약서 사진이 남아 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "소송이 시작된다. 그는 회사를 그만두지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "수습 평가 마지막 날, 그가 처음으로 정시 퇴근을 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S039": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "3만 명 앞에서 센터 유하늘이 노래를 멈춘다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "카메라를 정면으로 보며 한 사람의 이름을 부른다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "전광판이 꺼지고 목소리만 남는다. \"이 노래, 원래 제 곡이 아닙니다.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그 이름은 2년 전 학교폭력 가해자로 지목돼 사라진 연습생이었다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "가해자로 몰린 사람과 실제 가해자가 뒤바뀌어 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "하늘이 2년간 그 사실을 알고도 침묵했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "컴백 D-30. 회사가 하늘을 퇴출 명단에 올린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "진짜 가해자는 같은 그룹 멤버였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "대표가 그 사실을 처음부터 알고 조작을 지시했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "사라진 연습생이 다른 나라에서 작곡가로 살아 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "하늘이 부른 그 곡의 원작자가 바로 그 사람이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "멤버가 기자회견을 열어 하늘을 거짓말쟁이로 몬다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "원작자가 직접 등록 서류를 공개한다. 날짜가 모든 것을 뒤집는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "1년 후, 두 사람의 이름이 나란히 적힌 곡이 발매된다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S040": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "은퇴한 골키퍼 남기준이 상대팀 감독으로 부임한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "20년 전 그의 무릎을 부순 그 경기의 상대팀이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "라커룸 문을 열자 그 선수가 주장 완장을 차고 서 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "주장은 사과할 기회를 20년간 기다렸다고 말한다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "기준은 사과를 받지 않는다. 그날의 태클은 지시받은 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "지시한 사람은 당시 기준의 팀 동료였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "강등 플레이오프 D-5. 팀은 3연패 중이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "구단주가 기준에게 승부 조작을 제안한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "20년 전 그 경기도 조작이었다는 기록이 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "주장이 그 사실을 알고 20년간 축구를 계속해온 이유를 말한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "기준이 제안을 거절하고 구단주와의 대화를 전부 녹음한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "플레이오프 당일, 주전 세 명이 결장한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "팀이 진다. 그리고 그날 밤 녹음이 공개된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "구단은 해체되고 기준은 유소년 팀을 맡는다. 골키퍼 코치는 그 주장이다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S041": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "국가대표 역도 선수 오세림이 도핑 양성 판정을 받는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "세림은 약을 쓴 적이 없다. 아무도 믿지 않는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "검체 번호를 대조한다. 세림의 것은 애초에 검사실에 도착하지 않았다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "결과지가 두 장이었다. 한 장은 폐기 처리돼 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "검체를 바꾼 사람은 12년간 세림을 키운 코치였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "코치는 다른 선수를 보호하려 했다. 협회장의 조카였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "징계위 D-10. 세림에게 자격정지 4년이 예고된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "코치가 세림에게 대신 뒤집어써 달라고 무릎을 꿇는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "세림이 징계위에서 폐기된 결과지 원본을 꺼낸다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "코치가 스스로 마이크를 잡는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "협회가 뒤집힌다. 세림의 기록은 복원되지만 4년이 사라진 뒤다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "세림이 서른셋에 다시 바를 잡는다. 관중석 맨 앞에 코치가 앉아 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S042": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "방송에서 스타 셰프가 '외할머니의 비법'이라며 김치찌개를 끓인다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "그건 우리 집 찌개다. 그리고 그는 내 형이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "방송을 보던 어머니가 리모컨을 놓는다. \"저건... 내가 쟤한테만 안 알려준 건데.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "형은 15년 전 집을 나갔다. 나갈 때 레시피 노트를 가져갔다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "형의 회사가 그 레시피로 상표 등록을 신청한다. D-14.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "등록되면 어머니 식당이 같은 이름을 못 쓴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "동생이 이의신청을 낸다. 증거로 낼 원본 노트가 없다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "방송국이 형 편에 선다. 프로그램 시즌 2가 걸려 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "어머니가 등록을 막지 말라고 한다. 이유를 말하지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "어머니가 형에게만 알려주지 않은 이유가 밝혀진다. 형은 친아들이 아니었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "레시피는 형의 친어머니 것이었다. 어머니는 그것을 대신 지켜온 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "형이 방송에서 말한 '외할머니'는 실제 자기 외할머니였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "이의신청이 취하된다. 상표에 두 사람의 이름이 함께 올라간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "식당 문을 열자 형이 앞치마를 매고 서 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S043": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "30년 된 4천 원짜리 국밥집에 외국인 손님이 들어온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "그가 두 그릇을 비우고 묻는다. \"이 국물, 누가 가르쳐줬습니까.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "그는 미쉐린 심사위원이었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그가 수저를 내려놓는다. \"저는 이 맛을 40년 전에 딱 한 번 먹어봤습니다.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "40년 전 그 맛을 낸 사람은 주인의 스승이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "스승은 어느 날 가게를 두고 사라졌다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "재개발 철거 D-90. 건물주가 계약 연장을 거부한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "제자가 길 건너에 같은 간판을 걸고 개업한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "건물주가 그 제자의 투자자였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "심사위원이 사라진 스승의 행방을 알고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "스승은 40년간 요양원에 있었다. 국밥 한 그릇이 그곳에 배달된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "가게는 철거된다. 대신 리어카 한 대가 같은 자리에 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S044": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "장문인이 죽은 채 발견된다. 시신에 남은 검흔은 본문의 초식이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "그 초식을 아는 사람은 셋뿐이고 둘은 이미 죽었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "수제자 서문호가 검을 뽑는다. 검흔과 정확히 같은 각도다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "문파가 그를 용의자로 가둔다. 무림맹 심판 D-15.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "사형이 증인으로 나선다. 그날 밤 문호를 봤다고 말한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "문호는 그 시각 산 아래에 있었다. 증명해줄 사람은 기루의 여인뿐이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "그 여인이 다음 날 죽은 채 발견된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "장로들이 심판을 앞당기려 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "문호가 탈옥한다. 도망이 아니라 비급을 확인하기 위해서다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "장서각의 비급이 위조본이었다. 원본의 초식은 한 획이 다르다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "위조본으로 배운 사람은 문호가 아니라 사형이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "사형은 서자였다. 20년간 본문의 이름을 받지 못했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "장문인이 죽기 전 그에게 이름을 주려 했다는 사실이 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "사형은 그 말을 듣기 하루 전에 검을 뽑았다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "절정",
+        "synopsis": "무림맹 심판장. 두 사람이 마주 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "문호가 검을 버린다. 사형의 검이 멈춘다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 17,
+        "act": "결말",
+        "synopsis": "사형이 스스로 무림맹에 걸어 들어간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 18,
+        "act": "결말",
+        "synopsis": "문호가 장문인이 된다. 첫 명으로 서자 제도를 없앤다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S045": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "단전이 부서진 지 10년, 술로 사는 검객에게 열두 살 아이가 절을 한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "\"제 아버지를 죽인 법을 가르쳐주십시오.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "아이가 품에서 검을 꺼낸다. 10년 전 그가 잃어버린 검이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "아이의 아버지는 10년 전 그를 배신한 의형제였다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "의형제는 3년 전 살수에게 죽었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "검객은 가르치기를 거부한다. 아이는 매일 문 앞에 앉는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "백 일째 되는 날 검객이 검을 잡는다. 손이 떨린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "단전 없이 검을 쓰는 법을 가르치기 시작한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "살수 명부가 손에 들어온다. 의뢰인 칸이 비어 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "복수 기일 D-100. 아이의 검이 스승을 처음으로 스친다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "명부의 의뢰인이 밝혀진다. 의형제 본인이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "그는 자기 아들을 살리려 스스로를 팔았다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "10년 전 검객을 배신한 것도 같은 이유였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "아이가 그 사실을 알고 검을 내려놓지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "복수 기일. 살수 앞에 두 사람이 함께 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "검객이 10년 만에 이긴다. 그리고 아이에게 검을 돌려준다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S046": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "법정에 선 두 여자는 지문도 기억도 같다. 다른 것은 결혼반지 하나뿐이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "복제된 아내가 원본을 고소했다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "재판장이 묻는다. \"두 분 중 누가 원본입니까.\" 둘 다 동시에 손을 든다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "복제를 의뢰한 사람은 남편이었다. 아내의 동의는 없었다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "남편은 사고로 죽어가던 아내를 살리려 했다고 주장한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "그런데 원본은 죽지 않았다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "판결 D-30. 법은 한 사람에게만 법인격을 준다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "연구소가 복제본의 데이터 소유권을 주장한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "두 여자가 처음으로 따로 만난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "복제 시점 이후의 기억이 서로 다르다는 것을 확인한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "남편은 두 사람 다 알고 있었다. 두 집 살림이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "두 여자가 소송을 취하하고 공동 원고로 남편을 고소한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "판결은 두 사람 모두에게 법인격을 인정한다. 최초의 판례가 된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "두 사람이 각자 다른 도시로 간다. 반지는 아무도 끼지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S047": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "기억을 사고파는 가게, 폐업 D-1에 마지막 손님이 온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "팔려는 기억 속에 상인 자신의 얼굴이 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "재생을 누른다. 화면 속 젊은 상인이 그 여자에게 무언가를 약속하고 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "상인에게는 20년 전 기억이 없다. 스스로 팔았기 때문이다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "자기 기억을 산 사람은 동업자였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "동업자는 그 기억으로 지금의 회사를 세웠다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "여자는 20년간 그 약속을 기다려온 사람이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "기억을 되사려면 20년치 이자를 내야 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "상인이 가게의 재고 전부를 값으로 내놓는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "동업자가 조건을 건다. 되찾는 순간 상인의 지금 20년이 지워진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "상인이 되사지 않기로 한다. 대신 여자에게 새 약속을 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "가게 간판이 내려간다. 두 사람이 함께 걸어 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S048": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "세상이 무너진 지 400일, 의사 서지안이 방역선 앞에 도착한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "철망 너머에 3년 전 그녀를 버린 남편이 서 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "그의 옆에는 새 가족이 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그가 말한다. \"한 명만 데려갈 수 있어.\" 그리고 지안의 딸을 본다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "백신은 그의 연구팀이 독점하고 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "감염 잠복 D-14. 딸에게 이미 증상이 시작됐다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "지안이 안으로 들어간다. 조건은 연구팀 합류다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "백신은 완성되지 않았다. 임상은 방역선 밖 사람들로 이뤄지고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "지안의 옛 동료가 그 실험을 설계했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "남편은 알고도 묵인했다. 새 가족을 지키기 위해서.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "지안이 백신 제조식을 밖으로 내보내려 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "동료가 그녀를 막는다. 독점이 깨지면 통제도 깨진다는 논리다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "딸의 상태가 악화된다. 남은 백신은 한 명분이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "지안이 그 한 명분을 임상 데이터 검증용으로 쓴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "제조식이 밖으로 나간다. 딸은 그날 밤을 넘긴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "방역선이 열린다. 지안은 안으로 들어가지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S049": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "평생 F급으로 살다 게이트에서 죽은 헌터의 장례식이 열린다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "그날 열여섯 살 딸 하서린이 각성 측정을 받는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "측정기가 멈추지 않는다. 협회 직원이 조용히 뒷걸음질친다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "S급 판정. 국내 네 번째다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "길드들이 몰려든다. 그중 아버지를 버린 길드도 있다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "서린이 그 길드를 고른다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "아버지의 각성 등급 기록이 조작돼 있었다는 정황이 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "F급으로 등록된 헌터는 위험 수당도 보험도 받지 못한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "같은 방식으로 등급이 낮춰진 헌터가 200명이 넘는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "길드장이 서린에게 침묵의 대가로 최상위 던전 권한을 준다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "게이트 붕괴 D-30. 대형 게이트가 서울 한복판에 열린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "길드가 F급 헌터들을 먼저 투입한다. 소모품이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "서린이 명령을 어기고 최전선으로 들어간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "아버지가 죽은 게이트와 같은 구조라는 것을 알아본다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "절정",
+        "synopsis": "아버지는 F급이 아니었다. 그날 게이트를 혼자 막아낸 사람이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "게이트가 닫힌다. 서린이 협회 앞에서 기록 전부를 공개한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 17,
+        "act": "결말",
+        "synopsis": "200명의 등급이 재산정된다. 절반은 이미 죽은 뒤다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 18,
+        "act": "결말",
+        "synopsis": "서린이 새 길드를 연다. 첫 조항은 등급을 적지 않는 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S050": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "종갓집 마당에서 굿판이 벌어진다. 방울이 울린 쪽은 구경하던 며느리였다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "며느리가 시어머니를 보며 처음 듣는 목소리로 말한다. \"거기, 우물 밑에 있잖아.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "그 집 우물은 40년 전에 메워졌다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그날 밤부터 집안 어른들이 하나씩 말을 잃는다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "무당이 굿을 중단하고 도망친다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "며느리는 신내림을 거부한다. 대신 우물 자리를 파겠다고 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "시댁이 막아선다. 49재 D-49, 집안 제사가 코앞이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "40년 전 이 집에서 사라진 여자가 있었다. 첫째 며느리다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "호적에도 족보에도 그 이름이 없다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "무당이 40년 전에도 이 집 굿을 했다는 기록이 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "그때도 신은 같은 말을 했고, 그때는 아무도 파지 않았다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "며느리가 혼자 우물 자리를 판다. 시어머니가 옆에 와 앉는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "유골이 나온다. 시어머니가 40년 만에 그 이름을 부른다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "49재 상에 위패가 하나 더 오른다. 며느리는 그 집을 떠난다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S051": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "추석 아침, 현관에 낯선 여자와 두 아이가 서 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "아버지가 말한다. \"인사해라, 네 동생들이다.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "장남 박정우가 30년 만에 차남이 된다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "어머니가 수저를 놓으며 말한다. \"나도 30년 전부터 알고 있었다.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "두 집 살림이 아니라 두 개의 호적이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "아버지가 이제 와 데려온 이유는 병 때문이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "이복동생 중 형이 정우보다 두 달 먼저 태어났다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "족보상 장남 자리가 흔들린다. 집안 어른들이 갈린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "어머니가 30년간 그 집에 생활비를 보내온 사실이 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "이모가 그 통장을 관리해왔다. 아버지 몰래.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "이복동생들이 그 돈의 출처를 이제야 안다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "아버지가 유산을 두 집에 반씩 나누겠다고 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "어머니가 자기 몫 전부를 이복동생들에게 넘긴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "정우가 처음으로 아버지에게 소리를 지른다. 제사상 앞에서다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "아버지가 떠난다. 장례식에서 두 집 사람들이 나란히 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "다음 추석, 현관 앞에 신발이 여덟 켤레 놓인다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S052": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "우리 집 제사상 지방에 40년째 모르는 이름이 하나 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "아무도 설명하지 못한다. 물으면 화제가 바뀐다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "올해 처음으로 큰아버지가 입을 연다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "큰아버지가 지방을 태우지 않고 접는다. \"이건 죽은 사람 이름이 아니다.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "그 이름의 주인은 살아 있다. 호적에서만 지워졌다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "40년 전 이 집에서 태어난 셋째였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "할머니가 그 아이를 보육원에 보냈다. 사주가 나쁘다는 이유였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "큰아버지는 그 사실을 알고도 40년간 제사만 지냈다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "막내가 그 사람을 찾아 나선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "그 사람은 같은 도시에 살고 있었다. 우리 집 단골 세탁소 주인이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "제사상 앞에 산 사람이 앉는다. 지방은 태워진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "이듬해 제사에 이름이 하나 줄고, 밥그릇이 하나 는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S053": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "귀농 3년 차, 이장이 내 땅문서를 들고 찾아온다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "이장이 막걸리를 따르며 웃는다. \"자네, 이 마을에서 나가긴 어려울 걸세.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "마을이 통째로 내 땅 위에 앉아 있었다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그 사실을 아는 사람은 마을 주민 60명 전원이었다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "30년 전 매매계약서가 위조된 것이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "위조한 사람은 마을 부동산, 이장의 형이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "토지 소송 D-60. 마을 사람들이 하나둘 등을 돌린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "소송에서 이기면 마을 절반이 집을 잃는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "원래 땅 주인이 누구였는지 등기부를 거슬러 올라간다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "내 할아버지 이름이 나온다. 나는 이 마을 사람이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "할아버지가 마을을 떠난 이유가 그 위조 때문이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "이장이 무릎을 꿇는다. 60명이 그 뒤에 서 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "소송을 취하하고 땅을 마을 명의 조합으로 돌린다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "마을 회관에 할아버지 이름이 새겨진다. 나는 4년 차가 된다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S054": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "고해소 칸막이 너머에서 신부가 자기 죄를 고백한다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "듣고 있는 사람은 신자가 아니라, 그 자리에 잘못 들어간 나다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "고백은 15년 전 우리 어머니의 이름으로 시작된다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그가 묻는다. \"주님, 저를 용서하시겠습니까.\" 나는 창을 열고 대답한다. \"아니요.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "15년 전 어머니는 성당 계단에서 떨어져 죽었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "사고로 처리됐고, 목격자는 신부 한 사람이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "교구가 그를 다른 성당으로 옮기려 한다. 서품 25주년 D-20.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "당시 교구 문서가 봉인돼 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "어머니는 성당 회계 장부의 문제를 알고 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "신부는 밀지 않았다. 그는 잡지 못했을 뿐이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "민 사람은 당시 회계 담당, 지금의 교구장이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "신부는 15년간 그것을 고해소에서만 말해왔다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "서품 25주년 미사에서 신부가 강론 대신 그날의 일을 읽는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "나는 그를 용서하지 않는다. 대신 그의 옆자리에 앉는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S055": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "재개발 동의율 74.9%. 남은 도장은 우리 집 하나다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "그날부터 이웃들이 우리 집 앞에 모인다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "20년 알고 지낸 사람들의 얼굴이 하룻밤에 바뀐다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "조합장이 봉투를 내민다. \"이거, 20년 전에 자네 아버지가 받았어야 할 돈이야.\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "20년 전에도 같은 재개발이 있었고, 그때 아버지가 반대했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "당시 이면 합의서에 아버지 이름이 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "조합 총회 D-11. 세입자들이 먼저 쫓겨나기 시작한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "아버지는 도장을 팔지 않은 게 아니라 팔았다가 취소했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "그 취소 때문에 20년 전 사업이 무산됐고, 마을이 늙었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "이웃들의 분노가 20년 묵은 것이었다는 게 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "이면 합의서에 조합장의 이름도 함께 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "총회 당일, 나는 도장 대신 그 합의서를 들고 단상에 오른다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "조합장이 물러난다. 사업은 세입자 이주 대책과 함께 다시 짜인다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "철거 전날, 아버지가 심은 감나무를 옮겨 심는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S056": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "착륙 직전 12초, 기장이 조종간에서 손을 뗀다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "부기장 강태오만이 그 순간을 목격하고 살아남는다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "블랙박스 음성 기록에서 마지막 12초가 잘려 있다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "유족들이 태오를 찾아온다. 그가 무슨 말을 들었는지 묻는다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "태오는 기억하지만 말하지 못한다. 항공사와 합의서를 썼다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "조사위원회가 기장의 과실로 결론을 내려 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "조사 보고서 D-45. 기장 유족의 보험금이 걸려 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "기체 정비 기록에 결함이 세 번 반복돼 있었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "정비 책임자가 조사위원 중 한 명의 처남이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "태오가 원본 음성을 복원한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "기장이 말한다. \"네 아버지한테, 미안하다고 전해.\"",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "태오의 아버지도 조종사였고, 20년 전 같은 기종에서 죽었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "기장은 20년 전 그 사고의 유일한 생존 정비사였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "보고서가 다시 쓰인다. 태오는 다시 조종석에 앉지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S057": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "30년 만에 침몰선이 인양된다. 승선자 명단이 공개된다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "열두 번째 이름은 어제 나와 통화한 사람이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "수화기 너머에서 그가 말한다. \"그 배, 왜 지금 올렸어요.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "그는 30년간 다른 이름으로 살아온 내 아버지였다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "인양 종료 D-20. 선체에서 나온 유해는 명단보다 한 구가 적다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "당시 선주는 보험금을 받고 회사를 정리했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "아버지는 그 배가 침몰할 것을 미리 알았다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "과적 지시서에 아버지의 서명이 남아 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "그는 서명을 거부했다가 대신 이름을 도용당했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "해경 기록에 그의 생존 신고가 접수됐다 삭제된 흔적이 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "선주가 지금 인양 사업의 자문위원으로 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "아버지가 30년 만에 세상 앞에 선다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "유해 한 구의 신원이 밝혀진다. 아버지 대신 죽은 동료였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "위령비에 이름 하나가 지워지고 하나가 새겨진다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S058": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "자대 배치 첫날, 소대장의 명찰을 본다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "20년 전 아버지의 사고 보고서에 있던 성씨다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "소대장이 내 관등성명을 듣고 손을 멈춘다. 그도 그 이름을 안다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "두 사람 다 20년 전 그 사고 때문에 이 부대에 왔다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "공식 기록은 훈련 중 사고사다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "소대장의 아버지는 당시 지휘관이었고 이미 죽었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "부대 창고에서 원본 보고서가 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "사고 원인은 상급 부대의 무리한 일정이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "절정",
+        "synopsis": "소대장의 아버지는 그것을 막으려다 함께 책임을 뒤집어썼다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "두 아버지는 서로를 지키려 했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "결말",
+        "synopsis": "두 사람이 함께 재조사를 청구한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "결말",
+        "synopsis": "전역하는 날, 소대장이 위병소까지 따라 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S059": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "공연 40분 전, 프리마 발레리나가 분장실에서 쓰러진다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "아킬레스건이 끊어져 있다. 무대에 오른 건 20년 2인자였던 여자다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "커튼콜이 끝나고 분장실 거울에 립스틱으로 적혀 있었다. \"다음은 너야.\"",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "CCTV 원본이 공연 당일 분량만 사라져 있다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "경찰은 자해 가능성을 언급한다. 프리마는 이미 은퇴를 통보받은 상태였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "은퇴를 통보한 사람은 예술감독이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "시즌 폐막 D-30. 2인자가 남은 전 공연의 주역이 된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "20년 전 두 사람은 같은 반이었고, 그때도 한 자리를 두고 겨뤘다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "그때 다친 사람도 있었다. 지금의 프리마다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "절정",
+        "synopsis": "CCTV 원본이 예술감독의 사무실에서 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "영상 속에서 분장실에 들어간 사람은 프리마 본인이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "20년 전 사고의 진짜 가해자도 그녀였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "결말",
+        "synopsis": "프리마가 무대 위에서 은퇴 인사를 한다. 마지막 문장이 자백이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "결말",
+        "synopsis": "2인자가 다음 시즌 예술감독이 된다. 첫 결정은 그 배역을 없애는 것이다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S060": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "16부작 막장 드라마 작가 오미란이 자기 대본 속에서 눈을 뜬다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "전개를 다 아는 유일한 인간이 됐다. 문제는 배역이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "발단",
+        "synopsis": "미란이 맡은 인물은 3화에서 트럭에 치여 죽는 단역이다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "3화 방영 D-3. 미란이 대사를 바꿔보지만 장면은 그대로 흘러간다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "트럭이 달려온다. 미란이 소리친다. \"이 장면 내가 썼어! 브레이크 없다고!\"",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "미란이 살아난다. 대본에 없던 인물이 그녀를 밀어냈기 때문이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "그 인물은 미란이 1화에서 삭제한 캐릭터였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "삭제된 캐릭터들이 이 세계 어딘가에 남아 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "주인공이 미란을 찾아온다. 자기 결말을 알고 싶어 한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "미란은 말해주지 않는다. 최종화는 아직 쓰지 않았기 때문이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "현실에서는 미란이 혼수상태다. PD가 대타 작가를 구한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "대타 작가의 전개가 이 세계에 그대로 적용되기 시작한다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "삭제된 캐릭터들이 하나씩 지워진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "미란이 최종화를 이 세계 안에서 직접 쓴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "마지막 장면에 미란은 자기 이름을 넣지 않는다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "현실에서 눈을 뜬다. 모니터에는 그녀가 쓴 적 없는 최종화가 저장돼 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ]
+  }
+}

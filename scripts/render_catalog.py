@@ -13,6 +13,9 @@ ROOT = Path(__file__).resolve().parent.parent
 def main() -> None:
     data = json.loads((ROOT / "data" / "series.json").read_text(encoding="utf-8"))
     series = data["series"]
+    episodes = json.loads(
+        (ROOT / "data" / "episodes.json").read_text(encoding="utf-8")
+    )["episodes"]
 
     by_genre = defaultdict(list)
     for s in series:
@@ -21,8 +24,10 @@ def main() -> None:
     lines = [
         "# 막장 드라마 카탈로그",
         "",
-        f"총 **{len(series)}편** / **{len(by_genre)}개 장르**. "
-        "원본 데이터는 `data/series.json`, 생성 슬롯은 `data/slots.json`.",
+        f"총 **{len(series)}편** / **{len(by_genre)}개 장르** / "
+        f"**{sum(len(v) for v in episodes.values())}회차**. "
+        "원본 데이터는 `data/series.json`과 `data/episodes.json`, "
+        "생성 슬롯은 `data/slots.json`.",
         "",
         "| 컬럼 | 의미 |",
         "| --- | --- |",
@@ -55,6 +60,17 @@ def main() -> None:
                 f"- 조합: {slots['낙차']} / {slots['배신']} / {slots['비밀']} / {slots['시한']}"
             )
             lines.append(f"- 무료 컷: {s['freeCutLine']}")
+            lines.append("")
+            lines.append("<details><summary>회차별 시놉시스</summary>")
+            lines.append("")
+            for e in episodes.get(s["id"], []):
+                mark = " 🔒" if not e["isFree"] else ""
+                cut = " **← 무료 마지막 화**" if e["isFreeCut"] else ""
+                lines.append(
+                    f"{e['ep']}. *({e['act']})* {e['synopsis']}{mark}{cut}"
+                )
+            lines.append("")
+            lines.append("</details>")
             lines.append("")
         lines.append("---")
         lines.append("")
