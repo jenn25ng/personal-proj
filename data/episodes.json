@@ -2827,7 +2827,7 @@
       },
       {
         "ep": 3,
-        "act": "발단",
+        "act": "전개",
         "synopsis": "통장 마지막 줄의 입금이 오늘 새벽이었다. 형은 12년째 납골당에 있다.",
         "isFree": true,
         "isFreeCut": true
@@ -2934,7 +2934,7 @@
       },
       {
         "ep": 3,
-        "act": "발단",
+        "act": "전개",
         "synopsis": "어젯밤 처음으로 대사가 바뀌었고, 그 안에 내 이름이 나왔다.",
         "isFree": true,
         "isFreeCut": true
@@ -3734,7 +3734,7 @@
       },
       {
         "ep": 3,
-        "act": "발단",
+        "act": "전개",
         "synopsis": "그가 조서에 지장을 찍고 변호사를 본다. \"이제 변호사님 차례입니다.\"",
         "isFree": true,
         "isFreeCut": true
@@ -4320,7 +4320,7 @@
       },
       {
         "ep": 3,
-        "act": "발단",
+        "act": "전개",
         "synopsis": "검체 번호를 대조한다. 세림의 것은 애초에 검사실에 도착하지 않았다.",
         "isFree": true,
         "isFreeCut": true
