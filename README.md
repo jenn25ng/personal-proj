@@ -83,3 +83,15 @@ CATALOG.md         # 사람이 읽는 카탈로그 (자동 생성물, 직접 수
 ```bash
 python3 scripts/render_catalog.py
 ```
+
+## 컷 라인 판정 페이지
+
+무료 컷 라인 60개만 모아 블라인드로 읽고 결제 전환 여부를 판정하는 한 페이지:
+
+```bash
+python3 scripts/render_cutlines.py   # cutlines.html 생성
+```
+
+제목과 장르는 판정 전까지 가려진다. 시리즈를 알면 이미 궁금해진 상태라
+판정이 무의미해지기 때문이다. 60개를 모두 판정하면 전환 가능성 %와
+다시 써야 할 컷 라인 목록이 나온다.
