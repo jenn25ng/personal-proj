@@ -120,3 +120,26 @@ python3 scripts/audit.py --strict      # high 가 있으면 exit 1 (CI 용)
 정합성은 단정이고, 페이스·페이월·카탈로그는 **확인 대상 목록**이다.
 `secret-early` 와 `declarative-cutline` 은 기계가 판정할 수 없는 항목이라
 사람이 그 편만 읽어보라는 뜻이다.
+
+가장 중요한 검사는 `cutline-drift` 다. 카드에 적힌 컷 라인은 무료 마지막 화의
+마지막 문장이어야 하는데, 이게 앞 화를 가리키면 훅이 무료분 안에서 소진되고
+뒤 화를 가리키면 유료 내용을 카드에 미리 노출한다.
+
+### 검토 완료 처리
+
+기계가 판정할 수 없는 findings 는 사람이 읽고 `data/reviewed.json` 에 이유와
+함께 기록한다. 기록된 항목은 리포트 본문에서 빠지고 요약에만 집계된다.
+
+```jsonc
+{
+  "declarative-cutline": {
+    "S014": "3년 내내 같은 문장이라고만 하고 그 문장이 무엇인지 감춘다."
+  }
+}
+```
+
+```bash
+python3 scripts/audit.py --show-reviewed   # 검토 완료 항목까지 보기
+```
+
+이유 없이 끄는 것은 안 된다. reviewed.json 의 값은 판정 근거이지 무시 목록이 아니다.

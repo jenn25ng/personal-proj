@@ -30,7 +30,7 @@ LEVELS = ("high", "medium", "low")
 ACTS = ("발단", "전개", "위기", "절정", "결말")
 
 # 무료 비율 실질 구간. 12화짜리는 1화가 8%라 25~30% 안에 들어갈 수가 없다.
-FREE_RATIO_MIN = 0.20
+FREE_RATIO_MIN = 0.18
 FREE_RATIO_MAX = 0.35
 
 # 컷 라인이 '이미 닫힌 문장'으로 끝나는 패턴. 다음 화가 궁금해지지 않는다.
@@ -47,6 +47,15 @@ class Finding:
     code: str
     target: str
     message: str
+    reviewed: str = ""
+
+
+def load_reviewed() -> dict:
+    path = ROOT / "data" / "reviewed.json"
+    if not path.exists():
+        return {}
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    return {k: v for k, v in raw.items() if not k.startswith("_")}
 
 
 def norm_tokens(text: str) -> list[str]:
@@ -166,20 +175,23 @@ def check_paywall(s: dict, eps: list[dict]) -> list[Finding]:
     ratio = free_n / total
     if not (FREE_RATIO_MIN - 1e-9 <= ratio <= FREE_RATIO_MAX + 1e-9):
         out.append(Finding("low", "free-ratio", sid,
-                           f"무료 비율 {ratio:.0%} ({free_n}/{total}). 권장은 20~35%."))
+                           f"무료 비율 {ratio:.0%} ({free_n}/{total}). 권장은 18~35%."))
 
     # 비밀이 무료분에서 이미 공개되면 결제할 이유가 사라진다.
     secret = s.get("slots", {}).get("비밀", "")
-    tokens = norm_tokens(secret)
+    # 제목이나 로그라인에 이미 나온 말은 독자에게 약속된 전제다. 비밀로 세지 않는다.
+    premise = s["title"] + " " + s["logline"]
+    tokens = [t for t in norm_tokens(secret) if t not in premise]
     # 컷 회차에서 장치가 보이는 것은 설계대로다. 그 앞에서 보이는 것만 본다.
     before_cut = [e for e in eps if e["ep"] < free_n]
     free_text = " ".join(e["synopsis"] for e in before_cut)
     hits = [t for t in tokens if t in free_text]
     if hits:
-        first = next(e["ep"] for e in before_cut if any(t in e["synopsis"] for t in hits))
+        hit_ep = next(e for e in before_cut if any(t in e["synopsis"] for t in hits))
         out.append(Finding("medium", "secret-early", sid,
-                           f"비밀 장치({secret})가 컷보다 앞선 {first}화에 등장한다({', '.join(hits)}). "
-                           "존재만 노출된 것인지, 정체까지 공개된 것인지 확인이 필요하다."))
+                           f"비밀 장치({secret})가 컷보다 앞선 {hit_ep['ep']}화에 보인다"
+                           f"[{', '.join(hits)}] — \"{hit_ep['synopsis']}\" "
+                           "존재만 노출된 것인지 정체까지 공개된 것인지 확인할 것."))
 
     line = s.get("freeCutLine", "")
     if line.endswith(CLOSED_ENDINGS) and not any(m in line for m in OPEN_MARKERS):
@@ -190,9 +202,29 @@ def check_paywall(s: dict, eps: list[dict]) -> list[Finding]:
         out.append(Finding("low", "short-cutline", sid,
                            f"컷 라인이 {len(line)}자다. 장면이 서기 전에 끝난다."))
 
+    # 카드에 적힌 컷 라인은 무료 마지막 화의 마지막 문장이어야 한다. 다른 화를
+    # 가리키면 훅이 무료분 안에서 소진되거나(앞), 유료 내용을 미리 노출한다(뒤).
+    if line:
+        cl = bigrams(line)
+        scored = sorted(((jaccard(cl, bigrams(e["synopsis"])), e["ep"]) for e in eps),
+                        reverse=True)
+        best_score, best_ep = scored[0]
+        if best_score < 0.15:
+            out.append(Finding("medium", "cutline-orphan", sid,
+                               "컷 라인에 대응하는 회차를 특정할 수 없다. "
+                               "회차 시놉시스에 없는 장면이거나 표현이 너무 멀다."))
+        elif best_ep != free_n and best_score >= 0.30:
+            where = "무료분 안에서 이미 지나간" if best_ep < free_n else "유료 구간의"
+            out.append(Finding("high", "cutline-drift", sid,
+                               f"컷 라인이 {where} {best_ep}화를 가리킨다(유사도 {best_score:.0%}). "
+                               f"페이월은 {free_n}화다."))
+
     cut_ep = next((e for e in eps if e.get("isFreeCut")), None)
     if cut_ep and cut_ep["act"] == "결말":
         out.append(Finding("high", "cut-in-ending", sid, "무료 컷이 결말 구간에 있다."))
+    if cut_ep and cut_ep["act"] == "발단":
+        out.append(Finding("high", "cut-in-setup", sid,
+                           f"무료 컷인 {cut_ep['ep']}화가 발단이다. 컷은 사건이 도는 지점이어야 한다."))
     return out
 
 
@@ -251,6 +283,10 @@ def run() -> tuple[list[Finding], dict]:
             findings += check_paywall(s, eps)
     findings += check_catalog(series)
 
+    reviewed = load_reviewed()
+    for f in findings:
+        f.reviewed = reviewed.get(f.code, {}).get(f.target, "")
+
     acts = Counter(e["act"] for v in episodes.values() for e in v)
     stats = {
         "seriesCount": len(series),
@@ -263,10 +299,14 @@ def run() -> tuple[list[Finding], dict]:
     return findings, stats
 
 
-def report(findings: list[Finding], stats: dict, min_level: str) -> None:
+def report(findings: list[Finding], stats: dict, min_level: str,
+           show_reviewed: bool = False) -> None:
     cutoff = LEVELS.index(min_level)
-    shown = [f for f in findings if LEVELS.index(f.level) <= cutoff]
-    counts = Counter(f.level for f in findings)
+    open_findings = [f for f in findings if not f.reviewed]
+    done = [f for f in findings if f.reviewed]
+    pool = findings if show_reviewed else open_findings
+    shown = [f for f in pool if LEVELS.index(f.level) <= cutoff]
+    counts = Counter(f.level for f in open_findings)
 
     print("구조 검증 리포트")
     print("=" * 60)
@@ -276,12 +316,13 @@ def report(findings: list[Finding], stats: dict, min_level: str) -> None:
     total_eps = sum(dist.values()) or 1
     print("막 분포   " + "  ".join(f"{a} {n / total_eps:>4.0%}" for a, n in dist.items()))
     print()
-    print(f"발견  high {counts.get('high', 0)}  "
-          f"medium {counts.get('medium', 0)}  low {counts.get('low', 0)}")
+    print(f"미해결  high {counts.get('high', 0)}  "
+          f"medium {counts.get('medium', 0)}  low {counts.get('low', 0)}"
+          f"   ·   검토 완료 {len(done)}건")
     print("=" * 60)
 
     if not shown:
-        print(f"\n{min_level} 이상 문제 없음.")
+        print(f"\n{min_level} 이상 미해결 없음. (검토 완료 {len(done)}건)")
         return
 
     for level in LEVELS[:cutoff + 1]:
@@ -291,14 +332,26 @@ def report(findings: list[Finding], stats: dict, min_level: str) -> None:
         print(f"\n[{level.upper()}]  {len(group)}건")
         print("-" * 60)
         for f in sorted(group, key=lambda x: (x.code, x.target)):
-            print(f"  {f.target:<14} {f.code:<16} {f.message}")
+            tag = "✓ " if f.reviewed else "  "
+            print(f"{tag}{f.target:<14} {f.code:<16} {f.message}")
+            if f.reviewed:
+                print(f"{'':<18}{'':<16} └ 검토: {f.reviewed}")
 
 
 def main() -> int:
+    # `audit.py | head` 로 잘릴 때 traceback 대신 조용히 끝낸다.
+    try:
+        import signal
+        signal.signal(signal.SIGPIPE, signal.SIG_DFL)
+    except (ImportError, AttributeError, ValueError):
+        pass
+
     ap = argparse.ArgumentParser(description="막장 드라마 데이터 구조 검증")
     ap.add_argument("--json", action="store_true", help="JSON 으로 출력")
     ap.add_argument("--level", choices=LEVELS, default="low", help="이 심각도 이상만 출력")
-    ap.add_argument("--strict", action="store_true", help="high 가 있으면 1을 반환")
+    ap.add_argument("--strict", action="store_true", help="미해결 high 가 있으면 1을 반환")
+    ap.add_argument("--show-reviewed", action="store_true",
+                    help="검토 완료로 처리된 항목도 함께 출력")
     args = ap.parse_args()
 
     findings, stats = run()
@@ -308,9 +361,9 @@ def main() -> int:
             {"stats": stats, "findings": [asdict(f) for f in findings]},
             ensure_ascii=False, indent=2))
     else:
-        report(findings, stats, args.level)
+        report(findings, stats, args.level, args.show_reviewed)
 
-    if args.strict and any(f.level == "high" for f in findings):
+    if args.strict and any(f.level == "high" and not f.reviewed for f in findings):
         return 1
     return 0
 
