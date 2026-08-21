@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """drafts/ 의 회차 본문을 모바일 리더 한 페이지로 렌더링한다.
 
-usage: python3 scripts/render_reader.py S001 [out.html]
+usage:
+  python3 scripts/render_reader.py S001                # 한 편
+  python3 scripts/render_reader.py S056,S050 out.html  # 여러 편 비교
 """
 import html
 import json
@@ -146,64 +148,111 @@ TEMPLATE = """<title>__TITLE__</title>
   }
   .paywall button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .paywall small { font-size: .75rem; color: var(--muted); }
+  .series-head {
+    border-top: 1px solid var(--line); padding-top: 2rem; margin-bottom: 2.5rem;
+    font-family: "Noto Sans KR", sans-serif;
+  }
+  .series-head:first-child { border-top: 0; padding-top: 0; }
+  .series-head .genre {
+    font-size: .6875rem; font-weight: 700; letter-spacing: .16em; color: var(--accent);
+  }
+  .series-head h1 {
+    font-family: "Noto Serif KR", serif; font-size: 1.375rem;
+    margin: .5rem 0 .5rem; font-weight: 600;
+  }
+  .series-head p { font-size: .8125rem; color: var(--muted); margin: 0; line-height: 1.7; }
+  .series-head .pov {
+    display: inline-block; margin-top: .75rem; font-size: .6875rem;
+    border: 1px solid var(--line); border-radius: 2px; padding: .125rem .5rem; color: var(--muted);
+  }
 </style>
 
 <div class="bar">
   <div class="bar-inner">
     <strong>__SERIES__</strong>
-    <span>무료 __FREE__화 · 총 __TOTAL__화</span>
+    <span>__SUBTITLE__</span>
   </div>
 </div>
 
 <main>
 __EPISODES__
-
-  <section class="paywall">
-    <div class="tag">여기서 끊깁니다</div>
-    <h3>6화. 하객 200명</h3>
-    <p>__CUTLINE__</p>
-    <button type="button" onclick="this.nextElementSibling.hidden=false;this.hidden=true">다음 화 보기</button>
-    <small hidden>여기가 결제 지점입니다. 6화부터는 아직 쓰지 않았습니다.</small>
-  </section>
 </main>
 """
 
 
 def main() -> int:
-    sid = sys.argv[1] if len(sys.argv) > 1 else "S001"
-    series = {s["id"]: s for s in json.loads(
-        (ROOT / "data" / "series.json").read_text(encoding="utf-8"))["series"]}[sid]
+    sids = (sys.argv[1] if len(sys.argv) > 1 else "S001").split(",")
+    catalog = {s["id"]: s for s in json.loads(
+        (ROOT / "data" / "series.json").read_text(encoding="utf-8"))["series"]}
 
-    files = sorted((ROOT / "drafts").glob(f"{sid}-*.md"))
-    if not files:
-        print(f"{sid} 초고가 없다.")
-        return 1
+    sections, total_eps = [], 0
+    for sid in sids:
+        series = catalog[sid]
+        files = sorted((ROOT / "drafts").glob(f"{sid}-*.md"))
+        if not files:
+            print(f"{sid} 초고가 없다.")
+            return 1
+        total_eps += len(files)
 
-    blocks = []
-    for f in files:
-        d = parse(f)
-        no = d["meta"].get("episode", "?")
-        chars = len(d["body"].replace("\n", ""))
-        blocks.append(
-            f'  <article class="ep">\n'
-            f'    <div class="ep-no">EPISODE {int(no):02d}</div>\n'
-            f'    <h2>{html.escape(d["title"].split(". ", 1)[-1])}</h2>\n'
-            f'{to_html(d["body"])}\n'
-            f'    <div class="meta"><span>{chars}자</span>'
-            f'<span>{"무료" if d["meta"].get("isFree") == "true" else "유료"}</span></div>\n'
-            f'  </article>')
+        parsed = [parse(f) for f in files]
+        pov = parsed[0]["meta"].get("pov", "")
+        head = (
+            f'  <header class="series-head">\n'
+            f'    <div class="genre">{html.escape(series["genre"])}</div>\n'
+            f'    <h1>{html.escape(series["title"])}</h1>\n'
+            f'    <p>{html.escape(series["logline"])}</p>\n'
+            + (f'    <span class="pov">{html.escape(pov)}</span>\n' if pov else "")
+            + '  </header>')
+        sections.append(head)
+
+        for d in parsed:
+            no = int(d["meta"].get("episode", 0))
+            chars = len(d["body"].replace("\n", ""))
+            sections.append(
+                f'  <article class="ep">\n'
+                f'    <div class="ep-no">EPISODE {no:02d}</div>\n'
+                f'    <h2>{html.escape(d["title"].split(". ", 1)[-1])}</h2>\n'
+                f'{to_html(d["body"])}\n'
+                f'    <div class="meta"><span>{chars}자</span>'
+                f'<span>{"무료" if d["meta"].get("isFree") == "true" else "유료"}</span></div>\n'
+                f'  </article>')
+
+        # 무료분을 다 쓴 편만 페이월을 붙인다.
+        if len(files) >= series["freeEpisodes"]:
+            sections.append(
+                '  <section class="paywall">\n'
+                '    <div class="tag">여기서 끊깁니다</div>\n'
+                f'    <h3>{series["freeEpisodes"] + 1}화</h3>\n'
+                f'    <p>{html.escape(series["freeCutLine"])}</p>\n'
+                '    <button type="button" onclick="this.nextElementSibling.hidden=false;this.hidden=true">다음 화 보기</button>\n'
+                f'    <small hidden>여기가 결제 지점입니다. {series["freeEpisodes"] + 1}화부터는 아직 쓰지 않았습니다.</small>\n'
+                '  </section>')
+        else:
+            sections.append(
+                '  <section class="paywall">\n'
+                '    <div class="tag">초고 여기까지</div>\n'
+                f'    <h3>{len(files) + 1}화</h3>\n'
+                f'    <p>무료 구간은 {series["freeEpisodes"]}화까지입니다. '
+                f'지금은 {len(files)}화까지만 썼습니다.</p>\n'
+                '  </section>')
+
+    if len(sids) == 1:
+        s0 = catalog[sids[0]]
+        title = s0["title"]
+        subtitle = f'무료 {s0["freeEpisodes"]}화 · 총 {s0["totalEpisodes"]}화'
+    else:
+        title = "장르 이식 테스트"
+        subtitle = " · ".join(catalog[i]["genre"] for i in sids)
 
     page = (TEMPLATE
-            .replace("__TITLE__", html.escape(series["title"]))
-            .replace("__SERIES__", html.escape(series["title"]))
-            .replace("__FREE__", str(series["freeEpisodes"]))
-            .replace("__TOTAL__", str(series["totalEpisodes"]))
-            .replace("__CUTLINE__", html.escape(series["freeCutLine"]))
-            .replace("__EPISODES__", "\n\n".join(blocks)))
+            .replace("__TITLE__", html.escape(title))
+            .replace("__SERIES__", html.escape(title))
+            .replace("__SUBTITLE__", html.escape(subtitle))
+            .replace("__EPISODES__", "\n\n".join(sections)))
 
-    out = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / f"reader-{sid}.html"
+    out = Path(sys.argv[2]) if len(sys.argv) > 2 else ROOT / f"reader-{sids[0]}.html"
     out.write_text(page, encoding="utf-8")
-    print(f"{out} 생성 완료: {len(files)}화")
+    print(f"{out} 생성 완료: {len(sids)}편 {total_eps}화")
     return 0
 
 

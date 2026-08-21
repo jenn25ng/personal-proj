@@ -99,6 +99,23 @@
   }
   .paywall button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   .paywall small { font-size: .75rem; color: var(--muted); }
+  .series-head {
+    border-top: 1px solid var(--line); padding-top: 2rem; margin-bottom: 2.5rem;
+    font-family: "Noto Sans KR", sans-serif;
+  }
+  .series-head:first-child { border-top: 0; padding-top: 0; }
+  .series-head .genre {
+    font-size: .6875rem; font-weight: 700; letter-spacing: .16em; color: var(--accent);
+  }
+  .series-head h1 {
+    font-family: "Noto Serif KR", serif; font-size: 1.375rem;
+    margin: .5rem 0 .5rem; font-weight: 600;
+  }
+  .series-head p { font-size: .8125rem; color: var(--muted); margin: 0; line-height: 1.7; }
+  .series-head .pov {
+    display: inline-block; margin-top: .75rem; font-size: .6875rem;
+    border: 1px solid var(--line); border-radius: 2px; padding: .125rem .5rem; color: var(--muted);
+  }
 </style>
 
 <div class="bar">
@@ -109,6 +126,12 @@
 </div>
 
 <main>
+  <header class="series-head">
+    <div class="genre">막장</div>
+    <h1>시어머니가 내 전남편과 재혼했다</h1>
+    <p>이혼 도장을 찍은 지 3개월, 청첩장이 왔다. 신랑은 전남편, 신부는 전 시어머니, 그리고 내 뱃속엔 그 남자의 아이가 있다.</p>
+  </header>
+
   <article class="ep">
     <div class="ep-no">EPISODE 01</div>
     <h2>청첩장</h2>
@@ -1658,7 +1681,7 @@
 
   <section class="paywall">
     <div class="tag">여기서 끊깁니다</div>
-    <h3>6화. 하객 200명</h3>
+    <h3>6화</h3>
     <p>주례가 물었다. &quot;신부 측 가족 되시는 분, 이의 있으십니까.&quot; 나는 자리에서 일어섰다.</p>
     <button type="button" onclick="this.nextElementSibling.hidden=false;this.hidden=true">다음 화 보기</button>
     <small hidden>여기가 결제 지점입니다. 6화부터는 아직 쓰지 않았습니다.</small>
