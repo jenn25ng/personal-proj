@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "episodeCount": 889,
+  "episodeCount": 905,
   "episodes": {
     "S001": [
       {
@@ -6341,6 +6341,120 @@
         "ep": 16,
         "act": "결말",
         "synopsis": "현실에서 눈을 뜬다. 모니터에는 그녀가 쓴 적 없는 최종화가 저장돼 있다.",
+        "isFree": false,
+        "isFreeCut": false
+      }
+    ],
+    "S061": [
+      {
+        "ep": 1,
+        "act": "발단",
+        "synopsis": "H그룹 전무 강도윤과의 결혼식 날, 신부 한유라가 펜트하우스 루프탑에서 추락한다. 시댁은 사흘 만에 자살로 종결시킨다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 2,
+        "act": "발단",
+        "synopsis": "밑바닥을 살던 쌍둥이 동생 한유진이 언니의 시신에서 타살 흔적과 일기장을 발견한다. 유진은 망가진 자기 얼굴을 언니의 사진대로 되돌린다.",
+        "isFree": true,
+        "isFreeCut": false
+      },
+      {
+        "ep": 3,
+        "act": "전개",
+        "synopsis": "죽은 유라가 저택 문을 열고 걸어 들어온다. 그날 밤 도윤이 유진의 목을 죄며 정체를 추궁하고, 유진이 비리 장부를 꺼내 들자 손이 떨어진다. 그때 유진의 핸드폰 화면에 오선영이라는 이름이 뜬다.",
+        "isFree": true,
+        "isFreeCut": true
+      },
+      {
+        "ep": 4,
+        "act": "전개",
+        "synopsis": "파일을 재생한다. 오선영이 누군가에게 유라를 처리하라고 지시하는 목소리다. 보낸 사람이 누구인지는 알 수 없다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 5,
+        "act": "전개",
+        "synopsis": "유진이 H그룹 수석 변호사 차은석을 포섭한다. 유진이 밑바닥으로 떨어지던 해에 버린 첫사랑이다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 6,
+        "act": "전개",
+        "synopsis": "유진이 도윤과 선영 사이에 가짜 정황을 흘려 서로를 의심하게 만든다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 7,
+        "act": "위기",
+        "synopsis": "주총 D-60. 유진이 가짜 임신을 연출해 시댁에서의 입지를 굳힌다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 8,
+        "act": "위기",
+        "synopsis": "도윤의 집착이 폭주한다. 유진의 방에서 감시 장치가 나온다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 9,
+        "act": "위기",
+        "synopsis": "선영이 유라를 죽이려 한 이유가 유라가 받아 둔 유전자 검사지 때문이었음이 드러난다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 10,
+        "act": "위기",
+        "synopsis": "유진이 검사지 원본을 찾아 나선다. 발급한 병원은 이미 폐업했다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 11,
+        "act": "절정",
+        "synopsis": "선영이 어릴 적 자신과 언니를 버리고 재벌가로 도망친 친어머니였다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 12,
+        "act": "절정",
+        "synopsis": "검사지가 증명한 것은 유라가 도윤의 이복 여동생이라는 사실이었다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 13,
+        "act": "절정",
+        "synopsis": "친모가 근친을 은폐하려 딸을 죽였다. 유진의 복수가 가문 전체의 파멸로 확장된다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 14,
+        "act": "절정",
+        "synopsis": "유진의 정체가 파헤쳐질 위기에 은석이 스스로 죄를 뒤집어쓴다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 15,
+        "act": "결말",
+        "synopsis": "주총 당일, 유진이 도윤의 범죄와 선영의 살인 교사를 언론에 폭로한다. H그룹이 무너진다.",
+        "isFree": false,
+        "isFreeCut": false
+      },
+      {
+        "ep": 16,
+        "act": "결말",
+        "synopsis": "선영은 광기에 빠져 자멸하고 도윤은 수감된다. 유진은 왕좌에 오르지만 빈 펜트하우스에 홀로 남는다.",
         "isFree": false,
         "isFreeCut": false
       }

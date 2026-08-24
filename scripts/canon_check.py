@@ -97,7 +97,8 @@ def check(canon: dict) -> list[Issue]:
         if p["plantedIn"] >= p["paysOffIn"]:
             issues.append(Issue("4 역검증",
                                 f"'{p['plant']}' 는 {p['plantedIn']}화에 심고 {p['paysOffIn']}화에 회수한다. 순서가 뒤집혔다."))
-        if p["plantedIn"] > upto:
+        # 집필 전에 canon 을 먼저 쓰는 경우(draftedThrough=0)에는 이 검사를 건너뛴다.
+        if upto > 0 and p["plantedIn"] > upto:
             issues.append(Issue("4 역검증", f"'{p['plant']}' 를 아직 안 쓴 {p['plantedIn']}화에 심었다고 적혀 있다."))
         if not p.get("reread", "").strip():
             issues.append(Issue("4 역검증", f"'{p['plant']}' 에 재독 시 해석이 비었다."))
@@ -151,7 +152,8 @@ def main() -> int:
         issues = check(canon)
         print(f"서사 검증 — {canon['series']} {canon['title']}")
         print("=" * 64)
-        print(f"집필 범위 1~{canon['draftedThrough']}화")
+        upto = canon["draftedThrough"]
+        print("집필 범위 " + (f"1~{upto}화" if upto else "없음 (canon 선작성)"))
         print("-" * 64)
         if not issues:
             print("일곱 단계 모두 통과.")
