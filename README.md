@@ -10,6 +10,9 @@ data/episodes.json # 회차별 시놉시스 889회차 (시리즈 id로 키잉)
 data/slots.json    # 조합형 생성 슬롯 테이블 + 유료 전환 규칙
 scripts/render_catalog.py  # series.json -> CATALOG.md 렌더링
 scripts/style_check.py     # 초고 문체 지표 측정 (기준은 STYLE.md)
+scripts/canon_check.py     # 서사 논리 검증 (설정·정보보유·인과·복선·현실성)
+scripts/verify.py          # 1~3층 한 번에
+data/canon/                # 시리즈별 설정표와 검증 자료
 drafts/                    # 본문 초고
 CATALOG.md         # 사람이 읽는 카탈로그 (자동 생성물, 직접 수정 금지)
 ```
@@ -99,7 +102,15 @@ python3 scripts/render_cutlines.py   # cutlines.html 생성
 판정이 무의미해지기 때문이다. 60개를 모두 판정하면 전환 가능성 %와
 다시 써야 할 컷 라인 목록이 나온다.
 
-## 구조 검증
+## 검증
+
+전체 프로세스는 `VERIFY.md`. 네 층이고 아래 세 층은 자동이다.
+
+```bash
+python3 scripts/verify.py
+```
+
+### 1층 — 구조 검증
 
 읽지 않고 잡히는 결함을 데이터에서 검출한다.
 
@@ -155,3 +166,15 @@ python3 scripts/style_check.py     # 분량·문장·대사·문단 지표 측�
 ```
 
 기준과 그 근거는 `STYLE.md`. 업계 관행인 공백 포함 5,000자에 맞춘다.
+
+### 2층 — 서사 검증
+
+`data/canon/<시리즈>.json` 에 고정 설정표, 인물별 정보보유표, 원인–행동–결과,
+반전 역검증, 현실성 검증, 회차 삭제 테스트, 결제 반대 심사를 적고 초고와 대조한다.
+
+```bash
+python3 scripts/canon_check.py        # 전체
+python3 scripts/canon_check.py S056   # 한 편
+```
+
+`draftedThrough` 까지만 검사한다. 자세한 내용은 `VERIFY.md`.
