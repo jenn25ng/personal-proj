@@ -34,6 +34,7 @@ export function QuestionFlow() {
 
   const [reflection, setReflection] = useState("");
   const [doubted, setDoubted] = useState(false);
+  const [shareWithParent, setShareWithParent] = useState(false);
   const [feedback, setFeedback] = useState<ReflectResult | null>(null);
 
   function reset() {
@@ -48,6 +49,7 @@ export function QuestionFlow() {
     setCompared(false);
     setReflection("");
     setDoubted(false);
+    setShareWithParent(false);
     setFeedback(null);
   }
 
@@ -100,6 +102,7 @@ export function QuestionFlow() {
           comparedModels: compared,
           reflection,
           doubtedAi: doubted,
+          sharedWithParent: shareWithParent,
           answers: result,
         }).catch((err) => console.error("기록 저장 실패", err));
       },
@@ -299,6 +302,16 @@ export function QuestionFlow() {
                 <input type="checkbox" checked={doubted} onChange={(e) => setDoubted(e.target.checked)} />
                 AI 답 중에 “정말일까?” 싶어서 확인해 보고 싶은 부분이 있었어요
               </label>
+              <div className="rounded-xl bg-stone-50 p-3 ring-1 ring-stone-200">
+                <label className="flex items-center gap-2 text-sm text-stone-800">
+                  <input type="checkbox" checked={shareWithParent} onChange={(e) => setShareWithParent(e.target.checked)} />
+                  이 질문을 부모님께 보여 주기
+                </label>
+                <p className="mt-1 pl-6 text-xs text-stone-500">
+                  부모님은 평소에 “몇 번 질문했는지, 먼저 생각했는지” 같은 숫자만 볼 수 있어요. 질문 내용은 여기서
+                  켠 것만 보여요. 나중에 ‘내 습관’에서 바꿀 수 있어요.
+                </p>
+              </div>
               <div className="flex items-center gap-3">
                 <Button onClick={submitReflection} disabled={loading || reflection.trim().length < 2}>
                   마무리

@@ -1,6 +1,6 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getDb, schema } from "@/db";
 import { resetPasswordText, sendMail, verifyEmailText } from "./mail";
@@ -9,6 +9,7 @@ import {
   CONSENT_VERSION,
   createAuthSession,
   destroyAuthSession,
+  getActiveChild,
   getParent,
   hashPassword,
   setActiveChild,
@@ -199,4 +200,20 @@ function devAware(state: { ok: string }, result: Awaited<ReturnType<typeof sendM
     return { ...state, devLink: result.link };
   }
   return state;
+}
+
+// ---------- 아이의 공유 설정 ----------
+
+/** /me 화면에서 아이가 질문 하나를 부모에게 보여 줄지 바꾼다. 자기 기록만 바꿀 수 있다. */
+export async function setQuestionShared(form: FormData): Promise<void> {
+  const active = await getActiveChild();
+  if (!active) redirect("/login");
+  const logId = field(form, "logId", 36);
+  const shared = form.get("shared") === "1";
+  const db = await getDb();
+  await db
+    .update(schema.questionLogs)
+    .set({ sharedWithParent: shared })
+    .where(and(eq(schema.questionLogs.id, logId), eq(schema.questionLogs.childId, active.child.id)));
+  redirect("/me");
 }

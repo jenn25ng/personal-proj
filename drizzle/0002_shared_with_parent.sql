@@ -1,0 +1,1 @@
+ALTER TABLE "question_logs" ADD COLUMN "shared_with_parent" boolean DEFAULT false NOT NULL;

@@ -25,6 +25,10 @@ export function AddChildForm() {
           </select>
         </label>
       </div>
+      <p className="rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900 ring-1 ring-amber-200">
+        부모님은 아이가 몇 번 질문했는지, 먼저 생각했는지 같은 <span className="font-semibold">숫자만</span> 볼 수 있어요.
+        질문 내용은 아이가 “보여 주기”를 켠 것만 보여요. 아이도 같은 화면을 봐요.
+      </p>
       <label className="flex items-start gap-2 rounded-xl bg-stone-100 p-3 text-xs leading-relaxed text-stone-700">
         <input type="checkbox" name="consent" required className="mt-0.5" />
         <span>

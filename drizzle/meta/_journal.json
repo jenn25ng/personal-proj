@@ -15,6 +15,13 @@
       "when": 1791529074916,
       "tag": "0001_email_tokens",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1791529579723,
+      "tag": "0002_shared_with_parent",
+      "breakpoints": true
     }
   ]
 }

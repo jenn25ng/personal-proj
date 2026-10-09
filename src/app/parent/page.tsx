@@ -31,7 +31,7 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
     <div className="space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h1 className="text-2xl font-extrabold text-stone-900">부모님 보기</h1>
+          <h1 className="text-2xl font-extrabold text-stone-900">우리 가족 기록</h1>
           <p className="mt-1 text-sm text-stone-600">{parent.name} 님, 안녕하세요.</p>
         </div>
         <form action={logout}>
@@ -83,7 +83,7 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
                 <div className="flex items-center gap-2">
                   {selected?.id !== k.id && (
                     <Link href={`/parent?child=${k.id}`} className="rounded-xl bg-stone-100 px-3 py-2 text-xs font-semibold text-stone-600 hover:bg-stone-200">
-                      기록 보기
+                      습관 보기
                     </Link>
                   )}
                   <form action={selectChild}>
@@ -110,9 +110,10 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
 
       {selected && (
         <div className="space-y-3">
-          <h2 className="text-lg font-bold text-stone-800">{selected.nickname}의 기록</h2>
+          <h2 className="text-lg font-bold text-stone-800">{selected.nickname}의 습관</h2>
           <p className="text-sm text-stone-600">
-            무엇을 물었는지보다, 묻기 전에 얼마나 생각했고 AI 답을 얼마나 의심했는지를 봐 주세요.
+            무엇을 물었는지가 아니라, 묻기 전에 얼마나 생각했고 AI 답을 얼마나 의심했는지를 봐요. 질문 내용은 아이가 보여
+            주기로 한 것만 보여요. 아이가 마음 놓고 아무거나 물어볼 수 있어야 이 습관이 자라요.
           </p>
           <ChildDashboard child={selected} logs={logs} games={games} />
         </div>

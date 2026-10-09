@@ -24,7 +24,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 틀린 거 찾기
               </Link>
               <Link href="/parent" className="hover:text-stone-900">
-                부모님
+                가족 기록
               </Link>
             </nav>
           </div>

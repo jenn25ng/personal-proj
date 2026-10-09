@@ -28,6 +28,7 @@ export async function POST(request: Request) {
       comparedModels: body.comparedModels === true,
       reflection: clean(body.reflection, MAX_FIELD_LEN),
       doubtedAi: body.doubtedAi === true,
+      sharedWithParent: body.sharedWithParent === true,
       answers,
     })
     .returning({ id: schema.questionLogs.id });
