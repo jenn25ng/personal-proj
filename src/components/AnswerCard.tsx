@@ -23,7 +23,11 @@ export function AnswerCard({ answer, highlight = false }: { answer: ModelAnswer;
           )}
         </>
       ) : (
-        <p className="text-sm text-stone-500">이 AI는 지금 답을 주지 못했어요. AI도 가끔 쉬어요.</p>
+        <p className="text-sm text-stone-500">
+          {answer.error === "blocked"
+            ? "이번 답은 보여 줄 수 없었어요. 다른 말로 다시 물어보거나, 부모님이나 선생님께 물어봐요."
+            : "이 AI는 지금 답을 주지 못했어요. AI도 가끔 쉬어요."}
+        </p>
       )}
     </div>
   );

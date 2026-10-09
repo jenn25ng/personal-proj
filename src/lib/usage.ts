@@ -2,7 +2,7 @@ import "server-only";
 import type { LanguageModelUsage } from "ai";
 import { getDb, schema } from "@/db";
 
-export type UsagePurpose = "think" | "answer" | "judge" | "reflect" | "game";
+export type UsagePurpose = "think" | "answer" | "judge" | "reflect" | "game" | "safety";
 
 /** 호출을 묶고 아이를 식별하는 문맥. 라우트에서 만들어 ai.ts로 넘긴다. */
 export type CallContext = { requestId: string; childId?: string };

@@ -67,7 +67,7 @@ Drizzle ORM의 PostgreSQL 스키마 하나(`src/db/schema.ts`)를 씁니다. 드
 pnpm exec drizzle-kit generate --name <이름>
 ```
 
-테이블: `parents`, `auth_sessions`, `email_tokens`, `children`, `question_logs`, `game_results`, `ai_usage`.
+테이블: `parents`, `auth_sessions`, `email_tokens`, `children`, `question_logs`, `game_results`, `ai_usage`, `safety_events`.
 
 세 제공사 중 **설정된 키가 있는 모델만** 사용됩니다. 생각 단계, 비교 판정, 반성 피드백은 기본적으로 Claude(`JUDGE_MODEL`)가 맡고, Claude 키가 없으면 설정된 다른 제공사로 대체됩니다.
 
@@ -82,11 +82,19 @@ pnpm exec drizzle-kit generate --name <이름>
 | `SMTP_URL` / `MAIL_FROM` | – | 비우면 메일 링크를 콘솔에 출력 |
 | `APP_URL` | 요청 host | 메일 링크의 기준 주소, `pnpm usage`의 대상 |
 | `ADMIN_TOKEN` | – | 관리자 화면·사용량 API 비밀 토큰 |
+| `OUTPUT_FILTER` | `model` | AI 출력 모델 검사. `off`면 규칙만 |
 | `DAILY_QUESTION_LIMIT` / `DAILY_GAME_LIMIT` | 10 / 5 | 아이당 하루 한도 기본값 (부모가 아이별로 조정) |
 | `MAX_DAILY_QUESTION_LIMIT` / `MAX_DAILY_GAME_LIMIT` | 30 / 10 | 부모가 올릴 수 있는 상한 |
 | `PGLITE_DIR` | `.data/pglite` | PGlite 데이터 폴더 |
 
 기본 모델은 비용을 최우선으로 각 회사의 가장 가벼운 모델입니다. 질문 1건에 약 1~2센트가 들도록 맞춘 것이고, 답변 품질이 부족하면 환경변수로 한 단계 위 모델(`claude-sonnet-5-5`, `gpt-5.4-mini`)로 올리면 됩니다. 제미나이·챗지피티 모델 ID는 각 회사 문서에서 현재 이름을 확인해 바꾸세요.
+
+### 안전 필터
+
+- **입력(규칙, 무료)**: 아이가 적는 모든 글(질문, 아는 것, 예상, 정리, 게임 주제)을 AI에게 보내기 전에 검사합니다. 전화번호·주민번호·이메일·상세 주소 같은 개인정보, 욕설, 성적 표현, 자해, 약물, 무기 제작, 혐오 표현이 대상이고, 글자 사이에 공백·점을 넣어 피하는 것도 잡습니다. 걸리면 AI를 부르지 않고 아이 눈높이 안내를 보여 줍니다. 자해 표현은 막는 말 대신 어른과 청소년 상담전화 1388 안내가 나옵니다.
+- **출력(규칙 + 모델)**: AI가 만든 모든 글을 아이에게 보여 주기 전에 규칙으로 검사하고(욕설·성적·혐오·링크), 이어서 Haiku 5.5로 한 번 더 검사합니다(라우트당 1회, `OUTPUT_FILTER=off`로 끌 수 있음). 걸리면 그 답은 "보여 줄 수 없었어요"로 바뀌고, 정리 피드백은 안전한 고정 문구로 대체됩니다. 검사기 자체가 실패해도 보여 주지 않는 쪽을 택합니다.
+- 기존의 생각 단계·게임 주제 안전 판정(모델)은 그대로 있습니다.
+- 걸린 사례는 `safety_events`에 단계·경로·종류·앞부분 80자만 남고, `/admin`에서 봅니다. 규칙은 `src/lib/safety-rules.ts` 한 파일에 있어 바로 고칠 수 있습니다.
 
 ### 하루 한도
 
@@ -117,6 +125,7 @@ src/lib/actions.ts          서버 액션 (가입, 로그인, 인증, 재설정,
 src/lib/tokens.ts, mail.ts  일회성 토큰과 메일 발송
 src/lib/usage.ts, pricing.ts, usage-report.ts   호출별 사용량 기록, 요금표, 집계
 src/lib/quota.ts            아이당 하루 한도
+src/lib/safety-rules.ts, safety.ts   입력·출력 안전 필터 (규칙, 모델)
 src/app/admin                관리자 화면 (ADMIN_TOKEN)
 scripts/usage.mjs            터미널 사용량 리포트
 src/components/QuestionFlow.tsx             단계별 흐름 (클라이언트)
@@ -130,5 +139,4 @@ src/lib/mock.ts             MOCK_AI 응답
 ## 아직 없는 것 (다음 단계)
 
 - 부모 외 기기에서 아이가 혼자 쓰는 흐름 (지금은 부모가 로그인한 기기에서만 사용)
-- 입력·출력 양쪽의 별도 안전 필터 (지금은 시스템 프롬프트와 생각 단계의 `safe` 판정에 의존)
 - 각 제공사의 미성년자 대상 서비스 정책 검토

@@ -5,7 +5,7 @@ import { Card } from "@/components/ui";
 import { adminConfigured, requireAdmin } from "@/lib/admin";
 import { adminLogout } from "@/lib/admin-actions";
 import { DAILY_GAME_LIMIT, DAILY_QUESTION_LIMIT, MAX_DAILY_GAME_LIMIT, MAX_DAILY_QUESTION_LIMIT } from "@/lib/quota";
-import { buildOverview, buildUsageReport } from "@/lib/usage-report";
+import { buildOverview, buildSafetySummary, buildUsageReport } from "@/lib/usage-report";
 
 type Search = Promise<{ days?: string }>;
 const PERIODS = [1, 7, 30, 90];
@@ -47,7 +47,7 @@ async function AdminContent({ searchParams }: { searchParams: Search }) {
   await requireAdmin();
   const { days: daysParam } = await searchParams;
   const days = PERIODS.includes(Number(daysParam)) ? Number(daysParam) : 30;
-  const [overview, report] = await Promise.all([buildOverview(), buildUsageReport(days)]);
+  const [overview, report, safety] = await Promise.all([buildOverview(), buildUsageReport(days), buildSafetySummary(days)]);
   const th = "px-2 py-1.5 text-left text-xs font-semibold text-stone-500";
   const td = "px-2 py-1.5 text-sm text-stone-800 whitespace-nowrap";
   const tdr = `${td} text-right tabular-nums`;
@@ -178,6 +178,51 @@ async function AdminContent({ searchParams }: { searchParams: Search }) {
                     <td className={td}>{d.day}</td>
                     <td className={tdr}>{num(d.calls)}</td>
                     <td className={tdr}>{d.usd.toFixed(4)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Card>
+      </section>
+
+      <section className="space-y-3">
+        <h2 className="text-base font-bold text-stone-800">안전 필터 ({days}일)</h2>
+        <div className="grid grid-cols-3 gap-3">
+          <Tile label="걸린 횟수" value={num(safety.total)} />
+          <Tile label="아이 입력" value={num(safety.byStage.input)} hint="AI에게 보내기 전에 막음" />
+          <Tile label="AI 출력" value={num(safety.byStage.output)} hint="아이에게 보여 주기 전에 막음" />
+        </div>
+        {safety.byCategory.length > 0 && (
+          <p className="text-xs text-stone-500">
+            종류별: {safety.byCategory.map(([c, n]) => `${c} ${n}`).join(" · ")}
+          </p>
+        )}
+        <Card className="overflow-x-auto p-3">
+          <h3 className="mb-2 px-2 text-sm font-bold text-stone-700">최근 사례</h3>
+          {safety.recent.length === 0 ? (
+            <p className="px-2 text-sm text-stone-500">이 기간에 걸린 사례가 없어요.</p>
+          ) : (
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className={th}>시각</th>
+                  <th className={th}>단계</th>
+                  <th className={th}>경로</th>
+                  <th className={th}>검사기</th>
+                  <th className={th}>종류</th>
+                  <th className={th}>앞부분</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100">
+                {safety.recent.map((e) => (
+                  <tr key={e.id}>
+                    <td className={td}>{e.createdAt.toLocaleString("ko-KR")}</td>
+                    <td className={td}>{e.stage}</td>
+                    <td className={td}>{e.route}</td>
+                    <td className={td}>{e.detector}</td>
+                    <td className={td}>{e.category}</td>
+                    <td className="px-2 py-1.5 text-xs text-stone-500">{e.excerpt}</td>
                   </tr>
                 ))}
               </tbody>

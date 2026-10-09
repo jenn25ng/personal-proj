@@ -117,7 +117,7 @@ export const aiUsage = pgTable(
     /** 같은 HTTP 요청에서 나간 호출을 묶는 id (예: 답변 3개 + 판정) */
     requestId: text("request_id").notNull(),
     childId: uuid("child_id").references(() => children.id, { onDelete: "set null" }),
-    purpose: text("purpose").$type<"think" | "answer" | "judge" | "reflect" | "game">().notNull(),
+    purpose: text("purpose").$type<"think" | "answer" | "judge" | "reflect" | "game" | "safety">().notNull(),
     provider: text("provider").notNull(),
     model: text("model").notNull(),
     inputTokens: integer("input_tokens").notNull().default(0),
@@ -133,3 +133,25 @@ export const aiUsage = pgTable(
 );
 
 export type AiUsage = typeof aiUsage.$inferSelect;
+
+/** 안전 필터에 걸린 사례. 운영자가 필터를 다듬기 위한 기록이며 아이·부모 화면에는 쓰지 않는다. */
+export const safetyEvents = pgTable(
+  "safety_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    childId: uuid("child_id").references(() => children.id, { onDelete: "set null" }),
+    /** input: 아이가 적은 글, output: AI가 만든 글 */
+    stage: text("stage").$type<"input" | "output">().notNull(),
+    /** 어느 API에서 (think, answer, compare, reflect, game, logs) */
+    route: text("route").notNull(),
+    /** rules 또는 model */
+    detector: text("detector").notNull(),
+    category: text("category").notNull(),
+    /** 앞부분 일부만. 전체 내용은 저장하지 않는다. */
+    excerpt: text("excerpt").notNull().default(""),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("safety_events_created_idx").on(t.createdAt)],
+);
+
+export type SafetyEvent = typeof safetyEvents.$inferSelect;

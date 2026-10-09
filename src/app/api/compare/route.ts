@@ -1,7 +1,8 @@
 import { checkQuota } from "@/lib/quota";
 import { compareAnswers } from "@/lib/ai";
+import { checkInput, checkOutput } from "@/lib/safety";
 import { MAX_FIELD_LEN, MAX_QUESTION_LEN, clean, errorResponse, requireChild } from "@/lib/api-utils";
-import type { ModelAnswer } from "@/lib/types";
+import type { CompareResult, ModelAnswer } from "@/lib/types";
 import { newContext } from "@/lib/usage";
 
 export const maxDuration = 120;
@@ -32,17 +33,27 @@ export async function POST(request: Request) {
     uncertainParts: Array.isArray(p.uncertainParts) ? p.uncertainParts.slice(0, 3).map((u: unknown) => clean(u, 200)) : [],
   };
 
+  const prediction = clean(body.prediction, MAX_FIELD_LEN);
+  const priorKnowledge = clean(body.priorKnowledge, MAX_FIELD_LEN);
+  const input = await checkInput([question, prediction, priorKnowledge], { childId: auth.child.id, route: "compare" });
+  if (!input.ok) return Response.json({ error: input.message, code: "SAFETY" }, { status: 400 });
   try {
-    return Response.json(
-      await compareAnswers(
-        question,
-        clean(body.prediction, MAX_FIELD_LEN),
-        clean(body.priorKnowledge, MAX_FIELD_LEN),
-        body.mode === "direct" ? "direct" : "think",
-        primary,
-        newContext(auth.child.id),
-      ),
-    );
+    const ctx = newContext(auth.child.id);
+    const result = await compareAnswers(question, prediction, priorKnowledge, body.mode === "direct" ? "direct" : "think", primary, ctx);
+    const j = result.judge;
+    const texts = [
+      ...result.answers.filter((a) => a.ok).flatMap((a) => [a.text, ...a.uncertainParts]),
+      ...(j ? [j.kidSummary, ...j.differences, ...j.riskyClaims.flatMap((r) => [r.claim, r.why]), ...j.checkTips] : []),
+    ];
+    if (texts.length > 0 && !(await checkOutput(texts, { ...ctx, route: "compare" }))) {
+      const blocked: CompareResult = {
+        answers: result.answers.map((a) => ({ ...a, ok: false, text: "", uncertainParts: [], error: "blocked" })),
+        judge: null,
+        judgeModel: result.judgeModel,
+      };
+      return Response.json(blocked);
+    }
+    return Response.json(result);
   } catch (err) {
     return errorResponse(err);
   }

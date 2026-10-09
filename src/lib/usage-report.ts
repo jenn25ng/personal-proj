@@ -1,5 +1,5 @@
 import "server-only";
-import { and, gte, lt } from "drizzle-orm";
+import { and, desc, gte, lt } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import { estimateUsd, priceFor } from "./pricing";
 
@@ -81,7 +81,7 @@ export async function buildUsageReport(days: number): Promise<UsageReport> {
     add(byPurpose.get(r.purpose)!, r);
   }
 
-  const questionUsd = ["think", "answer", "judge", "reflect"].reduce((s, p) => s + (byPurpose.get(p)?.usd ?? 0), 0);
+  const questionUsd = ["think", "answer", "judge", "reflect", "safety"].reduce((s, p) => s + (byPurpose.get(p)?.usd ?? 0), 0);
   const gameUsd = byPurpose.get("game")?.usd ?? 0;
 
   return {
@@ -120,5 +120,28 @@ export async function buildOverview() {
     questions: questions.length,
     directQuestions: questions.filter((q) => q.mode === "direct").length,
     games: games.length,
+  };
+}
+
+/** 최근 안전 필터 사례 */
+export async function buildSafetySummary(days: number) {
+  const db = await getDb();
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  const rows = await db.query.safetyEvents.findMany({
+    where: gte(schema.safetyEvents.createdAt, since),
+    orderBy: [desc(schema.safetyEvents.createdAt)],
+    limit: 200,
+  });
+  const byStage = { input: 0, output: 0 };
+  const byCategory = new Map<string, number>();
+  for (const r of rows) {
+    byStage[r.stage] += 1;
+    byCategory.set(r.category, (byCategory.get(r.category) ?? 0) + 1);
+  }
+  return {
+    total: rows.length,
+    byStage,
+    byCategory: [...byCategory.entries()].sort((a, b) => b[1] - a[1]),
+    recent: rows.slice(0, 20),
   };
 }

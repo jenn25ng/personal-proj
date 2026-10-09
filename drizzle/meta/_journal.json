@@ -50,6 +50,13 @@
       "when": 1791588411542,
       "tag": "0006_child_limits",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1791588763666,
+      "tag": "0007_safety_events",
+      "breakpoints": true
     }
   ]
 }
