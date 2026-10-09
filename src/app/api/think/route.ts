@@ -6,7 +6,7 @@ import { MAX_QUESTION_LEN, clean, errorResponse, requireChild } from "@/lib/api-
 export async function POST(request: Request) {
   const auth = await requireChild();
   if ("response" in auth) return auth.response;
-  const limited = await checkQuota(auth.child.id, "question", true);
+  const limited = await checkQuota(auth.child, "question", true);
   if (limited) return limited;
   const body = await request.json().catch(() => ({}));
   const question = clean(body.question, MAX_QUESTION_LEN);

@@ -43,6 +43,13 @@
       "when": 1791532404448,
       "tag": "0005_ai_usage",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1791588411542,
+      "tag": "0006_child_limits",
+      "breakpoints": true
     }
   ]
 }

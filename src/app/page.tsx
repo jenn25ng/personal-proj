@@ -16,7 +16,7 @@ export default function Home() {
 
 async function HomeContent() {
   const { child } = await requireActiveChild();
-  const quota = await getQuota(child.id);
+  const quota = await getQuota(child);
   const left = Math.max(0, quota.questionLimit - quota.questionsUsed);
   return (
     <div className="space-y-5">

@@ -15,7 +15,7 @@ export default function GamePage() {
 
 async function GameContent() {
   const { child } = await requireActiveChild();
-  const quota = await getQuota(child.id);
+  const quota = await getQuota(child);
   const left = Math.max(0, quota.gameLimit - quota.gamesUsed);
   return (
     <div className="space-y-5">

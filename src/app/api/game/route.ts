@@ -8,7 +8,7 @@ export const maxDuration = 60;
 export async function POST(request: Request) {
   const auth = await requireChild();
   if ("response" in auth) return auth.response;
-  const limited = await checkQuota(auth.child.id, "game", true);
+  const limited = await checkQuota(auth.child, "game", true);
   if (limited) return limited;
   const body = await request.json().catch(() => ({}));
   const topic = clean(body.topic, 60);

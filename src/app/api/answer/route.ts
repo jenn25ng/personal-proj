@@ -8,7 +8,7 @@ export const maxDuration = 120;
 export async function POST(request: Request) {
   const auth = await requireChild();
   if ("response" in auth) return auth.response;
-  const limited = await checkQuota(auth.child.id, "question", false);
+  const limited = await checkQuota(auth.child, "question", false);
   if (limited) return limited;
   const body = await request.json().catch(() => ({}));
   const question = clean(body.question, MAX_QUESTION_LEN);

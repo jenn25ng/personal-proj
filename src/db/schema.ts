@@ -53,6 +53,9 @@ export const children = pgTable(
     grade: integer("grade").notNull(),
     consentVersion: text("consent_version").notNull(),
     consentAt: timestamp("consent_at", { withTimezone: true }).notNull(),
+    /** 부모가 정한 하루 한도. null이면 서버 기본값. */
+    dailyQuestionLimit: integer("daily_question_limit"),
+    dailyGameLimit: integer("daily_game_limit"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [index("children_parent_idx").on(t.parentId)],

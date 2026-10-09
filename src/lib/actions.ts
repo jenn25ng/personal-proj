@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getDb, schema } from "@/db";
 import { resetPasswordText, sendMail, verifyEmailText } from "./mail";
+import { MAX_DAILY_GAME_LIMIT, MAX_DAILY_QUESTION_LIMIT } from "./quota";
 import { appUrl, consumeToken, issueToken, issuedRecently, peekToken } from "./tokens";
 import {
   CONSENT_VERSION,
@@ -115,6 +116,30 @@ export async function deleteChild(form: FormData): Promise<void> {
     await db.delete(schema.children).where(eq(schema.children.id, child.id));
   }
   redirect("/parent");
+}
+
+/** 부모가 아이별 하루 한도를 정한다. 비우면 서버 기본값으로 돌아간다. */
+export async function updateChildLimits(_prev: FormState, form: FormData): Promise<FormState> {
+  const parent = await getParent();
+  if (!parent) redirect("/login");
+  const childId = field(form, "childId", 36);
+  const db = await getDb();
+  const child = await db.query.children.findFirst({ where: eq(schema.children.id, childId) });
+  if (!child || child.parentId !== parent.id) redirect("/parent");
+
+  const parse = (name: string, max: number): number | null | "bad" => {
+    const raw = field(form, name, 4);
+    if (raw === "") return null;
+    const n = Number(raw);
+    return Number.isInteger(n) && n >= 1 && n <= max ? n : "bad";
+  };
+  const q = parse("dailyQuestionLimit", MAX_DAILY_QUESTION_LIMIT);
+  const g = parse("dailyGameLimit", MAX_DAILY_GAME_LIMIT);
+  if (q === "bad") return { error: `하루 질문 수는 1~${MAX_DAILY_QUESTION_LIMIT} 사이로 정해 주세요.` };
+  if (g === "bad") return { error: `하루 게임 수는 1~${MAX_DAILY_GAME_LIMIT} 사이로 정해 주세요.` };
+
+  await db.update(schema.children).set({ dailyQuestionLimit: q, dailyGameLimit: g }).where(eq(schema.children.id, child.id));
+  return { ok: `${child.nickname}의 하루 한도를 저장했어요.` };
 }
 
 /** 계정과 모든 아이 기록을 지운다 (cascade). */

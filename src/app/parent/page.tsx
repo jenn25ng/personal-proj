@@ -3,10 +3,12 @@ import { Suspense } from "react";
 import { ChildDashboard } from "@/components/ChildDashboard";
 import { ResendVerificationForm } from "@/components/AccountForms";
 import { AddChildForm, ConfirmSubmit } from "@/components/ChildForms";
+import { ChildLimitsForm } from "@/components/ChildLimitsForm";
 import { Card } from "@/components/ui";
 import { deleteAccount, deleteChild, logout, selectChild } from "@/lib/actions";
 import { listChildren, requireParent } from "@/lib/auth";
 import { listGameResults, listQuestionLogs } from "@/lib/logs";
+import { DAILY_GAME_LIMIT, DAILY_QUESTION_LIMIT, MAX_DAILY_GAME_LIMIT, MAX_DAILY_QUESTION_LIMIT, getQuota } from "@/lib/quota";
 
 type Search = Promise<{ child?: string; pick?: string; verified?: string }>;
 
@@ -23,9 +25,9 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
   const { child: childParam, pick, verified } = await searchParams;
   const kids = await listChildren(parent.id);
   const selected = kids.find((k) => k.id === childParam) ?? kids[0] ?? null;
-  const [logs, games] = selected
-    ? await Promise.all([listQuestionLogs(selected.id), listGameResults(selected.id)])
-    : [[], []];
+  const [logs, games, quota] = selected
+    ? await Promise.all([listQuestionLogs(selected.id), listGameResults(selected.id), getQuota(selected)])
+    : [[], [], null];
 
   return (
     <div className="space-y-5">
@@ -116,6 +118,22 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
             있어요. 아이가 마음 놓고 아무거나 물어볼 수 있어야 이 습관이 자라요.
           </p>
           <ChildDashboard child={selected} logs={logs} games={games} />
+
+          <Card>
+            <h3 className="mb-1 text-base font-bold text-stone-800">{selected.nickname}의 하루 한도</h3>
+            {quota && (
+              <p className="mb-3 text-sm text-stone-600">
+                오늘 질문 {quota.questionsUsed}/{quota.questionLimit} · 게임 {quota.gamesUsed}/{quota.gameLimit} 썼어요.
+              </p>
+            )}
+            <ChildLimitsForm
+              childId={selected.id}
+              questionLimit={selected.dailyQuestionLimit}
+              gameLimit={selected.dailyGameLimit}
+              defaults={{ question: DAILY_QUESTION_LIMIT, game: DAILY_GAME_LIMIT }}
+              max={{ question: MAX_DAILY_QUESTION_LIMIT, game: MAX_DAILY_GAME_LIMIT }}
+            />
+          </Card>
         </div>
       )}
 
