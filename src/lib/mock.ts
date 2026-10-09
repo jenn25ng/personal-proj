@@ -1,4 +1,4 @@
-import type { AnswerResult, GamePuzzle, QuestionMode, ReflectResult, ThinkFirstResult } from "./types";
+import type { AnswerResult, CompareResult, GamePuzzle, ModelAnswer, QuestionMode, ReflectResult, ThinkFirstResult } from "./types";
 
 /** API 키 없이 UI를 돌려 보기 위한 가짜 응답 (MOCK_AI=1) */
 
@@ -19,36 +19,62 @@ export function mockThink(question: string): ThinkFirstResult {
   };
 }
 
-export function mockAnswer(question: string, mode: QuestionMode = "think"): AnswerResult {
+function mockAnswers(question: string): ModelAnswer[] {
   const base = `"${question}"에 대한 답이에요. 가장 중요한 건 이거예요. 첫째, 핵심 원리를 짧게 말해요. 둘째, 예를 하나 들어요.`;
+  return [
+    {
+      provider: "claude",
+      model: "mock-claude",
+      ok: true,
+      text: `${base} 이 현상은 1년에 약 12번 일어나요. 이 부분은 확실하지 않아요.`,
+      selfConfidence: "medium",
+      uncertainParts: ["1년에 12번이라는 횟수"],
+    },
+    {
+      provider: "gemini",
+      model: "mock-gemini",
+      ok: true,
+      text: `${base} 이 현상은 1년에 약 13번 일어나요.`,
+      selfConfidence: "high",
+      uncertainParts: [],
+    },
+    {
+      provider: "chatgpt",
+      model: "mock-chatgpt",
+      ok: false,
+      text: "",
+      selfConfidence: "low",
+      uncertainParts: [],
+      error: "MOCK: 응답 실패 예시",
+    },
+  ];
+}
+
+/** 첫 답 하나. 바로 답한 질문이면 되묻는 질문과 퍼즐도 함께. */
+export function mockAnswer(question: string, mode: QuestionMode = "think"): AnswerResult {
   return {
-    answers: [
-      {
-        provider: "claude",
-        model: "mock-claude",
-        ok: true,
-        text: `${base} 이 현상은 1년에 약 12번 일어나요. 이 부분은 확실하지 않아요.`,
-        selfConfidence: "medium",
-        uncertainParts: ["1년에 12번이라는 횟수"],
-      },
-      {
-        provider: "gemini",
-        model: "mock-gemini",
-        ok: true,
-        text: `${base} 이 현상은 1년에 약 13번 일어나요.`,
-        selfConfidence: "high",
-        uncertainParts: [],
-      },
-      {
-        provider: "chatgpt",
-        model: "mock-chatgpt",
-        ok: false,
-        text: "",
-        selfConfidence: "low",
-        uncertainParts: [],
-        error: "MOCK: 응답 실패 예시",
-      },
-    ],
+    answer: mockAnswers(question)[0],
+    followUps:
+      mode === "direct"
+        ? ["그럼 해까지는 얼마나 멀까? 달보다 몇 배쯤일 것 같아?", "비행기로 달까지 가면 며칠이나 걸릴까?"]
+        : [],
+    puzzles:
+      mode === "direct"
+        ? [
+            {
+              question: "달까지는 약 38만 km예요. 시속 100km로 달리는 자동차로 쉬지 않고 가면 며칠이 걸릴까요?",
+              hint: "먼저 몇 시간이 걸리는지 구한 다음, 하루는 24시간이라는 걸 떠올려요.",
+              solution: "380,000 ÷ 100 = 3,800시간. 3,800 ÷ 24 ≈ 158일. 약 다섯 달 넘게 걸려요.",
+            },
+          ]
+        : [],
+  };
+}
+
+/** 비교를 눌렀을 때: 나머지 모델의 답과 판정 */
+export function mockCompare(question: string): CompareResult {
+  return {
+    answers: mockAnswers(question).slice(1),
     judge: {
       agreement: "partly",
       kidSummary:
@@ -56,20 +82,6 @@ export function mockAnswer(question: string, mode: QuestionMode = "think"): Answ
       differences: ["클로드는 12번, 제미나이는 13번이라고 했어요."],
       riskyClaims: [{ claim: "1년에 12번 또는 13번", why: "숫자는 AI가 자주 틀리는 부분이에요." }],
       checkTips: ["과학 교과서에서 이 단원을 찾아봐요.", "학교 도서관 백과사전에서 확인해요.", "선생님께 어느 쪽이 맞는지 여쭤봐요."],
-      followUps:
-        mode === "direct"
-          ? ["그럼 해까지는 얼마나 멀까? 달보다 몇 배쯤일 것 같아?", "비행기로 달까지 가면 며칠이나 걸릴까?"]
-          : [],
-      puzzles:
-        mode === "direct"
-          ? [
-              {
-                question: "달까지는 약 38만 km예요. 시속 100km로 달리는 자동차로 쉬지 않고 가면 며칠이 걸릴까요?",
-                hint: "먼저 몇 시간이 걸리는지 구한 다음, 하루는 24시간이라는 걸 떠올려요.",
-                solution: "380,000 ÷ 100 = 3,800시간. 3,800 ÷ 24 ≈ 158일. 약 다섯 달 넘게 걸려요.",
-              },
-            ]
-          : [],
     },
     judgeModel: "mock-judge",
   };

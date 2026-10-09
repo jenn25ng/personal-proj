@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AnswerCard } from "./AnswerCard";
 import { AgreementBanner, Button, Card, Spinner, StepTitle, TextArea } from "./ui";
-import type { AnswerResult, Puzzle, ReflectResult, ThinkFirstResult } from "@/lib/types";
+import type { AnswerResult, CompareResult, Puzzle, ReflectResult, ThinkFirstResult } from "@/lib/types";
 
 type Step = "ask" | "think" | "answer" | "reflect" | "done";
 
@@ -32,7 +32,8 @@ export function QuestionFlow() {
   const [showHint, setShowHint] = useState(false);
 
   const [result, setResult] = useState<AnswerResult | null>(null);
-  const [compared, setCompared] = useState(false);
+  const [comparison, setComparison] = useState<CompareResult | null>(null);
+  const [comparing, setComparing] = useState(false);
   const [logId, setLogId] = useState<string | null>(null);
 
   const [reflection, setReflection] = useState("");
@@ -51,7 +52,8 @@ export function QuestionFlow() {
     setPrediction("");
     setShowHint(false);
     setResult(null);
-    setCompared(false);
+    setComparison(null);
+    setComparing(false);
     setLogId(null);
     setReflection("");
     setDoubted(false);
@@ -95,8 +97,7 @@ export function QuestionFlow() {
           question: q,
           mode: "direct",
           topicLabel: t.topicLabel,
-          agreement: r.judge?.agreement ?? null,
-          answers: r,
+          answers: { answer: r.answer, comparison: null },
         })
           .then((saved) => setLogId(saved.id))
           .catch((err) => console.error("기록 저장 실패", err));
@@ -114,18 +115,34 @@ export function QuestionFlow() {
       },
     );
 
-  function compare() {
-    setCompared(true);
-    if (isDirect && logId) {
-      post(`/api/logs/question/${logId}`, { comparedModels: true }, "PATCH").catch((err) =>
-        console.error("기록 갱신 실패", err),
-      );
+  /** 버튼을 눌렀을 때만 나머지 모델을 부른다. */
+  async function compare() {
+    if (!result || comparing) return;
+    setComparing(true);
+    setError(null);
+    try {
+      const c = await post<CompareResult>("/api/compare", {
+        question,
+        prediction,
+        priorKnowledge,
+        mode: think?.mode ?? "think",
+        primary: result.answer,
+      });
+      setComparison(c);
+      if (isDirect && logId) {
+        post(`/api/logs/question/${logId}`, { comparedModels: true, agreement: c.judge?.agreement ?? null, comparison: c }, "PATCH").catch(
+          (err) => console.error("기록 갱신 실패", err),
+        );
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "문제가 생겼어요.");
+    } finally {
+      setComparing(false);
     }
   }
 
   const submitReflection = () => {
-    const answerSummary =
-      result?.judge?.kidSummary ?? result?.answers.find((a) => a.ok)?.text.slice(0, 500) ?? "";
+    const answerSummary = comparison?.judge?.kidSummary ?? result?.answer.text.slice(0, 500) ?? "";
     return run(
       "정리하고 있어요",
       () => post<ReflectResult>("/api/reflect", { question, prediction, answerSummary, reflection }),
@@ -139,11 +156,11 @@ export function QuestionFlow() {
           prediction,
           priorKnowledge,
           usedHint: showHint,
-          agreement: result?.judge?.agreement ?? null,
-          comparedModels: compared,
+          agreement: comparison?.judge?.agreement ?? null,
+          comparedModels: comparison != null,
           reflection,
           doubtedAi: doubted,
-          answers: result,
+          answers: result ? { answer: result.answer, comparison } : null,
         }).catch((err) => console.error("기록 저장 실패", err));
       },
     );
@@ -156,13 +173,13 @@ export function QuestionFlow() {
     submitQuestion(q);
   }
 
-  const okAnswers = result?.answers.filter((a) => a.ok) ?? [];
-  const primary = okAnswers[0];
-  const others = okAnswers.slice(1);
-  const failed = result?.answers.filter((a) => !a.ok) ?? [];
+  const primary = result?.answer.ok ? result.answer : undefined;
+  const others = comparison?.answers.filter((a) => a.ok) ?? [];
+  const failed = comparison?.answers.filter((a) => !a.ok) ?? [];
+  const judge = comparison?.judge ?? null;
   const answerStep = isDirect ? 2 : 3;
-  const followUps = result?.judge?.followUps ?? [];
-  const puzzles = result?.judge?.puzzles ?? [];
+  const followUps = result?.followUps ?? [];
+  const puzzles = result?.puzzles ?? [];
 
   return (
     <div className="space-y-4">
@@ -267,45 +284,50 @@ export function QuestionFlow() {
             <div className="space-y-4">
               <AnswerCard answer={primary} highlight />
 
-              {!compared ? (
+              {!comparison ? (
                 <div className="rounded-xl border border-dashed border-stone-300 p-4 text-center">
                   <p className="mb-3 text-sm text-stone-600">
                     AI는 가끔 틀린 걸 자신 있게 말해요. 다른 AI는 뭐라고 하는지 비교해 볼까요?
                   </p>
-                  <Button onClick={compare} disabled={others.length === 0 && !result.judge}>
+                  <Button onClick={compare} disabled={comparing}>
                     다른 AI는 뭐라고 할까? 🔎
                   </Button>
-                  {others.length === 0 && (
-                    <p className="mt-2 text-xs text-stone-400">지금은 비교할 다른 AI 답이 없어요.</p>
+                  {comparing && (
+                    <div className="mt-3 flex justify-center">
+                      <Spinner text="다른 AI들에게 묻고 비교하고 있어요" />
+                    </div>
                   )}
                 </div>
               ) : (
                 <div className="space-y-3">
+                  {others.length === 0 && failed.length === 0 && (
+                    <p className="text-xs text-stone-400">지금은 비교할 다른 AI가 없어요. 그래도 아래에서 확인할 부분을 봐요.</p>
+                  )}
                   {others.map((a) => (
                     <AnswerCard key={a.provider} answer={a} />
                   ))}
                   {failed.map((a) => (
                     <AnswerCard key={a.provider} answer={a} />
                   ))}
-                  {result.judge && (
+                  {judge && (
                     <div className="space-y-3 rounded-xl bg-white p-4 ring-1 ring-stone-200">
-                      <AgreementBanner agreement={result.judge.agreement} />
-                      <p className="text-[15px] leading-relaxed text-stone-800">{result.judge.kidSummary}</p>
-                      {result.judge.differences.length > 0 && (
+                      <AgreementBanner agreement={judge.agreement} />
+                      <p className="text-[15px] leading-relaxed text-stone-800">{judge.kidSummary}</p>
+                      {judge.differences.length > 0 && (
                         <div>
                           <p className="mb-1 text-sm font-semibold text-stone-700">서로 달랐던 점</p>
                           <ul className="list-disc space-y-0.5 pl-5 text-sm text-stone-700">
-                            {result.judge.differences.map((d) => (
+                            {judge.differences.map((d) => (
                               <li key={d}>{d}</li>
                             ))}
                           </ul>
                         </div>
                       )}
-                      {result.judge.riskyClaims.length > 0 && (
+                      {judge.riskyClaims.length > 0 && (
                         <div>
                           <p className="mb-1 text-sm font-semibold text-rose-700">⚠️ 틀리기 쉬운 부분</p>
                           <ul className="space-y-1 text-sm text-stone-700">
-                            {result.judge.riskyClaims.map((r) => (
+                            {judge.riskyClaims.map((r) => (
                               <li key={r.claim}>
                                 <span className="font-medium">{r.claim}</span> · {r.why}
                               </li>
@@ -316,7 +338,7 @@ export function QuestionFlow() {
                       <div>
                         <p className="mb-1 text-sm font-semibold text-emerald-700">✅ 직접 확인하는 방법</p>
                         <ul className="list-disc space-y-0.5 pl-5 text-sm text-stone-700">
-                          {result.judge.checkTips.map((t) => (
+                          {judge.checkTips.map((t) => (
                             <li key={t}>{t}</li>
                           ))}
                         </ul>

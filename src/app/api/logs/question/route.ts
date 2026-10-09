@@ -1,6 +1,6 @@
 import { getDb, schema } from "@/db";
 import { MAX_FIELD_LEN, MAX_QUESTION_LEN, clean, requireChild } from "@/lib/api-utils";
-import type { AnswerResult } from "@/lib/types";
+import type { AnswerLog } from "@/lib/types";
 
 const AGREEMENTS = new Set(["agree", "partly", "disagree"]);
 
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
   if (question.length < 2) return Response.json({ error: "질문이 비어 있어요." }, { status: 400 });
 
   const agreement = typeof body.agreement === "string" && AGREEMENTS.has(body.agreement) ? body.agreement : null;
-  const answers = body.answers && typeof body.answers === "object" ? (body.answers as AnswerResult) : null;
+  const answers = body.answers && typeof body.answers === "object" ? (body.answers as AnswerLog) : null;
 
   const db = await getDb();
   const [row] = await db

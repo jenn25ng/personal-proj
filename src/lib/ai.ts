@@ -9,10 +9,11 @@ import {
   getModel,
 } from "./providers";
 import { ANSWER_SYSTEM, GAME_SYSTEM, JUDGE_SYSTEM, REFLECT_SYSTEM, THINK_FIRST_SYSTEM } from "./prompts";
-import { mockAnswer, mockGame, mockReflect, mockThink } from "./mock";
+import { mockAnswer, mockCompare, mockGame, mockReflect, mockThink } from "./mock";
 import { newContext, recordMock, tracked, type CallContext } from "./usage";
 import type {
   AnswerResult,
+  CompareResult,
   GamePuzzle,
   JudgeResult,
   ModelAnswer,
@@ -42,6 +43,8 @@ const answerSchema = z.object({
   answer: z.string(),
   selfConfidence: z.enum(["high", "medium", "low"]),
   uncertainParts: z.array(z.string()).max(3),
+  followUps: z.array(z.string()).max(3),
+  puzzles: z.array(z.object({ question: z.string(), hint: z.string(), solution: z.string() })).max(2),
 });
 
 const judgeSchema = z.object({
@@ -50,8 +53,6 @@ const judgeSchema = z.object({
   differences: z.array(z.string()),
   riskyClaims: z.array(z.object({ claim: z.string(), why: z.string() })),
   checkTips: z.array(z.string()),
-  followUps: z.array(z.string()).max(3),
-  puzzles: z.array(z.object({ question: z.string(), hint: z.string(), solution: z.string() })).max(2),
 });
 
 const reflectSchema = z.object({
@@ -82,47 +83,60 @@ export async function thinkFirst(question: string, ctx: CallContext = newContext
   return object;
 }
 
+type AskOneResult = { answer: ModelAnswer; followUps: string[]; puzzles: AnswerResult["puzzles"] };
+
 async function askOne(
   provider: ProviderId,
   question: string,
   prediction: string,
   priorKnowledge: string,
+  mode: QuestionMode,
   ctx: CallContext,
-): Promise<ModelAnswer> {
+): Promise<AskOneResult> {
   const model = DEFAULT_MODELS[provider];
+  const prompt = [
+    `어린이의 질문: """${question}"""`,
+    `질문 종류: ${mode === "direct" ? "바로 답한 질문(단순 사실)" : "생각 먼저 질문"}`,
+    priorKnowledge ? `아이가 이미 알고 있다고 적은 것: """${priorKnowledge}"""` : "",
+    prediction ? `아이의 예상: """${prediction}"""` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
   try {
     const { object } = await tracked({ ctx, purpose: "answer", provider, model }, () =>
       generateObject({
         model: getModel(provider),
         schema: answerSchema,
         system: ANSWER_SYSTEM,
-        prompt: [
-          `어린이의 질문: """${question}"""`,
-          priorKnowledge ? `아이가 이미 알고 있다고 적은 것: """${priorKnowledge}"""` : "",
-          prediction ? `아이의 예상: """${prediction}"""` : "",
-        ]
-          .filter(Boolean)
-          .join("\n"),
+        prompt,
         providerOptions: answerProviderOptions(provider),
       }),
     );
     return {
-      provider,
-      model,
-      ok: true,
-      text: object.answer,
-      selfConfidence: object.selfConfidence,
-      uncertainParts: object.uncertainParts,
+      answer: {
+        provider,
+        model,
+        ok: true,
+        text: object.answer,
+        selfConfidence: object.selfConfidence,
+        uncertainParts: object.uncertainParts,
+      },
+      followUps: mode === "direct" ? object.followUps : [],
+      puzzles: mode === "direct" ? object.puzzles : [],
     };
   } catch (err) {
     return {
-      provider,
-      model,
-      ok: false,
-      text: "",
-      selfConfidence: "low",
-      uncertainParts: [],
-      error: err instanceof Error ? err.message : String(err),
+      answer: {
+        provider,
+        model,
+        ok: false,
+        text: "",
+        selfConfidence: "low",
+        uncertainParts: [],
+        error: err instanceof Error ? err.message : String(err),
+      },
+      followUps: [],
+      puzzles: [],
     };
   }
 }
@@ -152,8 +166,15 @@ async function judgeAnswers(
   return { judge: object, judgeModel: helper.id };
 }
 
-/** 2단계: 세 모델에 동시에 묻고 비교 */
-export async function askAll(
+/** 첫 답 모델: Claude가 설정돼 있으면 Claude, 아니면 설정된 첫 제공사 */
+function primaryProvider(): ProviderId | null {
+  const providers = configuredProviders();
+  if (providers.length === 0) return null;
+  return providers.includes("claude") ? "claude" : providers[0];
+}
+
+/** 2단계: 첫 답. 모델 하나만 부른다. 비용의 대부분이 여기서 결정된다. */
+export async function askPrimary(
   question: string,
   prediction: string,
   priorKnowledge: string,
@@ -162,17 +183,36 @@ export async function askAll(
 ): Promise<AnswerResult> {
   if (MOCK_AI) {
     const r = mockAnswer(question, mode);
+    await recordMock(ctx, "answer", ANSWER_SYSTEM.length + question.length + prediction.length, r.answer.text.length);
+    return r;
+  }
+  const provider = primaryProvider();
+  if (!provider) throw new NoProviderError();
+  return askOne(provider, question, prediction, priorKnowledge, mode, ctx);
+}
+
+/** "다른 AI는 뭐라고 할까?"를 눌렀을 때만: 나머지 모델에 묻고, 첫 답까지 합쳐 비교한다. */
+export async function compareAnswers(
+  question: string,
+  prediction: string,
+  priorKnowledge: string,
+  mode: QuestionMode,
+  primary: ModelAnswer,
+  ctx: CallContext = newContext(),
+): Promise<CompareResult> {
+  if (MOCK_AI) {
+    const r = mockCompare(question);
     const promptChars = ANSWER_SYSTEM.length + question.length + prediction.length;
     await Promise.all(r.answers.map((a) => recordMock(ctx, "answer", promptChars, a.text.length)));
     await recordMock(ctx, "judge", JUDGE_SYSTEM.length + r.answers.reduce((n, a) => n + a.text.length, 0), JSON.stringify(r.judge).length);
     return r;
   }
-  const providers = configuredProviders();
-  if (providers.length === 0) throw new NoProviderError();
-
-  const answers = await Promise.all(providers.map((p) => askOne(p, question, prediction, priorKnowledge, ctx)));
-  const judged = await judgeAnswers(question, mode, answers, ctx);
-  return { answers, judge: judged?.judge ?? null, judgeModel: judged?.judgeModel ?? null };
+  const providers = configuredProviders().filter((p) => p !== primary.provider);
+  const others = await Promise.all(
+    providers.map((p) => askOne(p, question, prediction, priorKnowledge, mode, ctx).then((r) => r.answer)),
+  );
+  const judged = await judgeAnswers(question, mode, [primary, ...others], ctx);
+  return { answers: others, judge: judged?.judge ?? null, judgeModel: judged?.judgeModel ?? null };
 }
 
 /** 3단계: 반성 */

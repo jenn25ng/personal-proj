@@ -12,7 +12,7 @@
    - **생각이 필요한 질문**("왜", "어떻게", "~하면 어떻게 될까"): 아래 2~5단계를 거친다.
 2. **생각 먼저** – AI가 답 대신 "먼저 생각해 볼 질문"을 던진다. 아이는 아는 것과 **예상**을 적어야 다음으로 갈 수 있다. 막히면 힌트.
 3. **답 읽기** – 답변 하나를 먼저 보여 준다. 각 답에는 AI가 스스로 밝힌 **확신도**와 **꼭 확인해야 할 부분**이 붙는다.
-4. **다른 AI는 뭐라고 할까?** – 버튼을 누르면 나머지 모델의 답과 비교 결과(🟢 일치 / 🟡 부분 일치 / 🔴 불일치), 틀리기 쉬운 주장, 직접 확인하는 방법이 나온다.
+4. **다른 AI는 뭐라고 할까?** – 버튼을 누르면 **그때** 나머지 모델을 호출해 답과 비교 결과(🟢 일치 / 🟡 부분 일치 / 🔴 불일치), 틀리기 쉬운 주장, 직접 확인하는 방법을 보여 준다. 누르지 않으면 모델 하나만 쓴다.
 5. **한 줄 정리** – 새로 알게 된 것을 적으면 과정을 칭찬하고, 예상과 답을 비교하고, 다음 질문을 제안한다.
 
 ### 틀린 거 찾기 게임 (`/game`)
@@ -103,7 +103,7 @@ src/app/game/page.tsx       틀린 거 찾기 게임
 src/app/me/page.tsx         아이용 "내 습관" (부모와 같은 집계 + 내 질문)
 src/app/parent/page.tsx     "우리 가족 기록" (집계만)
 src/components/HabitStats.tsx   부모·아이가 공유하는 집계 컴포넌트
-src/app/api/think|answer|reflect|game/route.ts   AI API (아이 프로필 선택 필요)
+src/app/api/think|answer|compare|reflect|game/route.ts   AI API (아이 프로필 선택 필요)
 src/app/api/logs/question|game/route.ts          기록 저장 API
 src/db/schema.ts, index.ts  Drizzle 스키마와 드라이버 선택
 src/lib/auth.ts             비밀번호 해시, 세션 쿠키, 페이지 가드

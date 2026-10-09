@@ -43,10 +43,6 @@ export type JudgeResult = {
   differences: string[];
   riskyClaims: { claim: string; why: string }[];
   checkTips: string[];
-  /** 바로 답한 질문일 때: AI가 아이에게 되묻는 이어지는 질문 (예: "그럼 해까지는 얼마나 멀까?") */
-  followUps: string[];
-  /** 바로 답한 질문일 때: 그 사실을 바탕으로 추론해 보는 문제 */
-  puzzles: Puzzle[];
 };
 
 export type Puzzle = {
@@ -56,11 +52,24 @@ export type Puzzle = {
   solution: string;
 };
 
+/** 첫 답. 모델 하나만 호출한다. 바로 답한 질문이면 되묻는 질문과 퍼즐도 같은 호출에서 받는다. */
 export type AnswerResult = {
+  answer: ModelAnswer;
+  /** 바로 답한 질문일 때: AI가 아이에게 되묻는 이어지는 질문 (예: "그럼 해까지는 얼마나 멀까?") */
+  followUps: string[];
+  /** 바로 답한 질문일 때: 그 사실을 바탕으로 추론해 보는 문제 */
+  puzzles: Puzzle[];
+};
+
+/** "다른 AI는 뭐라고 할까?"를 눌렀을 때만 호출한다. 나머지 모델의 답과 전체 비교 판정. */
+export type CompareResult = {
   answers: ModelAnswer[];
   judge: JudgeResult | null;
   judgeModel: string | null;
 };
+
+/** 질문 기록에 JSON으로 남기는 답변 묶음 */
+export type AnswerLog = { answer: ModelAnswer; comparison: CompareResult | null };
 
 /** 3단계: 반성 단계 피드백 */
 export type ReflectResult = {

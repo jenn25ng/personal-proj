@@ -1,5 +1,5 @@
 import { boolean, index, integer, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import type { AnswerResult, GamePuzzle } from "@/lib/types";
+import type { AnswerLog, GamePuzzle } from "@/lib/types";
 
 /** 부모 계정 */
 export const parents = pgTable("parents", {
@@ -77,7 +77,7 @@ export const questionLogs = pgTable(
     comparedModels: boolean("compared_models").notNull().default(false),
     reflection: text("reflection").notNull().default(""),
     doubtedAi: boolean("doubted_ai").notNull().default(false),
-    answers: jsonb("answers").$type<AnswerResult | null>(),
+    answers: jsonb("answers").$type<AnswerLog | null>(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [index("question_logs_child_idx").on(t.childId, t.createdAt)],
