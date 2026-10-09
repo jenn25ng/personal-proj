@@ -6,16 +6,17 @@ import type { ProviderId } from "./types";
 
 /**
  * 모델 ID는 모두 환경변수로 바꿀 수 있다.
- * 기본값은 2026-10 기준 각 회사의 현재 모델/별칭이며, 제공사 문서에서 다시 확인하는 것이 좋다.
+ * 기본값은 비용을 최우선으로 각 회사의 가장 가벼운 현재 모델이다 (2026-10 기준, 제공사 문서에서 다시 확인할 것).
+ * 품질을 올리고 싶으면 .env.local에서 ANTHROPIC_MODEL=claude-sonnet-5-5, OPENAI_MODEL=gpt-5.5 처럼 바꾼다.
  */
 export const DEFAULT_MODELS: Record<ProviderId, string> = {
-  claude: process.env.ANTHROPIC_MODEL ?? "claude-opus-5-5",
+  claude: process.env.ANTHROPIC_MODEL ?? "claude-haiku-5-5",
   gemini: process.env.GOOGLE_MODEL ?? "gemini-flash-latest",
-  chatgpt: process.env.OPENAI_MODEL ?? "gpt-5.5",
+  chatgpt: process.env.OPENAI_MODEL ?? "gpt-5.4-nano",
 };
 
-/** 세 답변을 비교하는 판정 모델. 답변 모델보다 저렴한 현재 세대 모델을 쓴다. */
-export const JUDGE_MODEL = process.env.JUDGE_MODEL ?? "claude-sonnet-5-5";
+/** 생각 단계·비교 판정·반성·게임 문제를 만드는 모델. 가장 가벼운 현재 세대 Claude. */
+export const JUDGE_MODEL = process.env.JUDGE_MODEL ?? "claude-haiku-5-5";
 
 export const MOCK_AI = process.env.MOCK_AI === "1";
 
@@ -60,8 +61,8 @@ export function getHelperModel(): { model: LanguageModel; id: string } | null {
 /** 답변 모델에만 넘기는 제공사별 옵션 */
 export function answerProviderOptions(provider: ProviderId) {
   if (provider === "claude") {
-    // 아이용 짧은 답변이라 과한 추론은 필요 없다. effort는 Opus 5.5의 주된 비용/지연 조절 수단이다.
-    return { anthropic: { effort: "medium" as const } };
+    // 아이용 짧은 답변이라 추론은 최소로. effort는 사고 토큰(출력 요금)을 줄이는 주된 수단이다.
+    return { anthropic: { effort: "low" as const } };
   }
   return undefined;
 }

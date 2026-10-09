@@ -73,17 +73,17 @@ pnpm exec drizzle-kit generate --name <이름>
 
 | 환경변수 | 기본값 | 용도 |
 | --- | --- | --- |
-| `ANTHROPIC_API_KEY` / `ANTHROPIC_MODEL` | `claude-opus-5-5` | 클로드 답변 |
+| `ANTHROPIC_API_KEY` / `ANTHROPIC_MODEL` | `claude-haiku-5-5` | 클로드 답변 |
 | `GOOGLE_GENERATIVE_AI_API_KEY` / `GOOGLE_MODEL` | `gemini-flash-latest` | 제미나이 답변 |
-| `OPENAI_API_KEY` / `OPENAI_MODEL` | `gpt-5.5` | 챗지피티 답변 |
-| `JUDGE_MODEL` | `claude-sonnet-5-5` | 생각 단계·비교·반성·게임 문제 생성 |
+| `OPENAI_API_KEY` / `OPENAI_MODEL` | `gpt-5.4-nano` | 챗지피티 답변 |
+| `JUDGE_MODEL` | `claude-haiku-5-5` | 생각 단계·비교·반성·게임 문제 생성 |
 | `MOCK_AI` | – | `1`이면 가짜 응답 |
 | `DATABASE_URL` | – | 비우면 PGlite, 있으면 PostgreSQL |
 | `SMTP_URL` / `MAIL_FROM` | – | 비우면 메일 링크를 콘솔에 출력 |
 | `APP_URL` | 요청 host | 메일 링크의 기준 주소 |
 | `PGLITE_DIR` | `.data/pglite` | PGlite 데이터 폴더 |
 
-제미나이·챗지피티 모델 ID는 각 회사 문서에서 현재 이름을 확인해 바꾸세요.
+기본 모델은 비용을 최우선으로 각 회사의 가장 가벼운 모델입니다. 질문 1건에 약 1~2센트가 들도록 맞춘 것이고, 답변 품질이 부족하면 환경변수로 한 단계 위 모델(`claude-sonnet-5-5`, `gpt-5.4-mini`)로 올리면 됩니다. 제미나이·챗지피티 모델 ID는 각 회사 문서에서 현재 이름을 확인해 바꾸세요.
 
 ## 구조
 
