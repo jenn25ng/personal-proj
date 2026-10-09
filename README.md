@@ -11,7 +11,11 @@
 4. **다른 AI는 뭐라고 할까?** – 버튼을 누르면 나머지 모델의 답과 비교 결과(🟢 일치 / 🟡 부분 일치 / 🔴 불일치), 틀리기 쉬운 주장, 직접 확인하는 방법이 나온다.
 5. **한 줄 정리** – 새로 알게 된 것을 적으면 과정을 칭찬하고, 예상과 답을 비교하고, 다음 질문을 제안한다.
 
-`/parent` 페이지에서 부모가 "질문 수"보다 "먼저 예상한 비율", "비교해 본 비율", "AI 답을 의심한 비율"을 볼 수 있습니다. 기록은 브라우저 localStorage에만 저장됩니다(MVP라 DB 없음).
+### 틀린 거 찾기 게임 (`/game`)
+
+주제를 고르면 AI가 5~6문장짜리 설명글을 쓰는데, 그중 2문장을 **일부러 틀리게** 씁니다(숫자 바꿔치기, 날짜·순서 바꿔치기, 이름·장소 바꿔치기, 그럴듯한 가짜 이유). 아이가 틀린 문장을 눌러 고른 뒤 확인하면 어디를 찾았고 놓쳤는지, 바르게 고친 내용, AI가 쓴 수법, 그리고 오늘 교훈이 나옵니다. 게임용 글이라는 점을 화면에 명시합니다.
+
+`/parent` 페이지에서 부모가 "질문 수"보다 "먼저 예상한 비율", "비교해 본 비율", "AI 답을 의심한 비율", 게임에서 "숨은 틀린 문장을 찾은 비율"을 볼 수 있습니다. 기록은 브라우저 localStorage에만 저장됩니다(MVP라 DB 없음).
 
 ## 실행
 
@@ -30,7 +34,7 @@ pnpm dev
 | `ANTHROPIC_API_KEY` / `ANTHROPIC_MODEL` | `claude-opus-5-5` | 클로드 답변 |
 | `GOOGLE_GENERATIVE_AI_API_KEY` / `GOOGLE_MODEL` | `gemini-flash-latest` | 제미나이 답변 |
 | `OPENAI_API_KEY` / `OPENAI_MODEL` | `gpt-5.5` | 챗지피티 답변 |
-| `JUDGE_MODEL` | `claude-sonnet-5-5` | 생각 단계·비교·반성 |
+| `JUDGE_MODEL` | `claude-sonnet-5-5` | 생각 단계·비교·반성·게임 문제 생성 |
 | `MOCK_AI` | – | `1`이면 가짜 응답 |
 
 제미나이·챗지피티 모델 ID는 각 회사 문서에서 현재 이름을 확인해 바꾸세요.
@@ -39,9 +43,11 @@ pnpm dev
 
 ```
 src/app/page.tsx            아이용 메인 화면
+src/app/game/page.tsx       틀린 거 찾기 게임
 src/app/parent/page.tsx     부모 요약
-src/app/api/think|answer|reflect/route.ts   3단계 API
+src/app/api/think|answer|reflect|game/route.ts   API
 src/components/QuestionFlow.tsx             단계별 흐름 (클라이언트)
+src/components/FindMistakeGame.tsx          게임 (클라이언트)
 src/lib/ai.ts               generateObject 기반 파이프라인
 src/lib/providers.ts        제공사 레지스트리 (Vercel AI SDK)
 src/lib/prompts.ts          연령 가이드와 단계별 시스템 프롬프트
@@ -52,5 +58,4 @@ src/lib/mock.ts             MOCK_AI 응답
 
 - 부모 계정과 아동 프로필, 서버 DB (만 14세 미만 법정대리인 동의 흐름 포함)
 - 입력·출력 양쪽의 별도 안전 필터 (지금은 시스템 프롬프트와 생각 단계의 `safe` 판정에 의존)
-- "틀린 거 찾기" 게임 모드
 - 각 제공사의 미성년자 대상 서비스 정책 검토

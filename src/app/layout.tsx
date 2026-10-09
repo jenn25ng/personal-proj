@@ -13,12 +13,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="flex min-h-full flex-col bg-stone-50 text-stone-900">
         <header className="border-b border-stone-200 bg-white">
           <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
-            <Link href="/" className="text-lg font-extrabold text-amber-600">
+            <Link href="/" className="shrink-0 whitespace-nowrap text-lg font-extrabold text-amber-600">
               🧠 생각 먼저 AI
             </Link>
-            <nav className="flex gap-4 text-sm text-stone-600">
+            <nav className="flex shrink-0 gap-3 whitespace-nowrap text-xs text-stone-600 sm:gap-4 sm:text-sm">
               <Link href="/" className="hover:text-stone-900">
                 질문하기
+              </Link>
+              <Link href="/game" className="hover:text-stone-900">
+                틀린 거 찾기
               </Link>
               <Link href="/parent" className="hover:text-stone-900">
                 부모님 보기

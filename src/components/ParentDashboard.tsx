@@ -16,19 +16,22 @@ function Stat({ label, value, hint }: { label: string; value: string; hint?: str
 const AGREEMENT_LABEL = { agree: "🟢 일치", partly: "🟡 부분 일치", disagree: "🔴 불일치" } as const;
 
 export function ParentDashboard() {
-  const { records, hydrated } = useHistory();
+  const { records, games, hydrated } = useHistory();
 
   if (!hydrated) return <p className="text-sm text-stone-500">불러오는 중...</p>;
-  if (records.length === 0) {
+  if (records.length === 0 && games.length === 0) {
     return (
       <Card>
-        <p className="text-sm text-stone-600">아직 기록이 없어요. 아이가 질문을 하나 마치면 여기에 나타나요.</p>
+        <p className="text-sm text-stone-600">아직 기록이 없어요. 아이가 질문이나 게임을 하나 마치면 여기에 나타나요.</p>
       </Card>
     );
   }
 
+  const gameWrong = games.reduce((a, g) => a + g.wrongCount, 0);
+  const gameFound = games.reduce((a, g) => a + g.found, 0);
+
   const n = records.length;
-  const pct = (count: number) => `${Math.round((count / n) * 100)}%`;
+  const pct = (count: number) => (n === 0 ? "-" : `${Math.round((count / n) * 100)}%`);
   const predicted = records.filter((r) => r.prediction.trim().length > 0).length;
   const compared = records.filter((r) => r.comparedModels).length;
   const doubted = records.filter((r) => r.doubtedAi).length;
@@ -42,11 +45,39 @@ export function ParentDashboard() {
         <Stat label="다른 AI와 비교" value={pct(compared)} hint="비교 버튼을 눌러 본 횟수" />
         <Stat label="AI 답을 의심" value={pct(doubted)} hint="확인하고 싶은 부분이 있었다고 표시" />
       </div>
+      <div className="grid grid-cols-2 gap-3">
+        <Stat label="틀린 거 찾기 게임" value={`${games.length}판`} />
+        <Stat
+          label="숨은 틀린 문장 찾은 비율"
+          value={gameWrong === 0 ? "-" : `${Math.round((gameFound / gameWrong) * 100)}%`}
+          hint={`${gameWrong}개 중 ${gameFound}개`}
+        />
+      </div>
+      {n > 0 && (
       <p className="text-sm text-stone-600">
         AI들이 서로 다르게 답한 질문이 <span className="font-semibold">{disagreed}개</span> 있었어요. 아이와 함께 책이나
         믿을 수 있는 자료로 확인해 보면 좋은 대화 거리가 돼요.
       </p>
+      )}
 
+      {games.length > 0 && (
+        <Card>
+          <h2 className="mb-3 text-base font-bold text-stone-800">최근 게임</h2>
+          <ul className="divide-y divide-stone-100">
+            {games.slice(0, 10).map((g) => (
+              <li key={g.id} className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm">
+                <span className="font-semibold text-stone-800">{g.topic}</span>
+                <span className="text-stone-600">
+                  {g.wrongCount}개 중 {g.found}개 찾음{g.falseAlarms > 0 && ` · 맞는 문장 ${g.falseAlarms}개 의심`}
+                </span>
+                <span className="text-xs text-stone-400">{new Date(g.createdAt).toLocaleDateString("ko-KR")}</span>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
+
+      {records.length > 0 && (
       <Card>
         <h2 className="mb-3 text-base font-bold text-stone-800">최근 질문</h2>
         <ul className="divide-y divide-stone-100">
@@ -69,6 +100,7 @@ export function ParentDashboard() {
           ))}
         </ul>
       </Card>
+      )}
 
       <Button
         variant="secondary"

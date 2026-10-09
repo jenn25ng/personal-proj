@@ -1,4 +1,4 @@
-import type { AnswerResult, ReflectResult, ThinkFirstResult } from "./types";
+import type { AnswerResult, GamePuzzle, ReflectResult, ThinkFirstResult } from "./types";
 
 /** API 키 없이 UI를 돌려 보기 위한 가짜 응답 (MOCK_AI=1) */
 
@@ -61,5 +61,34 @@ export function mockReflect(): ReflectResult {
     comparison: "처음 예상은 원리 부분이 맞았고, 횟수는 달랐어요.",
     verifyTip: "과학 교과서 차례에서 이 단원을 찾아 숫자를 직접 확인해 봐요.",
     nextQuestion: "그럼 이 현상이 다른 행성에서도 똑같이 일어날까요?",
+  };
+}
+
+export function mockGame(topic: string): GamePuzzle {
+  return {
+    safe: true,
+    redirectMessage: "",
+    topic,
+    intro: `AI가 "${topic}"에 대해 설명한 글이에요. 그런데 두 문장이 틀렸어요!`,
+    sentences: [
+      { text: "달은 지구 주위를 도는 위성이에요.", isWrong: false, mistakeType: "none", correction: "", whyTricky: "" },
+      {
+        text: "달이 지구를 한 바퀴 도는 데는 약 7일이 걸려요.",
+        isWrong: true,
+        mistakeType: "number",
+        correction: "달이 지구를 한 바퀴 도는 데는 약 27일이 걸려요.",
+        whyTricky: "7일은 일주일이라 익숙한 숫자여서 그럴듯하게 들려요.",
+      },
+      { text: "달은 스스로 빛을 내지 못하고 햇빛을 반사해요.", isWrong: false, mistakeType: "none", correction: "", whyTricky: "" },
+      {
+        text: "달의 모양이 바뀌는 건 지구 그림자가 달을 가리기 때문이에요.",
+        isWrong: true,
+        mistakeType: "cause",
+        correction: "달의 모양이 바뀌는 건 달이 지구를 돌면서 햇빛을 받는 부분이 우리에게 다르게 보이기 때문이에요.",
+        whyTricky: "많은 사람이 그렇게 알고 있어서 틀린 줄 모르기 쉬워요.",
+      },
+      { text: "달에는 공기가 거의 없어요.", isWrong: false, mistakeType: "none", correction: "", whyTricky: "" },
+    ],
+    lesson: "오늘 AI는 숫자를 슬쩍 바꾸고, 그럴듯한 가짜 이유를 붙였어요. AI 답에서 숫자와 '~때문이에요'가 나오면 한 번 더 확인해요.",
   };
 }

@@ -69,3 +69,41 @@ export type SessionRecord = {
   reflection: string;
   doubtedAi: boolean;
 };
+
+/** 틀린 거 찾기 게임: AI가 일부러 틀린 문장을 섞어 만든 설명글 */
+export type MistakeType = "number" | "date" | "name" | "cause" | "none";
+
+export const MISTAKE_TYPE_LABEL: Record<Exclude<MistakeType, "none">, string> = {
+  number: "숫자를 바꿔치기",
+  date: "날짜·순서를 바꿔치기",
+  name: "이름·장소를 바꿔치기",
+  cause: "그럴듯한 가짜 이유",
+};
+
+export type GameSentence = {
+  text: string;
+  isWrong: boolean;
+  mistakeType: MistakeType;
+  /** isWrong일 때 올바른 내용 */
+  correction: string;
+  /** 왜 이 거짓말이 그럴듯한지 */
+  whyTricky: string;
+};
+
+export type GamePuzzle = {
+  safe: boolean;
+  redirectMessage: string;
+  topic: string;
+  intro: string;
+  sentences: GameSentence[];
+  lesson: string;
+};
+
+export type GameRecord = {
+  id: string;
+  createdAt: string;
+  topic: string;
+  wrongCount: number;
+  found: number;
+  falseAlarms: number;
+};

@@ -1,72 +1,93 @@
 import { useSyncExternalStore } from "react";
-import type { SessionRecord } from "./types";
+import type { GameRecord, SessionRecord } from "./types";
 
-const KEY = "think-first-history-v1";
-const EMPTY: SessionRecord[] = [];
-const listeners = new Set<() => void>();
-let cachedRaw: string | null = null;
-let cachedList: SessionRecord[] = EMPTY;
+/** localStorage 위에 올린 아주 작은 외부 스토어. 서버 렌더에서는 항상 빈 목록. */
+function createStore<T>(key: string, limit = 200) {
+  const EMPTY: T[] = [];
+  const listeners = new Set<() => void>();
+  let cachedRaw: string | null = null;
+  let cachedList: T[] = EMPTY;
 
-function readRaw(): string | null {
-  try {
-    return window.localStorage.getItem(KEY);
-  } catch {
-    return null;
+  function readRaw(): string | null {
+    try {
+      return window.localStorage.getItem(key);
+    } catch {
+      return null;
+    }
   }
-}
 
-export function loadHistory(): SessionRecord[] {
-  if (typeof window === "undefined") return EMPTY;
-  const raw = readRaw();
-  if (raw === cachedRaw) return cachedList;
-  cachedRaw = raw;
-  try {
-    cachedList = raw ? (JSON.parse(raw) as SessionRecord[]) : EMPTY;
-  } catch {
-    cachedList = EMPTY;
+  function load(): T[] {
+    if (typeof window === "undefined") return EMPTY;
+    const raw = readRaw();
+    if (raw === cachedRaw) return cachedList;
+    cachedRaw = raw;
+    try {
+      cachedList = raw ? (JSON.parse(raw) as T[]) : EMPTY;
+    } catch {
+      cachedList = EMPTY;
+    }
+    return cachedList;
   }
-  return cachedList;
-}
 
-function notify() {
-  listeners.forEach((l) => l());
-}
-
-export function saveRecord(record: SessionRecord) {
-  try {
-    const list = [record, ...loadHistory()].slice(0, 200);
-    window.localStorage.setItem(KEY, JSON.stringify(list));
-  } catch {
-    // 저장이 막힌 환경(시크릿 모드 등)에서는 조용히 넘어간다.
+  function notify() {
+    listeners.forEach((l) => l());
   }
-  notify();
+
+  function add(item: T) {
+    try {
+      window.localStorage.setItem(key, JSON.stringify([item, ...load()].slice(0, limit)));
+    } catch {
+      // 저장이 막힌 환경(시크릿 모드 등)에서는 조용히 넘어간다.
+    }
+    notify();
+  }
+
+  function clear() {
+    try {
+      window.localStorage.removeItem(key);
+    } catch {
+      // ignore
+    }
+    notify();
+  }
+
+  function subscribe(listener: () => void) {
+    listeners.add(listener);
+    window.addEventListener("storage", listener);
+    return () => {
+      listeners.delete(listener);
+      window.removeEventListener("storage", listener);
+    };
+  }
+
+  function use(): T[] {
+    return useSyncExternalStore(subscribe, load, () => EMPTY);
+  }
+
+  return { load, add, clear, use };
 }
+
+const sessions = createStore<SessionRecord>("think-first-history-v1");
+const games = createStore<GameRecord>("think-first-games-v1");
+
+export const loadHistory = sessions.load;
+export const saveRecord = sessions.add;
+export const saveGame = games.add;
 
 export function clearHistory() {
-  try {
-    window.localStorage.removeItem(KEY);
-  } catch {
-    // ignore
-  }
-  notify();
+  sessions.clear();
+  games.clear();
 }
 
-function subscribe(listener: () => void) {
-  listeners.add(listener);
-  window.addEventListener("storage", listener);
-  return () => {
-    listeners.delete(listener);
-    window.removeEventListener("storage", listener);
-  };
-}
-
-/** 서버 렌더에서는 빈 목록, 클라이언트에서는 localStorage 기록을 돌려준다. */
-export function useHistory(): { records: SessionRecord[]; hydrated: boolean } {
-  const records = useSyncExternalStore(subscribe, loadHistory, () => EMPTY);
-  const hydrated = useSyncExternalStore(
+/** 클라이언트에서 hydration이 끝났는지 */
+function useHydrated(): boolean {
+  return useSyncExternalStore(
     () => () => {},
     () => true,
     () => false,
   );
-  return { records, hydrated };
+}
+
+export function useHistory(): { records: SessionRecord[]; games: GameRecord[]; hydrated: boolean } {
+  return { records: sessions.use(), games: games.use(), hydrated: useHydrated() };
 }

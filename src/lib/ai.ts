@@ -8,9 +8,9 @@ import {
   getHelperModel,
   getModel,
 } from "./providers";
-import { ANSWER_SYSTEM, JUDGE_SYSTEM, REFLECT_SYSTEM, THINK_FIRST_SYSTEM } from "./prompts";
-import { mockAnswer, mockReflect, mockThink } from "./mock";
-import type { AnswerResult, JudgeResult, ModelAnswer, ProviderId, ReflectResult, ThinkFirstResult } from "./types";
+import { ANSWER_SYSTEM, GAME_SYSTEM, JUDGE_SYSTEM, REFLECT_SYSTEM, THINK_FIRST_SYSTEM } from "./prompts";
+import { mockAnswer, mockGame, mockReflect, mockThink } from "./mock";
+import type { AnswerResult, GamePuzzle, JudgeResult, ModelAnswer, ProviderId, ReflectResult, ThinkFirstResult } from "./types";
 
 export class NoProviderError extends Error {
   constructor() {
@@ -151,4 +151,46 @@ export async function reflect(input: {
     ].join("\n"),
   });
   return object;
+}
+
+const gameSchema = z.object({
+  safe: z.boolean(),
+  redirectMessage: z.string(),
+  intro: z.string(),
+  sentences: z
+    .array(
+      z.object({
+        text: z.string(),
+        isWrong: z.boolean(),
+        mistakeType: z.enum(["number", "date", "name", "cause", "none"]),
+        correction: z.string(),
+        whyTricky: z.string(),
+      }),
+    )
+    .max(8),
+  lesson: z.string(),
+});
+
+/** 게임 모드: 일부러 틀린 문장이 섞인 설명글 만들기 */
+export async function makeGamePuzzle(topic: string): Promise<GamePuzzle> {
+  if (MOCK_AI) return mockGame(topic);
+  const helper = getHelperModel();
+  if (!helper) throw new NoProviderError();
+
+  const { object } = await generateObject({
+    model: helper.model,
+    schema: gameSchema,
+    system: GAME_SYSTEM,
+    prompt: `게임 주제: """${topic}"""`,
+  });
+
+  // 맞는 문장의 mistakeType은 "none"으로, 틀린 문장이 하나도 없으면 게임이 성립하지 않으므로 다시 요청하게 한다.
+  const sentences = object.sentences.map((s) => ({
+    ...s,
+    mistakeType: s.isWrong ? (s.mistakeType === "none" ? "cause" : s.mistakeType) : ("none" as const),
+  }));
+  if (object.safe && !sentences.some((s) => s.isWrong)) {
+    throw new Error("게임 글에 틀린 문장이 만들어지지 않았어요.");
+  }
+  return { ...object, topic, sentences };
 }

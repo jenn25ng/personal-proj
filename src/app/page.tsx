@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { QuestionFlow } from "@/components/QuestionFlow";
 
 export default function Home() {
@@ -10,6 +11,12 @@ export default function Home() {
         </p>
       </div>
       <QuestionFlow />
+      <Link
+        href="/game"
+        className="block rounded-2xl bg-amber-100 p-4 text-sm text-amber-900 ring-1 ring-amber-200 hover:bg-amber-200"
+      >
+        🕵️ <span className="font-bold">틀린 거 찾기 게임</span> · AI가 일부러 틀린 문장을 숨겨요. 찾아낼 수 있을까요?
+      </Link>
     </div>
   );
 }
