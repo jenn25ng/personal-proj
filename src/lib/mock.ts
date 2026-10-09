@@ -1,19 +1,25 @@
-import type { AnswerResult, GamePuzzle, ReflectResult, ThinkFirstResult } from "./types";
+import type { AnswerResult, GamePuzzle, QuestionMode, ReflectResult, ThinkFirstResult } from "./types";
 
 /** API 키 없이 UI를 돌려 보기 위한 가짜 응답 (MOCK_AI=1) */
 
 export function mockThink(question: string): ThinkFirstResult {
+  // 목 모드: "왜/어떻게/될까"가 들어가면 생각 질문, 아니면 바로 답하는 질문
+  const think = /왜|어떻게|될까|어떨까|나을까/.test(question);
+  if (!think) {
+    return { safe: true, redirectMessage: "", topicLabel: question.slice(0, 12), mode: "direct", guidingQuestion: "", predictionPrompt: "", hint: "" };
+  }
   return {
     safe: true,
     redirectMessage: "",
     topicLabel: question.slice(0, 12),
+    mode: "think",
     guidingQuestion: "이 질문과 비슷한 걸 본 적이 있나요? 그때 어떤 모습이었는지 떠올려 봐요.",
     predictionPrompt: "답이 뭘지 한번 예상해 봐요. 틀려도 전혀 괜찮아요. 예상하는 것 자체가 공부예요.",
     hint: "'왜'가 아니라 '어떻게 되는지'를 먼저 떠올리면 실마리가 보여요.",
   };
 }
 
-export function mockAnswer(question: string): AnswerResult {
+export function mockAnswer(question: string, mode: QuestionMode = "think"): AnswerResult {
   const base = `"${question}"에 대한 답이에요. 가장 중요한 건 이거예요. 첫째, 핵심 원리를 짧게 말해요. 둘째, 예를 하나 들어요.`;
   return {
     answers: [
@@ -50,6 +56,20 @@ export function mockAnswer(question: string): AnswerResult {
       differences: ["클로드는 12번, 제미나이는 13번이라고 했어요."],
       riskyClaims: [{ claim: "1년에 12번 또는 13번", why: "숫자는 AI가 자주 틀리는 부분이에요." }],
       checkTips: ["과학 교과서에서 이 단원을 찾아봐요.", "학교 도서관 백과사전에서 확인해요.", "선생님께 어느 쪽이 맞는지 여쭤봐요."],
+      followUps:
+        mode === "direct"
+          ? ["그럼 해까지는 얼마나 멀까? 달보다 몇 배쯤일 것 같아?", "비행기로 달까지 가면 며칠이나 걸릴까?"]
+          : [],
+      puzzles:
+        mode === "direct"
+          ? [
+              {
+                question: "달까지는 약 38만 km예요. 시속 100km로 달리는 자동차로 쉬지 않고 가면 며칠이 걸릴까요?",
+                hint: "먼저 몇 시간이 걸리는지 구한 다음, 하루는 24시간이라는 걸 떠올려요.",
+                solution: "380,000 ÷ 100 = 3,800시간. 3,800 ÷ 24 ≈ 158일. 약 다섯 달 넘게 걸려요.",
+              },
+            ]
+          : [],
     },
     judgeModel: "mock-judge",
   };

@@ -20,6 +20,7 @@ export async function POST(request: Request) {
     .values({
       childId: auth.child.id,
       question,
+      mode: body.mode === "direct" ? "direct" : "think",
       topicLabel: clean(body.topicLabel, 60),
       priorKnowledge: clean(body.priorKnowledge, MAX_FIELD_LEN),
       prediction: clean(body.prediction, MAX_FIELD_LEN),

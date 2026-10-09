@@ -10,7 +10,16 @@ import {
 } from "./providers";
 import { ANSWER_SYSTEM, GAME_SYSTEM, JUDGE_SYSTEM, REFLECT_SYSTEM, THINK_FIRST_SYSTEM } from "./prompts";
 import { mockAnswer, mockGame, mockReflect, mockThink } from "./mock";
-import type { AnswerResult, GamePuzzle, JudgeResult, ModelAnswer, ProviderId, ReflectResult, ThinkFirstResult } from "./types";
+import type {
+  AnswerResult,
+  GamePuzzle,
+  JudgeResult,
+  ModelAnswer,
+  ProviderId,
+  QuestionMode,
+  ReflectResult,
+  ThinkFirstResult,
+} from "./types";
 
 export class NoProviderError extends Error {
   constructor() {
@@ -22,6 +31,7 @@ const thinkSchema = z.object({
   safe: z.boolean(),
   redirectMessage: z.string(),
   topicLabel: z.string(),
+  mode: z.enum(["think", "direct"]),
   guidingQuestion: z.string(),
   predictionPrompt: z.string(),
   hint: z.string(),
@@ -39,6 +49,8 @@ const judgeSchema = z.object({
   differences: z.array(z.string()),
   riskyClaims: z.array(z.object({ claim: z.string(), why: z.string() })),
   checkTips: z.array(z.string()),
+  followUps: z.array(z.string()).max(3),
+  puzzles: z.array(z.object({ question: z.string(), hint: z.string(), solution: z.string() })).max(2),
 });
 
 const reflectSchema = z.object({
@@ -100,7 +112,11 @@ async function askOne(provider: ProviderId, question: string, prediction: string
   }
 }
 
-async function judgeAnswers(question: string, answers: ModelAnswer[]): Promise<{ judge: JudgeResult; judgeModel: string } | null> {
+async function judgeAnswers(
+  question: string,
+  mode: QuestionMode,
+  answers: ModelAnswer[],
+): Promise<{ judge: JudgeResult; judgeModel: string } | null> {
   const helper = getHelperModel();
   const good = answers.filter((a) => a.ok);
   if (!helper || good.length === 0) return null;
@@ -111,6 +127,7 @@ async function judgeAnswers(question: string, answers: ModelAnswer[]): Promise<{
     system: JUDGE_SYSTEM,
     prompt: [
       `어린이의 질문: """${question}"""`,
+      `질문 종류: ${mode === "direct" ? "바로 답한 질문(단순 사실)" : "생각 먼저 질문"}`,
       ...good.map((a, i) => `[답변 ${i + 1}, ${a.provider}]\n${a.text}\n(스스로 밝힌 확신도: ${a.selfConfidence})`),
     ].join("\n\n"),
   });
@@ -118,13 +135,18 @@ async function judgeAnswers(question: string, answers: ModelAnswer[]): Promise<{
 }
 
 /** 2단계: 세 모델에 동시에 묻고 비교 */
-export async function askAll(question: string, prediction: string, priorKnowledge: string): Promise<AnswerResult> {
-  if (MOCK_AI) return mockAnswer(question);
+export async function askAll(
+  question: string,
+  prediction: string,
+  priorKnowledge: string,
+  mode: QuestionMode = "think",
+): Promise<AnswerResult> {
+  if (MOCK_AI) return mockAnswer(question, mode);
   const providers = configuredProviders();
   if (providers.length === 0) throw new NoProviderError();
 
   const answers = await Promise.all(providers.map((p) => askOne(p, question, prediction, priorKnowledge)));
-  const judged = await judgeAnswers(question, answers);
+  const judged = await judgeAnswers(question, mode, answers);
   return { answers, judge: judged?.judge ?? null, judgeModel: judged?.judgeModel ?? null };
 }
 

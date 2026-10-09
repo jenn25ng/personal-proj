@@ -6,9 +6,13 @@ export const PROVIDER_LABEL: Record<ProviderId, string> = {
   chatgpt: "챗지피티",
 };
 
-/** 1단계: 질문을 받고 "생각 먼저" 안내를 만든다. */
+/** 질문 종류: 아이가 스스로 추론해 볼 만한 질문(think) vs 단순 사실·정의·환산(direct) */
+export type QuestionMode = "think" | "direct";
+
+/** 1단계: 질문을 받고 종류를 나눈 뒤, 생각이 필요한 질문이면 "생각 먼저" 안내를 만든다. */
 export type ThinkFirstResult = {
   safe: boolean;
+  mode: QuestionMode;
   /** safe가 false일 때 아이에게 보여줄 부드러운 안내 */
   redirectMessage: string;
   topicLabel: string;
@@ -39,6 +43,17 @@ export type JudgeResult = {
   differences: string[];
   riskyClaims: { claim: string; why: string }[];
   checkTips: string[];
+  /** 바로 답한 질문일 때: AI가 아이에게 되묻는 이어지는 질문 (예: "그럼 해까지는 얼마나 멀까?") */
+  followUps: string[];
+  /** 바로 답한 질문일 때: 그 사실을 바탕으로 추론해 보는 문제 */
+  puzzles: Puzzle[];
+};
+
+export type Puzzle = {
+  question: string;
+  hint: string;
+  /** 풀이와 답. 아이가 자기 답을 적은 뒤에만 보여 준다. */
+  solution: string;
 };
 
 export type AnswerResult = {

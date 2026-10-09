@@ -17,7 +17,11 @@ function Stat({ label, value, hint }: { label: string; value: string; hint?: str
 export function HabitStats({ logs, games }: { logs: QuestionLog[]; games: GameResult[] }) {
   const n = logs.length;
   const pct = (count: number) => (n === 0 ? "-" : `${Math.round((count / n) * 100)}%`);
-  const predicted = logs.filter((r) => r.prediction.trim().length > 0).length;
+  // "먼저 예상"은 생각이 필요한 질문에만 해당한다. 바로 답한 질문은 분모에서 뺀다.
+  const thinkLogs = logs.filter((r) => r.mode === "think");
+  const direct = n - thinkLogs.length;
+  const predicted = thinkLogs.filter((r) => r.prediction.trim().length > 0).length;
+  const predictedPct = thinkLogs.length === 0 ? "-" : `${Math.round((predicted / thinkLogs.length) * 100)}%`;
   const compared = logs.filter((r) => r.comparedModels).length;
   const doubted = logs.filter((r) => r.doubtedAi).length;
   const disagreed = logs.filter((r) => r.agreement && r.agreement !== "agree").length;
@@ -27,8 +31,8 @@ export function HabitStats({ logs, games }: { logs: QuestionLog[]; games: GameRe
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="질문 수" value={String(n)} />
-        <Stat label="먼저 예상한 비율" value={pct(predicted)} hint="묻기 전에 자기 생각을 적은 횟수" />
+        <Stat label="질문 수" value={String(n)} hint={direct > 0 ? `그중 바로 답한 질문 ${direct}개` : undefined} />
+        <Stat label="먼저 예상한 비율" value={predictedPct} hint="생각이 필요한 질문 중, 묻기 전에 자기 생각을 적은 비율" />
         <Stat label="다른 AI와 비교" value={pct(compared)} hint="비교 버튼을 눌러 본 횟수" />
         <Stat label="AI 답을 의심" value={pct(doubted)} hint="확인하고 싶은 부분이 있었다고 표시" />
       </div>

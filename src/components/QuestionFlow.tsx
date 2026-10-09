@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { AnswerCard } from "./AnswerCard";
 import { AgreementBanner, Button, Card, Spinner, StepTitle, TextArea } from "./ui";
-import type { AnswerResult, ReflectResult, ThinkFirstResult } from "@/lib/types";
+import type { AnswerResult, Puzzle, ReflectResult, ThinkFirstResult } from "@/lib/types";
 
 type Step = "ask" | "think" | "answer" | "reflect" | "done";
 
-async function post<T>(url: string, body: unknown): Promise<T> {
+async function post<T>(url: string, body: unknown, method = "POST"): Promise<T> {
   const res = await fetch(url, {
-    method: "POST",
+    method,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
@@ -21,9 +21,11 @@ async function post<T>(url: string, body: unknown): Promise<T> {
 export function QuestionFlow() {
   const [step, setStep] = useState<Step>("ask");
   const [loading, setLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const [question, setQuestion] = useState("");
+  const [draft, setDraft] = useState("");
   const [think, setThink] = useState<ThinkFirstResult | null>(null);
   const [priorKnowledge, setPriorKnowledge] = useState("");
   const [prediction, setPrediction] = useState("");
@@ -31,31 +33,37 @@ export function QuestionFlow() {
 
   const [result, setResult] = useState<AnswerResult | null>(null);
   const [compared, setCompared] = useState(false);
+  const [logId, setLogId] = useState<string | null>(null);
 
   const [reflection, setReflection] = useState("");
   const [doubted, setDoubted] = useState(false);
   const [feedback, setFeedback] = useState<ReflectResult | null>(null);
 
+  const isDirect = think?.mode === "direct";
+
   function reset() {
     setStep("ask");
     setError(null);
     setQuestion("");
+    setDraft("");
     setThink(null);
     setPriorKnowledge("");
     setPrediction("");
     setShowHint(false);
     setResult(null);
     setCompared(false);
+    setLogId(null);
     setReflection("");
     setDoubted(false);
     setFeedback(null);
   }
 
-  async function run<T>(fn: () => Promise<T>, then: (v: T) => void) {
+  async function run<T>(text: string, fn: () => Promise<T>, then: (v: T) => void | Promise<void>) {
     setLoading(true);
+    setLoadingText(text);
     setError(null);
     try {
-      then(await fn());
+      await then(await fn());
     } catch (e) {
       setError(e instanceof Error ? e.message : "문제가 생겼어요.");
     } finally {
@@ -63,17 +71,42 @@ export function QuestionFlow() {
     }
   }
 
-  const submitQuestion = () =>
-    run(
-      () => post<ThinkFirstResult>("/api/think", { question }),
-      (t) => {
+  /** 질문 제출. 바로 답할 질문이면 생각 단계를 건너뛰고 곧장 답을 가져온다. */
+  function submitQuestion(text: string) {
+    const q = text.trim();
+    if (q.length < 2) return;
+    setQuestion(q);
+    return run(
+      "질문을 살펴보고 있어요",
+      () => post<ThinkFirstResult>("/api/think", { question: q }),
+      async (t) => {
         setThink(t);
-        setStep("think");
+        if (!t.safe) return;
+        if (t.mode === "think") {
+          setStep("think");
+          return;
+        }
+        setLoadingText("AI 세 개에게 동시에 묻고 있어요");
+        const r = await post<AnswerResult>("/api/answer", { question: q, prediction: "", priorKnowledge: "", mode: "direct" });
+        setResult(r);
+        setStep("answer");
+        // 바로 답한 질문은 지금 기록한다. 실패해도 아이에게는 알리지 않는다.
+        post<{ id: string }>("/api/logs/question", {
+          question: q,
+          mode: "direct",
+          topicLabel: t.topicLabel,
+          agreement: r.judge?.agreement ?? null,
+          answers: r,
+        })
+          .then((saved) => setLogId(saved.id))
+          .catch((err) => console.error("기록 저장 실패", err));
       },
     );
+  }
 
   const submitThinking = () =>
     run(
+      "AI 세 개에게 동시에 묻고 있어요",
       () => post<AnswerResult>("/api/answer", { question, prediction, priorKnowledge }),
       (r) => {
         setResult(r);
@@ -81,17 +114,27 @@ export function QuestionFlow() {
       },
     );
 
+  function compare() {
+    setCompared(true);
+    if (isDirect && logId) {
+      post(`/api/logs/question/${logId}`, { comparedModels: true }, "PATCH").catch((err) =>
+        console.error("기록 갱신 실패", err),
+      );
+    }
+  }
+
   const submitReflection = () => {
     const answerSummary =
       result?.judge?.kidSummary ?? result?.answers.find((a) => a.ok)?.text.slice(0, 500) ?? "";
     return run(
+      "정리하고 있어요",
       () => post<ReflectResult>("/api/reflect", { question, prediction, answerSummary, reflection }),
       (f) => {
         setFeedback(f);
         setStep("done");
-        // 기록 저장은 화면 진행을 막지 않는다. 실패해도 아이에게는 알리지 않고 콘솔에만 남긴다.
         post("/api/logs/question", {
           question,
+          mode: "think",
           topicLabel: think?.topicLabel ?? "",
           prediction,
           priorKnowledge,
@@ -106,10 +149,20 @@ export function QuestionFlow() {
     );
   };
 
+  /** "더 궁금해질 만한 것"을 누르면 그 질문으로 새로 시작한다. */
+  function askWonder(q: string) {
+    reset();
+    setDraft(q);
+    submitQuestion(q);
+  }
+
   const okAnswers = result?.answers.filter((a) => a.ok) ?? [];
   const primary = okAnswers[0];
   const others = okAnswers.slice(1);
   const failed = result?.answers.filter((a) => !a.ok) ?? [];
+  const answerStep = isDirect ? 2 : 3;
+  const followUps = result?.judge?.followUps ?? [];
+  const puzzles = result?.judge?.puzzles ?? [];
 
   return (
     <div className="space-y-4">
@@ -120,22 +173,22 @@ export function QuestionFlow() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              if (question.trim().length >= 2) submitQuestion();
+              submitQuestion(draft);
             }}
             className="space-y-3"
           >
             <TextArea
               label="질문"
-              value={question}
-              onChange={setQuestion}
-              placeholder="예) 달은 왜 모양이 바뀌어요?"
+              value={draft}
+              onChange={setDraft}
+              placeholder="예) 달은 왜 모양이 바뀌어요?  /  달까지 거리는 얼마예요?"
               rows={2}
             />
             <div className="flex items-center gap-3">
-              <Button type="submit" disabled={loading || question.trim().length < 2}>
+              <Button type="submit" disabled={loading || draft.trim().length < 2}>
                 다음
               </Button>
-              {loading && <Spinner text="생각할 거리를 준비하고 있어요" />}
+              {loading && <Spinner text={loadingText} />}
             </div>
           </form>
         ) : (
@@ -143,7 +196,7 @@ export function QuestionFlow() {
         )}
       </Card>
 
-      {/* 2. 생각 먼저 */}
+      {/* 부적절한 질문 */}
       {think && !think.safe && (
         <Card className="ring-rose-200">
           <p className="text-[15px] leading-relaxed text-stone-800">{think.redirectMessage}</p>
@@ -155,7 +208,8 @@ export function QuestionFlow() {
         </Card>
       )}
 
-      {think && think.safe && (
+      {/* 2. 생각 먼저 (생각이 필요한 질문만) */}
+      {think && think.safe && !isDirect && (
         <Card>
           <StepTitle step={2}>AI에게 묻기 전에, 먼저 생각해 봐요</StepTitle>
           {step === "think" ? (
@@ -188,7 +242,7 @@ export function QuestionFlow() {
                 <Button onClick={submitThinking} disabled={loading || prediction.trim().length < 2}>
                   이제 AI에게 물어보기
                 </Button>
-                {loading && <Spinner text="AI 세 개에게 동시에 묻고 있어요" />}
+                {loading && <Spinner text={loadingText} />}
               </div>
             </div>
           ) : (
@@ -205,7 +259,10 @@ export function QuestionFlow() {
       {/* 3. 답변 */}
       {result && (
         <Card>
-          <StepTitle step={3}>AI의 답을 읽어 봐요</StepTitle>
+          <StepTitle step={answerStep}>{isDirect ? "바로 알려 줄게요" : "AI의 답을 읽어 봐요"}</StepTitle>
+          {isDirect && (
+            <p className="mb-3 text-sm text-stone-500">이건 생각할 것보다 알면 되는 거라 바로 답해요. 그래도 AI 답은 한 번 확인해 봐요.</p>
+          )}
           {primary ? (
             <div className="space-y-4">
               <AnswerCard answer={primary} highlight />
@@ -215,7 +272,7 @@ export function QuestionFlow() {
                   <p className="mb-3 text-sm text-stone-600">
                     AI는 가끔 틀린 걸 자신 있게 말해요. 다른 AI는 뭐라고 하는지 비교해 볼까요?
                   </p>
-                  <Button onClick={() => setCompared(true)} disabled={others.length === 0 && !result.judge}>
+                  <Button onClick={compare} disabled={others.length === 0 && !result.judge}>
                     다른 AI는 뭐라고 할까? 🔎
                   </Button>
                   {others.length === 0 && (
@@ -269,7 +326,7 @@ export function QuestionFlow() {
                 </div>
               )}
 
-              {step === "answer" && (
+              {!isDirect && step === "answer" && (
                 <div className="pt-1">
                   <Button onClick={() => setStep("reflect")} variant="secondary">
                     다 읽었어요, 정리하기
@@ -283,8 +340,57 @@ export function QuestionFlow() {
         </Card>
       )}
 
-      {/* 4. 반성 */}
-      {(step === "reflect" || step === "done") && (
+      {/* 바로 답한 질문: AI가 되묻기 + 그 사실로 풀어 보는 문제 */}
+      {isDirect && result && primary && (
+        <>
+          {followUps.length > 0 && (
+            <Card className="bg-amber-50/60">
+              <h2 className="mb-1 text-base font-bold text-stone-800">🙋 이번엔 내가 물어볼게요</h2>
+              <p className="mb-3 text-xs text-stone-500">먼저 머릿속으로 찍어 보고, 궁금하면 눌러요. 그 질문으로 이어져요.</p>
+              <ul className="space-y-2">
+                {followUps.map((q) => (
+                  <li key={q}>
+                    <button
+                      type="button"
+                      disabled={loading}
+                      onClick={() => askWonder(q)}
+                      className="w-full rounded-xl bg-white p-3 text-left text-[15px] text-stone-800 ring-1 ring-amber-200 hover:bg-amber-100 disabled:opacity-40"
+                    >
+                      {q}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {loading && (
+                <div className="mt-3">
+                  <Spinner text={loadingText} />
+                </div>
+              )}
+            </Card>
+          )}
+
+          {puzzles.length > 0 && (
+            <Card>
+              <h2 className="mb-1 text-base font-bold text-stone-800">🧩 이걸로 풀어 보는 문제</h2>
+              <p className="mb-3 text-xs text-stone-500">방금 알게 된 걸로 어림해 봐요. 내 답을 적어야 풀이를 볼 수 있어요.</p>
+              <div className="space-y-4">
+                {puzzles.map((pz, i) => (
+                  <PuzzleCard key={i} puzzle={pz} />
+                ))}
+              </div>
+            </Card>
+          )}
+
+          <div className="flex items-center gap-3">
+            <Button onClick={reset} variant="secondary">
+              다른 거 물어보기
+            </Button>
+          </div>
+        </>
+      )}
+
+      {/* 4. 반성 (생각이 필요한 질문만) */}
+      {!isDirect && (step === "reflect" || step === "done") && (
         <Card>
           <StepTitle step={4}>한 줄로 정리해 봐요</StepTitle>
           {step === "reflect" ? (
@@ -303,7 +409,7 @@ export function QuestionFlow() {
                 <Button onClick={submitReflection} disabled={loading || reflection.trim().length < 2}>
                   마무리
                 </Button>
-                {loading && <Spinner text="정리하고 있어요" />}
+                {loading && <Spinner text={loadingText} />}
               </div>
             </div>
           ) : (
@@ -327,6 +433,50 @@ export function QuestionFlow() {
       )}
 
       {error && <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-800 ring-1 ring-rose-200">{error}</p>}
+    </div>
+  );
+}
+
+/** 추론 문제 하나. 아이가 답을 적어야 풀이가 열린다. */
+function PuzzleCard({ puzzle }: { puzzle: Puzzle }) {
+  const [attempt, setAttempt] = useState("");
+  const [hint, setHint] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+  return (
+    <div className="rounded-xl bg-stone-50 p-4 ring-1 ring-stone-200">
+      <p className="text-[15px] leading-relaxed text-stone-800">{puzzle.question}</p>
+      <div className="mt-3 flex gap-2">
+        <input
+          value={attempt}
+          onChange={(e) => setAttempt(e.target.value)}
+          disabled={revealed}
+          placeholder="내 답 (어림해도 괜찮아요)"
+          aria-label="내 답"
+          className="min-w-0 flex-1 rounded-xl border border-stone-300 px-3 py-2 text-base outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-200 disabled:bg-stone-100"
+        />
+        {!revealed && (
+          <Button onClick={() => setRevealed(true)} disabled={attempt.trim().length < 1}>
+            풀이 보기
+          </Button>
+        )}
+      </div>
+      {!revealed &&
+        (hint ? (
+          <p className="mt-2 text-sm text-stone-600">💡 {puzzle.hint}</p>
+        ) : (
+          <button type="button" onClick={() => setHint(true)} className="mt-2 text-sm text-amber-700 underline">
+            힌트 보기
+          </button>
+        ))}
+      {revealed && (
+        <div className="mt-3 space-y-1 text-sm">
+          <p className="text-stone-600">
+            내 답: <span className="font-semibold text-stone-800">{attempt}</span>
+          </p>
+          <p className="rounded-lg bg-white p-3 leading-relaxed text-stone-800 ring-1 ring-emerald-200">✅ {puzzle.solution}</p>
+          <p className="text-xs text-stone-500">딱 맞지 않아도 괜찮아요. 어림하는 방법을 떠올린 게 진짜예요.</p>
+        </div>
+      )}
     </div>
   );
 }

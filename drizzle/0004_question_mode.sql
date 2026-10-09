@@ -1,0 +1,1 @@
+ALTER TABLE "question_logs" ADD COLUMN "mode" text DEFAULT 'think' NOT NULL;

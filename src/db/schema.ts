@@ -67,6 +67,8 @@ export const questionLogs = pgTable(
       .notNull()
       .references(() => children.id, { onDelete: "cascade" }),
     question: text("question").notNull(),
+    /** "think": 생각 먼저 단계를 거친 질문, "direct": 바로 답한 질문 */
+    mode: text("mode").$type<"think" | "direct">().notNull().default("think"),
     topicLabel: text("topic_label").notNull().default(""),
     priorKnowledge: text("prior_knowledge").notNull().default(""),
     prediction: text("prediction").notNull().default(""),
