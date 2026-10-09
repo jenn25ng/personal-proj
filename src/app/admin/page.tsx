@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { Card } from "@/components/ui";
 import { adminConfigured, requireAdmin } from "@/lib/admin";
 import { adminLogout } from "@/lib/admin-actions";
+import { DAILY_GAME_LIMIT, DAILY_QUESTION_LIMIT } from "@/lib/quota";
 import { buildOverview, buildUsageReport } from "@/lib/usage-report";
 
 type Search = Promise<{ days?: string }>;
@@ -72,6 +73,7 @@ async function AdminContent({ searchParams }: { searchParams: Search }) {
           <Tile label="아이 프로필" value={num(overview.children)} />
           <Tile label="질문" value={num(overview.questions)} hint={`그중 바로 답한 질문 ${num(overview.directQuestions)}건`} />
           <Tile label="게임" value={`${num(overview.games)}판`} />
+          <Tile label="하루 한도 (아이당)" value={`질문 ${DAILY_QUESTION_LIMIT} · 게임 ${DAILY_GAME_LIMIT}`} hint="DAILY_QUESTION_LIMIT, DAILY_GAME_LIMIT" />
         </div>
       </section>
 

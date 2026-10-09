@@ -18,7 +18,8 @@ async function post<T>(url: string, body: unknown, method = "POST"): Promise<T> 
   return data as T;
 }
 
-export function QuestionFlow() {
+export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
+  const [left, setLeft] = useState(questionsLeft);
   const [step, setStep] = useState<Step>("ask");
   const [loading, setLoading] = useState(false);
   const [loadingText, setLoadingText] = useState("");
@@ -83,6 +84,7 @@ export function QuestionFlow() {
       () => post<ThinkFirstResult>("/api/think", { question: q }),
       async (t) => {
         setThink(t);
+        setLeft((n) => Math.max(0, n - 1));
         if (!t.safe) return;
         if (t.mode === "think") {
           setStep("think");
@@ -186,7 +188,9 @@ export function QuestionFlow() {
       {/* 1. 질문 */}
       <Card>
         <StepTitle step={1}>궁금한 걸 적어 봐요</StepTitle>
-        {step === "ask" ? (
+        {step === "ask" && left === 0 ? (
+          <p className="text-[15px] leading-relaxed text-stone-800">🌙 오늘 질문은 다 썼어요. 내일 다시 열려요. 궁금한 건 공책에 적어 뒀다가 내일 물어봐요!</p>
+        ) : step === "ask" ? (
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -205,7 +209,7 @@ export function QuestionFlow() {
               <Button type="submit" disabled={loading || draft.trim().length < 2}>
                 다음
               </Button>
-              {loading && <Spinner text={loadingText} />}
+              {loading ? <Spinner text={loadingText} /> : <span className="text-xs text-stone-400">오늘 {left}개 더 물어볼 수 있어요</span>}
             </div>
           </form>
         ) : (

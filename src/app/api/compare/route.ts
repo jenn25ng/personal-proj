@@ -1,3 +1,4 @@
+import { checkQuota } from "@/lib/quota";
 import { compareAnswers } from "@/lib/ai";
 import { MAX_FIELD_LEN, MAX_QUESTION_LEN, clean, errorResponse, requireChild } from "@/lib/api-utils";
 import type { ModelAnswer } from "@/lib/types";
@@ -12,6 +13,8 @@ const CONF = new Set(["high", "medium", "low"]);
 export async function POST(request: Request) {
   const auth = await requireChild();
   if ("response" in auth) return auth.response;
+  const limited = await checkQuota(auth.child.id, "question", false);
+  if (limited) return limited;
   const body = await request.json().catch(() => ({}));
   const question = clean(body.question, MAX_QUESTION_LEN);
   if (question.length < 2) return Response.json({ error: "질문이 비어 있어요." }, { status: 400 });

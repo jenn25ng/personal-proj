@@ -82,9 +82,14 @@ pnpm exec drizzle-kit generate --name <이름>
 | `SMTP_URL` / `MAIL_FROM` | – | 비우면 메일 링크를 콘솔에 출력 |
 | `APP_URL` | 요청 host | 메일 링크의 기준 주소, `pnpm usage`의 대상 |
 | `ADMIN_TOKEN` | – | 관리자 화면·사용량 API 비밀 토큰 |
+| `DAILY_QUESTION_LIMIT` / `DAILY_GAME_LIMIT` | 10 / 5 | 아이당 하루 한도 |
 | `PGLITE_DIR` | `.data/pglite` | PGlite 데이터 폴더 |
 
 기본 모델은 비용을 최우선으로 각 회사의 가장 가벼운 모델입니다. 질문 1건에 약 1~2센트가 들도록 맞춘 것이고, 답변 품질이 부족하면 환경변수로 한 단계 위 모델(`claude-sonnet-5-5`, `gpt-5.4-mini`)로 올리면 됩니다. 제미나이·챗지피티 모델 ID는 각 회사 문서에서 현재 이름을 확인해 바꾸세요.
+
+### 하루 한도
+
+아이 한 명당 하루 질문 수(기본 10)와 게임 수(기본 5)를 제한합니다. 한국 시간 자정에 초기화되고, `DAILY_QUESTION_LIMIT`, `DAILY_GAME_LIMIT`, `DAY_RESET_UTC_OFFSET_HOURS`로 바꿀 수 있습니다. 집계는 사용량 기록의 "생각 단계" 호출(질문)과 "문제 생성" 호출(게임)을 세고, 서버 API에서 막습니다. 화면에는 "오늘 남은 질문 N개"가 보이고, 다 쓰면 "내일 다시 열려요"라고 안내합니다.
 
 ### 관리자 화면과 비용 실측
 
@@ -110,6 +115,7 @@ src/lib/auth.ts             비밀번호 해시, 세션 쿠키, 페이지 가드
 src/lib/actions.ts          서버 액션 (가입, 로그인, 인증, 재설정, 아이 추가·선택·삭제, 계정 삭제)
 src/lib/tokens.ts, mail.ts  일회성 토큰과 메일 발송
 src/lib/usage.ts, pricing.ts, usage-report.ts   호출별 사용량 기록, 요금표, 집계
+src/lib/quota.ts            아이당 하루 한도
 src/app/admin                관리자 화면 (ADMIN_TOKEN)
 scripts/usage.mjs            터미널 사용량 리포트
 src/components/QuestionFlow.tsx             단계별 흐름 (클라이언트)
