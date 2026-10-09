@@ -61,8 +61,12 @@ export function SignupForm() {
       </Field>
       <p className="rounded-xl bg-stone-100 p-3 text-xs leading-relaxed text-stone-600">
         수집하는 정보는 부모의 이메일·이름, 아이의 별명·학년, 그리고 아이가 이 서비스에서 한 질문·예상·정리 기록이에요.
-        아이 기록은 부모님 화면에서만 볼 수 있고, 계정을 지우면 모든 기록이 함께 지워져요. 질문 내용은 답변을 만들기
-        위해 AI 제공사(Anthropic, Google, OpenAI)에 전송돼요.
+        아이 기록은 아이 본인 화면에서만 볼 수 있고, 계정을 지우면 모든 기록이 함께 지워져요. 질문 내용은 답변을 만들기
+        위해 미국에 있는 AI 제공사(Anthropic, Google, OpenAI)에 전송돼요. 자세한 내용은{" "}
+        <Link href="/privacy" className="underline">
+          개인정보 처리방침
+        </Link>
+        에 있어요.
       </p>
       {state?.error && <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-800 ring-1 ring-rose-200">{state.error}</p>}
       <Button type="submit" disabled={pending}>

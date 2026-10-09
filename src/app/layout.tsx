@@ -30,8 +30,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
         <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-6">{children}</main>
-        <footer className="px-4 py-6 text-center text-xs text-stone-400">
-          AI 답은 틀릴 수 있어요. 중요한 건 꼭 책이나 어른에게 확인해요.
+        <footer className="space-y-1 px-4 py-6 text-center text-xs text-stone-400">
+          <p>AI 답은 틀릴 수 있어요. 중요한 건 꼭 책이나 어른에게 확인해요.</p>
+          <p>
+            <Link href="/privacy" className="underline">
+              개인정보 처리방침
+            </Link>
+          </p>
         </footer>
       </body>
     </html>
