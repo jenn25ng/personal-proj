@@ -75,8 +75,6 @@ export const questionLogs = pgTable(
     comparedModels: boolean("compared_models").notNull().default(false),
     reflection: text("reflection").notNull().default(""),
     doubtedAi: boolean("doubted_ai").notNull().default(false),
-    /** 아이가 이 질문을 부모에게 보여 주기로 했는지. 기본은 비공개. */
-    sharedWithParent: boolean("shared_with_parent").notNull().default(false),
     answers: jsonb("answers").$type<AnswerResult | null>(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },

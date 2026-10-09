@@ -112,8 +112,8 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
         <div className="space-y-3">
           <h2 className="text-lg font-bold text-stone-800">{selected.nickname}의 습관</h2>
           <p className="text-sm text-stone-600">
-            무엇을 물었는지가 아니라, 묻기 전에 얼마나 생각했고 AI 답을 얼마나 의심했는지를 봐요. 질문 내용은 아이가 보여
-            주기로 한 것만 보여요. 아이가 마음 놓고 아무거나 물어볼 수 있어야 이 습관이 자라요.
+            무엇을 물었는지가 아니라, 묻기 전에 얼마나 생각했고 AI 답을 얼마나 의심했는지를 봐요. 질문 내용은 아이만 볼 수
+            있어요. 아이가 마음 놓고 아무거나 물어볼 수 있어야 이 습관이 자라요.
           </p>
           <ChildDashboard child={selected} logs={logs} games={games} />
         </div>

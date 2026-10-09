@@ -25,10 +25,9 @@
 
 아이가 "부모가 내 질문을 읽는다"고 느끼면 안전한 질문만 하게 되므로, 기록은 이렇게 설계했습니다.
 
-- **부모는 습관만 봅니다.** `/parent`("우리 가족 기록")에는 질문 수, 먼저 예상한 비율, 비교해 본 비율, 의심한 비율, AI끼리 달랐던 질문 수, 게임 성적 같은 집계만 보입니다. 질문 원문·예상·정리는 기본적으로 보이지 않습니다.
-- **아이가 공유를 고릅니다.** 질문을 마칠 때 "이 질문을 부모님께 보여 주기" 스위치가 있고 기본은 꺼짐입니다. 켠 질문만 부모 화면에 나옵니다. 나중에 `/me`에서 켜고 끌 수 있습니다.
-- **아이도 같은 화면을 봅니다.** `/me`("내 습관")는 부모가 보는 것과 같은 집계 컴포넌트를 쓰고, 그 아래에 자기 질문 전체와 공유 스위치가 있습니다.
-- 아이 프로필을 만들 때와 질문을 마칠 때, 부모가 무엇을 볼 수 있는지 아이 눈높이로 알려 줍니다.
+- **부모는 습관만 봅니다.** `/parent`("우리 가족 기록")에는 질문 수, 먼저 예상한 비율, 비교해 본 비율, 의심한 비율, AI끼리 달랐던 질문 수, 게임 성적 같은 집계만 보입니다. 질문 원문·예상·정리는 어떤 경우에도 부모에게 보이지 않습니다. 공유 선택 같은 장치도 두지 않았습니다. 그런 장치 자체가 "부모가 보고 있다"는 신호가 되기 때문입니다.
+- **아이도 같은 숫자를 봅니다.** `/me`("내 습관")는 부모가 보는 것과 같은 집계 컴포넌트를 쓰고, 그 아래에 자기 질문 전체가 나옵니다. 아이 화면에는 부모를 언급하는 문구를 넣지 않았습니다.
+- 부모에게는 프로필을 만들 때 "숫자만 볼 수 있고 질문 내용은 보이지 않는다"고 알려 줍니다.
 - 프로필이나 계정을 지우면 관련 기록이 모두 함께 지워집니다(cascade).
 
 인증은 외부 라이브러리 없이 구현했습니다. 비밀번호는 Node의 scrypt로 해시하고, 세션은 DB의 `auth_sessions` 테이블과 httpOnly 쿠키로 관리합니다.
@@ -64,7 +63,7 @@ Drizzle ORM의 PostgreSQL 스키마 하나(`src/db/schema.ts`)를 씁니다. 드
 pnpm exec drizzle-kit generate --name <이름>
 ```
 
-테이블: `parents`, `auth_sessions`, `email_tokens`, `children`, `question_logs`(`shared_with_parent` 포함), `game_results`.
+테이블: `parents`, `auth_sessions`, `email_tokens`, `children`, `question_logs`, `game_results`.
 
 세 제공사 중 **설정된 키가 있는 모델만** 사용됩니다. 생각 단계, 비교 판정, 반성 피드백은 기본적으로 Claude(`JUDGE_MODEL`)가 맡고, Claude 키가 없으면 설정된 다른 제공사로 대체됩니다.
 
@@ -88,8 +87,8 @@ pnpm exec drizzle-kit generate --name <이름>
 src/app/login, signup, forgot-password, reset-password, verify-email   부모 계정 화면
 src/app/page.tsx            아이용 메인 화면 (아이 프로필 선택 필요)
 src/app/game/page.tsx       틀린 거 찾기 게임
-src/app/me/page.tsx         아이용 "내 습관" (부모와 같은 집계 + 공유 스위치)
-src/app/parent/page.tsx     "우리 가족 기록" (집계 + 아이가 공유한 질문만)
+src/app/me/page.tsx         아이용 "내 습관" (부모와 같은 집계 + 내 질문)
+src/app/parent/page.tsx     "우리 가족 기록" (집계와 게임 결과만)
 src/components/HabitStats.tsx   부모·아이가 공유하는 집계 컴포넌트
 src/app/api/think|answer|reflect|game/route.ts   AI API (아이 프로필 선택 필요)
 src/app/api/logs/question|game/route.ts          기록 저장 API

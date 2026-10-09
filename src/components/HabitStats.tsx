@@ -47,7 +47,7 @@ export function HabitStats({ logs, games }: { logs: QuestionLog[]; games: GameRe
 
 export const AGREEMENT_LABEL: Record<string, string> = { agree: "🟢 일치", partly: "🟡 부분 일치", disagree: "🔴 불일치" };
 
-export function QuestionItem({ log, action }: { log: QuestionLog; action?: React.ReactNode }) {
+export function QuestionItem({ log }: { log: QuestionLog }) {
   return (
     <li className="py-3 text-sm">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -63,7 +63,6 @@ export function QuestionItem({ log, action }: { log: QuestionLog; action?: React
       </div>
       {log.prediction && <p className="mt-1 text-stone-700">예상: {log.prediction}</p>}
       {log.reflection && <p className="text-stone-700">정리: {log.reflection}</p>}
-      {action && <div className="mt-2">{action}</div>}
     </li>
   );
 }

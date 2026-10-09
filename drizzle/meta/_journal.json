@@ -22,6 +22,13 @@
       "when": 1791529579723,
       "tag": "0002_shared_with_parent",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1791530935462,
+      "tag": "0003_drop_shared_with_parent",
+      "breakpoints": true
     }
   ]
 }

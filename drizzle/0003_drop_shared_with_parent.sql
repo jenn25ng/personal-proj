@@ -1,0 +1,1 @@
+ALTER TABLE "question_logs" DROP COLUMN "shared_with_parent";
