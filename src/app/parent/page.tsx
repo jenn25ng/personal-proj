@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { ChildDashboard } from "@/components/ChildDashboard";
+import { ResendVerificationForm } from "@/components/AccountForms";
 import { AddChildForm, ConfirmSubmit } from "@/components/ChildForms";
 import { Card } from "@/components/ui";
 import { deleteAccount, deleteChild, logout, selectChild } from "@/lib/actions";
 import { listChildren, requireParent } from "@/lib/auth";
 import { listGameResults, listQuestionLogs } from "@/lib/logs";
 
-type Search = Promise<{ child?: string; pick?: string }>;
+type Search = Promise<{ child?: string; pick?: string; verified?: string }>;
 
 export default function ParentPage({ searchParams }: { searchParams: Search }) {
   return (
@@ -19,7 +20,7 @@ export default function ParentPage({ searchParams }: { searchParams: Search }) {
 
 async function ParentContent({ searchParams }: { searchParams: Search }) {
   const parent = await requireParent();
-  const { child: childParam, pick } = await searchParams;
+  const { child: childParam, pick, verified } = await searchParams;
   const kids = await listChildren(parent.id);
   const selected = kids.find((k) => k.id === childParam) ?? kids[0] ?? null;
   const [logs, games] = selected
@@ -39,6 +40,22 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
           </button>
         </form>
       </div>
+
+      {!parent.emailVerifiedAt && (
+        <div className="space-y-2 rounded-xl bg-amber-50 p-4 text-sm text-amber-900 ring-1 ring-amber-200">
+          <p>
+            <span className="font-semibold">{parent.email}</span>로 보낸 인증 메일의 링크를 열어 이메일 인증을 완료해 주세요.
+            인증이 끝나야 아이 프로필을 만들 수 있어요.
+          </p>
+          <ResendVerificationForm />
+        </div>
+      )}
+
+      {verified && (
+        <p className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-800 ring-1 ring-emerald-200">
+          이메일 인증이 끝났어요. 이제 아이 프로필을 만들 수 있어요.
+        </p>
+      )}
 
       {pick && (
         <p className="rounded-xl bg-amber-50 p-3 text-sm text-amber-900 ring-1 ring-amber-200">
@@ -84,7 +101,11 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
             ))}
           </ul>
         )}
-        <AddChildForm />
+        {parent.emailVerifiedAt ? (
+          <AddChildForm />
+        ) : (
+          <p className="text-sm text-stone-500">이메일 인증을 마치면 여기서 아이 프로필을 만들 수 있어요.</p>
+        )}
       </Card>
 
       {selected && (

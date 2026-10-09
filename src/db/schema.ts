@@ -7,8 +7,25 @@ export const parents = pgTable("parents", {
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   name: text("name").notNull(),
+  emailVerifiedAt: timestamp("email_verified_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+/** 이메일 인증·비밀번호 재설정용 일회성 토큰. 원본은 메일 링크에만 들어가고 DB에는 해시만 남긴다. */
+export const emailTokens = pgTable(
+  "email_tokens",
+  {
+    tokenHash: text("token_hash").primaryKey(),
+    parentId: uuid("parent_id")
+      .notNull()
+      .references(() => parents.id, { onDelete: "cascade" }),
+    purpose: text("purpose").$type<"verify" | "reset">().notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    usedAt: timestamp("used_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("email_tokens_parent_idx").on(t.parentId, t.purpose)],
+);
 
 /** 로그인 세션. 토큰은 httpOnly 쿠키로만 전달된다. */
 export const authSessions = pgTable(

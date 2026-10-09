@@ -22,7 +22,7 @@ export function LoginForm() {
   return (
     <form action={action} className="space-y-4">
       <Field label="이메일">
-        <input name="email" type="email" required autoComplete="email" className={inputCls} />
+        <input name="email" type="email" required autoComplete="email" defaultValue={state?.values?.email} className={inputCls} />
       </Field>
       <Field label="비밀번호">
         <input name="password" type="password" required autoComplete="current-password" className={inputCls} />
@@ -31,6 +31,11 @@ export function LoginForm() {
       <Button type="submit" disabled={pending}>
         {pending ? "확인 중..." : "로그인"}
       </Button>
+      <p className="text-sm text-stone-600">
+        <Link href="/forgot-password" className="text-stone-500 underline">
+          비밀번호를 잊었어요
+        </Link>
+      </p>
       <p className="text-sm text-stone-600">
         아직 계정이 없나요?{" "}
         <Link href="/signup" className="font-semibold text-amber-700 underline">
@@ -46,10 +51,10 @@ export function SignupForm() {
   return (
     <form action={action} className="space-y-4">
       <Field label="이름 또는 별명">
-        <input name="name" required maxLength={40} className={inputCls} />
+        <input name="name" required maxLength={40} defaultValue={state?.values?.name} className={inputCls} />
       </Field>
       <Field label="이메일">
-        <input name="email" type="email" required autoComplete="email" className={inputCls} />
+        <input name="email" type="email" required autoComplete="email" defaultValue={state?.values?.email} className={inputCls} />
       </Field>
       <Field label="비밀번호 (8자 이상)">
         <input name="password" type="password" required minLength={8} autoComplete="new-password" className={inputCls} />

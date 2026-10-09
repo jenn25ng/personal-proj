@@ -14,11 +14,11 @@ export function AddChildForm() {
       <div className="grid grid-cols-[1fr_auto] gap-2">
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-stone-600">아이 별명</span>
-          <input name="nickname" required maxLength={20} placeholder="예) 민수" className={inputCls} />
+          <input name="nickname" required maxLength={20} placeholder="예) 민수" defaultValue={state?.values?.nickname} className={inputCls} />
         </label>
         <label className="block">
           <span className="mb-1 block text-sm font-medium text-stone-600">학년</span>
-          <select name="grade" defaultValue="5" className={inputCls}>
+          <select name="grade" defaultValue={state?.values?.grade ?? "5"} className={inputCls}>
             <option value="4">4학년</option>
             <option value="5">5학년</option>
             <option value="6">6학년</option>
