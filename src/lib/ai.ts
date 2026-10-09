@@ -10,6 +10,7 @@ import {
 } from "./providers";
 import { ANSWER_SYSTEM, GAME_SYSTEM, JUDGE_SYSTEM, REFLECT_SYSTEM, THINK_FIRST_SYSTEM } from "./prompts";
 import { mockAnswer, mockGame, mockReflect, mockThink } from "./mock";
+import { newContext, recordMock, tracked, type CallContext } from "./usage";
 import type {
   AnswerResult,
   GamePuzzle,
@@ -61,36 +62,50 @@ const reflectSchema = z.object({
 });
 
 /** 1단계: 생각 먼저 */
-export async function thinkFirst(question: string): Promise<ThinkFirstResult> {
-  if (MOCK_AI) return mockThink(question);
+export async function thinkFirst(question: string, ctx: CallContext = newContext()): Promise<ThinkFirstResult> {
+  if (MOCK_AI) {
+    const r = mockThink(question);
+    await recordMock(ctx, "think", THINK_FIRST_SYSTEM.length + question.length, JSON.stringify(r).length);
+    return r;
+  }
   const helper = getHelperModel();
   if (!helper) throw new NoProviderError();
 
-  const { object } = await generateObject({
-    model: helper.model,
-    schema: thinkSchema,
-    system: THINK_FIRST_SYSTEM,
-    prompt: `어린이의 질문: """${question}"""`,
-  });
+  const { object } = await tracked({ ctx, purpose: "think", provider: helper.provider, model: helper.id }, () =>
+    generateObject({
+      model: helper.model,
+      schema: thinkSchema,
+      system: THINK_FIRST_SYSTEM,
+      prompt: `어린이의 질문: """${question}"""`,
+    }),
+  );
   return object;
 }
 
-async function askOne(provider: ProviderId, question: string, prediction: string, priorKnowledge: string): Promise<ModelAnswer> {
+async function askOne(
+  provider: ProviderId,
+  question: string,
+  prediction: string,
+  priorKnowledge: string,
+  ctx: CallContext,
+): Promise<ModelAnswer> {
   const model = DEFAULT_MODELS[provider];
   try {
-    const { object } = await generateObject({
-      model: getModel(provider),
-      schema: answerSchema,
-      system: ANSWER_SYSTEM,
-      prompt: [
-        `어린이의 질문: """${question}"""`,
-        priorKnowledge ? `아이가 이미 알고 있다고 적은 것: """${priorKnowledge}"""` : "",
-        prediction ? `아이의 예상: """${prediction}"""` : "",
-      ]
-        .filter(Boolean)
-        .join("\n"),
-      providerOptions: answerProviderOptions(provider),
-    });
+    const { object } = await tracked({ ctx, purpose: "answer", provider, model }, () =>
+      generateObject({
+        model: getModel(provider),
+        schema: answerSchema,
+        system: ANSWER_SYSTEM,
+        prompt: [
+          `어린이의 질문: """${question}"""`,
+          priorKnowledge ? `아이가 이미 알고 있다고 적은 것: """${priorKnowledge}"""` : "",
+          prediction ? `아이의 예상: """${prediction}"""` : "",
+        ]
+          .filter(Boolean)
+          .join("\n"),
+        providerOptions: answerProviderOptions(provider),
+      }),
+    );
     return {
       provider,
       model,
@@ -116,21 +131,24 @@ async function judgeAnswers(
   question: string,
   mode: QuestionMode,
   answers: ModelAnswer[],
+  ctx: CallContext,
 ): Promise<{ judge: JudgeResult; judgeModel: string } | null> {
   const helper = getHelperModel();
   const good = answers.filter((a) => a.ok);
   if (!helper || good.length === 0) return null;
 
-  const { object } = await generateObject({
-    model: helper.model,
-    schema: judgeSchema,
-    system: JUDGE_SYSTEM,
-    prompt: [
-      `어린이의 질문: """${question}"""`,
-      `질문 종류: ${mode === "direct" ? "바로 답한 질문(단순 사실)" : "생각 먼저 질문"}`,
-      ...good.map((a, i) => `[답변 ${i + 1}, ${a.provider}]\n${a.text}\n(스스로 밝힌 확신도: ${a.selfConfidence})`),
-    ].join("\n\n"),
-  });
+  const { object } = await tracked({ ctx, purpose: "judge", provider: helper.provider, model: helper.id }, () =>
+    generateObject({
+      model: helper.model,
+      schema: judgeSchema,
+      system: JUDGE_SYSTEM,
+      prompt: [
+        `어린이의 질문: """${question}"""`,
+        `질문 종류: ${mode === "direct" ? "바로 답한 질문(단순 사실)" : "생각 먼저 질문"}`,
+        ...good.map((a, i) => `[답변 ${i + 1}, ${a.provider}]\n${a.text}\n(스스로 밝힌 확신도: ${a.selfConfidence})`),
+      ].join("\n\n"),
+    }),
+  );
   return { judge: object, judgeModel: helper.id };
 }
 
@@ -140,38 +158,49 @@ export async function askAll(
   prediction: string,
   priorKnowledge: string,
   mode: QuestionMode = "think",
+  ctx: CallContext = newContext(),
 ): Promise<AnswerResult> {
-  if (MOCK_AI) return mockAnswer(question, mode);
+  if (MOCK_AI) {
+    const r = mockAnswer(question, mode);
+    const promptChars = ANSWER_SYSTEM.length + question.length + prediction.length;
+    await Promise.all(r.answers.map((a) => recordMock(ctx, "answer", promptChars, a.text.length)));
+    await recordMock(ctx, "judge", JUDGE_SYSTEM.length + r.answers.reduce((n, a) => n + a.text.length, 0), JSON.stringify(r.judge).length);
+    return r;
+  }
   const providers = configuredProviders();
   if (providers.length === 0) throw new NoProviderError();
 
-  const answers = await Promise.all(providers.map((p) => askOne(p, question, prediction, priorKnowledge)));
-  const judged = await judgeAnswers(question, mode, answers);
+  const answers = await Promise.all(providers.map((p) => askOne(p, question, prediction, priorKnowledge, ctx)));
+  const judged = await judgeAnswers(question, mode, answers, ctx);
   return { answers, judge: judged?.judge ?? null, judgeModel: judged?.judgeModel ?? null };
 }
 
 /** 3단계: 반성 */
-export async function reflect(input: {
-  question: string;
-  prediction: string;
-  answerSummary: string;
-  reflection: string;
-}): Promise<ReflectResult> {
-  if (MOCK_AI) return mockReflect();
+export async function reflect(
+  input: { question: string; prediction: string; answerSummary: string; reflection: string },
+  ctx: CallContext = newContext(),
+): Promise<ReflectResult> {
+  if (MOCK_AI) {
+    const r = mockReflect();
+    await recordMock(ctx, "reflect", REFLECT_SYSTEM.length + input.question.length + input.answerSummary.length, JSON.stringify(r).length);
+    return r;
+  }
   const helper = getHelperModel();
   if (!helper) throw new NoProviderError();
 
-  const { object } = await generateObject({
-    model: helper.model,
-    schema: reflectSchema,
-    system: REFLECT_SYSTEM,
-    prompt: [
-      `어린이의 질문: """${input.question}"""`,
-      `아이의 처음 예상: """${input.prediction || "(적지 않음)"}"""`,
-      `AI 답변 요약: """${input.answerSummary}"""`,
-      `아이가 적은 "알게 된 것": """${input.reflection || "(적지 않음)"}"""`,
-    ].join("\n"),
-  });
+  const { object } = await tracked({ ctx, purpose: "reflect", provider: helper.provider, model: helper.id }, () =>
+    generateObject({
+      model: helper.model,
+      schema: reflectSchema,
+      system: REFLECT_SYSTEM,
+      prompt: [
+        `어린이의 질문: """${input.question}"""`,
+        `아이의 처음 예상: """${input.prediction || "(적지 않음)"}"""`,
+        `AI 답변 요약: """${input.answerSummary}"""`,
+        `아이가 적은 "알게 된 것": """${input.reflection || "(적지 않음)"}"""`,
+      ].join("\n"),
+    }),
+  );
   return object;
 }
 
@@ -194,17 +223,23 @@ const gameSchema = z.object({
 });
 
 /** 게임 모드: 일부러 틀린 문장이 섞인 설명글 만들기 */
-export async function makeGamePuzzle(topic: string): Promise<GamePuzzle> {
-  if (MOCK_AI) return mockGame(topic);
+export async function makeGamePuzzle(topic: string, ctx: CallContext = newContext()): Promise<GamePuzzle> {
+  if (MOCK_AI) {
+    const r = mockGame(topic);
+    await recordMock(ctx, "game", GAME_SYSTEM.length + topic.length, JSON.stringify(r).length);
+    return r;
+  }
   const helper = getHelperModel();
   if (!helper) throw new NoProviderError();
 
-  const { object } = await generateObject({
-    model: helper.model,
-    schema: gameSchema,
-    system: GAME_SYSTEM,
-    prompt: `게임 주제: """${topic}"""`,
-  });
+  const { object } = await tracked({ ctx, purpose: "game", provider: helper.provider, model: helper.id }, () =>
+    generateObject({
+      model: helper.model,
+      schema: gameSchema,
+      system: GAME_SYSTEM,
+      prompt: `게임 주제: """${topic}"""`,
+    }),
+  );
 
   // 맞는 문장의 mistakeType은 "none"으로, 틀린 문장이 하나도 없으면 게임이 성립하지 않으므로 다시 요청하게 한다.
   const sentences = object.sentences.map((s) => ({

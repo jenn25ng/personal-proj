@@ -67,7 +67,7 @@ Drizzle ORM의 PostgreSQL 스키마 하나(`src/db/schema.ts`)를 씁니다. 드
 pnpm exec drizzle-kit generate --name <이름>
 ```
 
-테이블: `parents`, `auth_sessions`, `email_tokens`, `children`, `question_logs`, `game_results`.
+테이블: `parents`, `auth_sessions`, `email_tokens`, `children`, `question_logs`, `game_results`, `ai_usage`.
 
 세 제공사 중 **설정된 키가 있는 모델만** 사용됩니다. 생각 단계, 비교 판정, 반성 피드백은 기본적으로 Claude(`JUDGE_MODEL`)가 맡고, Claude 키가 없으면 설정된 다른 제공사로 대체됩니다.
 
@@ -80,10 +80,19 @@ pnpm exec drizzle-kit generate --name <이름>
 | `MOCK_AI` | – | `1`이면 가짜 응답 |
 | `DATABASE_URL` | – | 비우면 PGlite, 있으면 PostgreSQL |
 | `SMTP_URL` / `MAIL_FROM` | – | 비우면 메일 링크를 콘솔에 출력 |
-| `APP_URL` | 요청 host | 메일 링크의 기준 주소 |
+| `APP_URL` | 요청 host | 메일 링크의 기준 주소, `pnpm usage`의 대상 |
+| `ADMIN_TOKEN` | – | 관리자 화면·사용량 API 비밀 토큰 |
 | `PGLITE_DIR` | `.data/pglite` | PGlite 데이터 폴더 |
 
 기본 모델은 비용을 최우선으로 각 회사의 가장 가벼운 모델입니다. 질문 1건에 약 1~2센트가 들도록 맞춘 것이고, 답변 품질이 부족하면 환경변수로 한 단계 위 모델(`claude-sonnet-5-5`, `gpt-5.4-mini`)로 올리면 됩니다. 제미나이·챗지피티 모델 ID는 각 회사 문서에서 현재 이름을 확인해 바꾸세요.
+
+### 관리자 화면과 비용 실측
+
+- 모든 AI 호출의 토큰 사용량(입력, 캐시 읽기, 출력, 사고)과 소요 시간, 오류를 `ai_usage` 테이블에 남깁니다. 아이 화면에는 쓰지 않는 운영용 기록입니다.
+- `/admin`에서 `ADMIN_TOKEN`으로 들어가면 현황(계정·아이·질문·게임 수)과 기간별 AI 비용(총액, 질문 1건당, 게임 1판당, 용도·모델별, 날짜별)을 봅니다.
+- 같은 집계를 터미널에서도 볼 수 있습니다: `pnpm usage 30` (`.env.local`의 `APP_URL`, `ADMIN_TOKEN` 사용). JSON은 `GET /api/admin/usage?days=30`에 Bearer 토큰으로.
+- 비용은 `src/lib/pricing.ts`의 요금표로 추정합니다. 제공사 요금이 바뀌면 그 파일만 고치면 됩니다. 요금이 없는 모델은 "미등록"으로 표시됩니다.
+- `MOCK_AI=1`에서는 글자 수로 어림한 사용량이 `mock` 모델로 기록되어 호출 횟수와 흐름을 확인할 수 있습니다.
 
 ## 구조
 
@@ -100,6 +109,9 @@ src/db/schema.ts, index.ts  Drizzle 스키마와 드라이버 선택
 src/lib/auth.ts             비밀번호 해시, 세션 쿠키, 페이지 가드
 src/lib/actions.ts          서버 액션 (가입, 로그인, 인증, 재설정, 아이 추가·선택·삭제, 계정 삭제)
 src/lib/tokens.ts, mail.ts  일회성 토큰과 메일 발송
+src/lib/usage.ts, pricing.ts, usage-report.ts   호출별 사용량 기록, 요금표, 집계
+src/app/admin                관리자 화면 (ADMIN_TOKEN)
+scripts/usage.mjs            터미널 사용량 리포트
 src/components/QuestionFlow.tsx             단계별 흐름 (클라이언트)
 src/components/FindMistakeGame.tsx          게임 (클라이언트)
 src/lib/ai.ts               generateObject 기반 파이프라인

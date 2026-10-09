@@ -1,3 +1,4 @@
+import { newContext } from "@/lib/usage";
 import { makeGamePuzzle } from "@/lib/ai";
 import { clean, errorResponse, requireChild } from "@/lib/api-utils";
 
@@ -12,7 +13,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "주제를 조금 더 적어 주세요." }, { status: 400 });
   }
   try {
-    return Response.json(await makeGamePuzzle(topic));
+    return Response.json(await makeGamePuzzle(topic, newContext(auth.child.id)));
   } catch (err) {
     return errorResponse(err);
   }

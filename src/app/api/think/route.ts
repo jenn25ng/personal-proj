@@ -1,3 +1,4 @@
+import { newContext } from "@/lib/usage";
 import { thinkFirst } from "@/lib/ai";
 import { MAX_QUESTION_LEN, clean, errorResponse, requireChild } from "@/lib/api-utils";
 
@@ -10,7 +11,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "질문을 조금 더 적어 주세요." }, { status: 400 });
   }
   try {
-    return Response.json(await thinkFirst(question));
+    return Response.json(await thinkFirst(question, newContext(auth.child.id)));
   } catch (err) {
     return errorResponse(err);
   }

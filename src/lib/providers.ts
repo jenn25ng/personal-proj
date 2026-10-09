@@ -49,13 +49,13 @@ export function getModel(provider: ProviderId, modelId = DEFAULT_MODELS[provider
  * 생각 단계, 판정, 반성처럼 "진행을 돕는" 호출에 쓰는 모델.
  * 기본은 Claude이고, 키가 없으면 설정된 다른 제공사로 대체한다.
  */
-export function getHelperModel(): { model: LanguageModel; id: string } | null {
+export function getHelperModel(): { model: LanguageModel; id: string; provider: ProviderId } | null {
   if (isConfigured("claude")) {
-    return { model: getModel("claude", JUDGE_MODEL), id: JUDGE_MODEL };
+    return { model: getModel("claude", JUDGE_MODEL), id: JUDGE_MODEL, provider: "claude" };
   }
   const fallback = configuredProviders()[0];
   if (!fallback) return null;
-  return { model: getModel(fallback), id: DEFAULT_MODELS[fallback] };
+  return { model: getModel(fallback), id: DEFAULT_MODELS[fallback], provider: fallback };
 }
 
 /** 답변 모델에만 넘기는 제공사별 옵션 */

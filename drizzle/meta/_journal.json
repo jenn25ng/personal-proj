@@ -36,6 +36,13 @@
       "when": 1791531663947,
       "tag": "0004_question_mode",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791532404448,
+      "tag": "0005_ai_usage",
+      "breakpoints": true
     }
   ]
 }

@@ -105,3 +105,28 @@ export type Parent = typeof parents.$inferSelect;
 export type Child = typeof children.$inferSelect;
 export type QuestionLog = typeof questionLogs.$inferSelect;
 export type GameResult = typeof gameResults.$inferSelect;
+
+/** AI 호출 한 번의 토큰 사용량. 비용을 실측하기 위한 운영용 기록이며 아이 화면에는 쓰지 않는다. */
+export const aiUsage = pgTable(
+  "ai_usage",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** 같은 HTTP 요청에서 나간 호출을 묶는 id (예: 답변 3개 + 판정) */
+    requestId: text("request_id").notNull(),
+    childId: uuid("child_id").references(() => children.id, { onDelete: "set null" }),
+    purpose: text("purpose").$type<"think" | "answer" | "judge" | "reflect" | "game">().notNull(),
+    provider: text("provider").notNull(),
+    model: text("model").notNull(),
+    inputTokens: integer("input_tokens").notNull().default(0),
+    cacheReadTokens: integer("cache_read_tokens").notNull().default(0),
+    outputTokens: integer("output_tokens").notNull().default(0),
+    reasoningTokens: integer("reasoning_tokens").notNull().default(0),
+    durationMs: integer("duration_ms").notNull().default(0),
+    ok: boolean("ok").notNull().default(true),
+    error: text("error"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("ai_usage_created_idx").on(t.createdAt), index("ai_usage_request_idx").on(t.requestId)],
+);
+
+export type AiUsage = typeof aiUsage.$inferSelect;

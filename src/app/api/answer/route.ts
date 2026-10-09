@@ -1,3 +1,4 @@
+import { newContext } from "@/lib/usage";
 import { askAll } from "@/lib/ai";
 import { MAX_FIELD_LEN, MAX_QUESTION_LEN, clean, errorResponse, requireChild } from "@/lib/api-utils";
 
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "질문이 비어 있어요." }, { status: 400 });
   }
   try {
-    return Response.json(await askAll(question, prediction, priorKnowledge, mode));
+    return Response.json(await askAll(question, prediction, priorKnowledge, mode, newContext(auth.child.id)));
   } catch (err) {
     return errorResponse(err);
   }
