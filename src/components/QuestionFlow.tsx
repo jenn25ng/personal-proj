@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { AnswerCard } from "./AnswerCard";
 import { AgreementBanner, Button, Card, Spinner, StepTitle, TextArea } from "./ui";
-import { saveRecord } from "@/lib/history";
 import type { AnswerResult, ReflectResult, ThinkFirstResult } from "@/lib/types";
 
 type Step = "ask" | "think" | "answer" | "reflect" | "done";
@@ -90,9 +89,8 @@ export function QuestionFlow() {
       (f) => {
         setFeedback(f);
         setStep("done");
-        saveRecord({
-          id: crypto.randomUUID(),
-          createdAt: new Date().toISOString(),
+        // 기록 저장은 화면 진행을 막지 않는다. 실패해도 아이에게는 알리지 않고 콘솔에만 남긴다.
+        post("/api/logs/question", {
           question,
           topicLabel: think?.topicLabel ?? "",
           prediction,
@@ -102,7 +100,8 @@ export function QuestionFlow() {
           comparedModels: compared,
           reflection,
           doubtedAi: doubted,
-        });
+          answers: result,
+        }).catch((err) => console.error("기록 저장 실패", err));
       },
     );
   };

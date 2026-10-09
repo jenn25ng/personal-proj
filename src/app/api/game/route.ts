@@ -1,9 +1,11 @@
 import { makeGamePuzzle } from "@/lib/ai";
-import { clean, errorResponse } from "@/lib/api-utils";
+import { clean, errorResponse, requireChild } from "@/lib/api-utils";
 
 export const maxDuration = 60;
 
 export async function POST(request: Request) {
+  const auth = await requireChild();
+  if ("response" in auth) return auth.response;
   const body = await request.json().catch(() => ({}));
   const topic = clean(body.topic, 60);
   if (topic.length < 2) {

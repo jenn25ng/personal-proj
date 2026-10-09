@@ -1,7 +1,9 @@
 import { thinkFirst } from "@/lib/ai";
-import { MAX_QUESTION_LEN, clean, errorResponse } from "@/lib/api-utils";
+import { MAX_QUESTION_LEN, clean, errorResponse, requireChild } from "@/lib/api-utils";
 
 export async function POST(request: Request) {
+  const auth = await requireChild();
+  if ("response" in auth) return auth.response;
   const body = await request.json().catch(() => ({}));
   const question = clean(body.question, MAX_QUESTION_LEN);
   if (question.length < 2) {

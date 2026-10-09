@@ -55,20 +55,6 @@ export type ReflectResult = {
   nextQuestion: string;
 };
 
-/** 브라우저 localStorage에 저장하는 한 번의 질문 기록 */
-export type SessionRecord = {
-  id: string;
-  createdAt: string;
-  question: string;
-  topicLabel: string;
-  prediction: string;
-  priorKnowledge: string;
-  usedHint: boolean;
-  agreement: Agreement | null;
-  comparedModels: boolean;
-  reflection: string;
-  doubtedAi: boolean;
-};
 
 /** 틀린 거 찾기 게임: AI가 일부러 틀린 문장을 섞어 만든 설명글 */
 export type MistakeType = "number" | "date" | "name" | "cause" | "none";
@@ -99,11 +85,3 @@ export type GamePuzzle = {
   lesson: string;
 };
 
-export type GameRecord = {
-  id: string;
-  createdAt: string;
-  topic: string;
-  wrongCount: number;
-  found: number;
-  falseAlarms: number;
-};

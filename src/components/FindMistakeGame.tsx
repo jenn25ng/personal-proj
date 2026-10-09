@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { saveGame } from "@/lib/history";
 import { MISTAKE_TYPE_LABEL, type GamePuzzle } from "@/lib/types";
 import { Button, Card, Spinner, StepTitle } from "./ui";
 
@@ -62,14 +61,17 @@ export function FindMistakeGame() {
     if (!puzzle) return;
     const found = puzzle.sentences.filter((s, i) => s.isWrong && picked.has(i)).length;
     const falseAlarms = puzzle.sentences.filter((s, i) => !s.isWrong && picked.has(i)).length;
-    saveGame({
-      id: crypto.randomUUID(),
-      createdAt: new Date().toISOString(),
-      topic: puzzle.topic,
-      wrongCount: puzzle.sentences.filter((s) => s.isWrong).length,
-      found,
-      falseAlarms,
-    });
+    fetch("/api/logs/game", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        topic: puzzle.topic,
+        wrongCount: puzzle.sentences.filter((s) => s.isWrong).length,
+        found,
+        falseAlarms,
+        puzzle,
+      }),
+    }).catch((err) => console.error("기록 저장 실패", err));
     setPhase("result");
   }
 
