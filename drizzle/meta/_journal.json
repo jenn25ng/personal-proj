@@ -64,6 +64,13 @@
       "when": 1791610657076,
       "tag": "0008_daily_bonuses",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1791612142546,
+      "tag": "0009_auth_attempts",
+      "breakpoints": true
     }
   ]
 }

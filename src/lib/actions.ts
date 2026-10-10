@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { getDb, schema } from "@/db";
 import { resetPasswordText, sendMail, verifyEmailText } from "./mail";
 import { MAX_DAILY_GAME_LIMIT, MAX_DAILY_QUESTION_LIMIT, grantTodayBonus } from "./quota";
+import { checkRate, recordAttempt } from "./ratelimit";
 import { appUrl, consumeToken, issueToken, issuedRecently, peekToken } from "./tokens";
 import {
   CONSENT_VERSION,
@@ -35,10 +36,14 @@ export async function signup(_prev: FormState, form: FormData): Promise<FormStat
   if (name.length < 1) return { error: "이름(또는 별명)을 적어 주세요.", values };
   if (password.length < 8) return { error: "비밀번호는 8자 이상이어야 해요.", values };
 
+  const rate = await checkRate("signup");
+  if (!rate.allowed) return { error: rate.message, values };
+
   const db = await getDb();
   const exists = await db.query.parents.findFirst({ where: eq(schema.parents.email, email) });
   if (exists) return { error: "이미 가입된 이메일이에요. 로그인해 주세요.", values };
 
+  await recordAttempt("signup", true, { email });
   const [parent] = await db
     .insert(schema.parents)
     .values({ email, name, passwordHash: await hashPassword(password) })
@@ -51,12 +56,15 @@ export async function signup(_prev: FormState, form: FormData): Promise<FormStat
 export async function login(_prev: FormState, form: FormData): Promise<FormState> {
   const email = field(form, "email").toLowerCase();
   const password = field(form, "password", 200);
+  const rate = await checkRate("login", { email });
+  if (!rate.allowed) return { error: rate.message, values: { email } };
+
   const db = await getDb();
   const parent = await db.query.parents.findFirst({ where: eq(schema.parents.email, email) });
-  if (!parent || !(await verifyPassword(password, parent.passwordHash))) {
-    return { error: "이메일 또는 비밀번호가 맞지 않아요.", values: { email } };
-  }
-  await createAuthSession(parent.id);
+  const ok = Boolean(parent) && (await verifyPassword(password, parent!.passwordHash));
+  await recordAttempt("login", ok, { email });
+  if (!ok) return { error: "이메일 또는 비밀번호가 맞지 않아요.", values: { email } };
+  await createAuthSession(parent!.id);
   redirect("/parent");
 }
 
@@ -185,6 +193,9 @@ export async function resendVerification(): Promise<FormState> {
   if (!parent) redirect("/login");
   if (parent.emailVerifiedAt) return { ok: "이미 인증된 이메일이에요." };
   if (await issuedRecently(parent.id, "verify")) return { error: "방금 보냈어요. 1분 뒤에 다시 시도해 주세요." };
+  const rate = await checkRate("resend", { parentId: parent.id });
+  if (!rate.allowed) return { error: rate.message };
+  await recordAttempt("resend", true, { parentId: parent.id });
   const result = await sendVerificationMail(parent.id, parent.email, parent.name);
   return devAware({ ok: `${parent.email}로 인증 메일을 보냈어요.` }, result);
 }
@@ -206,6 +217,9 @@ export async function requestPasswordReset(_prev: FormState, form: FormData): Pr
   const email = field(form, "email").toLowerCase();
   if (!EMAIL_RE.test(email)) return { error: "이메일 형식을 확인해 주세요.", values: { email } };
   const ok = { ok: "가입된 이메일이라면 재설정 링크를 보냈어요. 메일함(스팸함 포함)을 확인해 주세요." };
+  const rate = await checkRate("reset", { email });
+  if (!rate.allowed) return { error: rate.message, values: { email } };
+  await recordAttempt("reset", true, { email });
 
   const db = await getDb();
   const parent = await db.query.parents.findFirst({ where: eq(schema.parents.email, email) });

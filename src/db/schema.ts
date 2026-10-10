@@ -175,3 +175,18 @@ export const dailyBonuses = pgTable(
 );
 
 export type DailyBonus = typeof dailyBonuses.$inferSelect;
+
+/** 로그인·가입·재설정 시도 기록. 무차별 대입 방어용이며 24시간 뒤 지운다. */
+export const authAttempts = pgTable(
+  "auth_attempts",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** 무엇을 기준으로 세는지: email:<주소> / ip:<주소> / parent:<id> */
+    key: text("key").notNull(),
+    /** login, signup, reset, resend, admin */
+    kind: text("kind").notNull(),
+    success: boolean("success").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("auth_attempts_key_idx").on(t.key, t.kind, t.createdAt)],
+);

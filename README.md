@@ -36,6 +36,10 @@
 
 인증은 외부 라이브러리 없이 구현했습니다. 비밀번호는 Node의 scrypt로 해시하고, 세션은 DB의 `auth_sessions` 테이블과 httpOnly 쿠키로 관리합니다.
 
+### 시도 횟수 제한
+
+무차별 대입과 남용을 막기 위해 시도를 `auth_attempts` 테이블에 기록하고(서버리스에서도 동작), 이메일·IP·계정 기준으로 막습니다. 로그인은 같은 이메일 15분 안 실패 5회 또는 같은 IP 실패 30회, 가입은 IP당 1시간 5회, 재설정 요청은 이메일당 1시간 3회·IP당 10회, 인증 메일 재전송은 계정당 1시간 5회, 관리자 로그인은 IP당 15분 안 실패 5회입니다. 막히면 "너무 여러 번 시도했어요"가 보이고, 기록은 24시간 뒤 지워집니다. IP는 `x-forwarded-for`를 먼저 보므로 프록시 뒤에서도 동작합니다. 규칙은 `src/lib/ratelimit.ts`에 있습니다.
+
 ### 이메일 인증과 비밀번호 재설정
 
 - 가입하면 인증 메일이 가고, **인증을 마쳐야 아이 프로필을 만들 수 있습니다.** 부모 화면 배너에서 1분 간격으로 다시 보낼 수 있습니다.
@@ -67,7 +71,7 @@ Drizzle ORM의 PostgreSQL 스키마 하나(`src/db/schema.ts`)를 씁니다. 드
 pnpm exec drizzle-kit generate --name <이름>
 ```
 
-테이블: `parents`, `auth_sessions`, `email_tokens`, `children`, `daily_bonuses`, `question_logs`, `game_results`, `ai_usage`, `safety_events`.
+테이블: `parents`, `auth_sessions`, `auth_attempts`, `email_tokens`, `children`, `daily_bonuses`, `question_logs`, `game_results`, `ai_usage`, `safety_events`.
 
 세 제공사 중 **설정된 키가 있는 모델만** 사용됩니다. 생각 단계, 비교 판정, 반성 피드백은 기본적으로 Claude(`JUDGE_MODEL`)가 맡고, Claude 키가 없으면 설정된 다른 제공사로 대체됩니다.
 
@@ -130,6 +134,7 @@ src/db/schema.ts, index.ts  Drizzle 스키마와 드라이버 선택
 src/lib/auth.ts             비밀번호 해시, 세션 쿠키, 페이지 가드
 src/lib/actions.ts          서버 액션 (가입, 로그인, 인증, 재설정, 아이 추가·선택·삭제, 계정 삭제)
 src/lib/tokens.ts, mail.ts  일회성 토큰과 메일 발송
+src/lib/ratelimit.ts        로그인·가입·재설정 시도 횟수 제한
 src/lib/usage.ts, pricing.ts, usage-report.ts   호출별 사용량 기록, 요금표, 집계
 src/lib/quota.ts            아이당 하루 한도
 src/lib/safety-rules.ts, safety.ts   입력·출력 안전 필터 (규칙, 모델)
