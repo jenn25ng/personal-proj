@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { getDb, schema } from "@/db";
 import { resetPasswordText, sendMail, verifyEmailText } from "./mail";
-import { MAX_DAILY_GAME_LIMIT, MAX_DAILY_QUESTION_LIMIT } from "./quota";
+import { MAX_DAILY_GAME_LIMIT, MAX_DAILY_QUESTION_LIMIT, grantTodayBonus } from "./quota";
 import { appUrl, consumeToken, issueToken, issuedRecently, peekToken } from "./tokens";
 import {
   CONSENT_VERSION,
@@ -140,6 +140,25 @@ export async function updateChildLimits(_prev: FormState, form: FormData): Promi
 
   await db.update(schema.children).set({ dailyQuestionLimit: q, dailyGameLimit: g }).where(eq(schema.children.id, child.id));
   return { ok: `${child.nickname}의 하루 한도를 저장했어요.` };
+}
+
+/** 한도를 넘은 날, 부모가 오늘만 추가로 열어 준다. */
+export async function grantBonus(_prev: FormState, form: FormData): Promise<FormState> {
+  const parent = await getParent();
+  if (!parent) redirect("/login");
+  const childId = field(form, "childId", 36);
+  const db = await getDb();
+  const child = await db.query.children.findFirst({ where: eq(schema.children.id, childId) });
+  if (!child || child.parentId !== parent.id) redirect("/parent");
+
+  const questions = Math.min(10, Math.max(0, Number(field(form, "questions", 3)) || 0));
+  const games = Math.min(5, Math.max(0, Number(field(form, "games", 3)) || 0));
+  if (questions === 0 && games === 0) return { error: "몇 개를 더 열어 줄지 골라 주세요." };
+
+  const r = await grantTodayBonus(child, { questions, games });
+  if (!r.ok) return { error: r.error };
+  const parts = [questions > 0 ? `질문 +${questions}` : "", games > 0 ? `게임 +${games}` : ""].filter(Boolean).join(", ");
+  return { ok: `오늘만 ${parts} 열어 줬어요. (오늘 한도: 질문 ${r.questionLimit}, 게임 ${r.gameLimit})` };
 }
 
 /** 계정과 모든 아이 기록을 지운다 (cascade). */

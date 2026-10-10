@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { ChildDashboard } from "@/components/ChildDashboard";
 import { ResendVerificationForm } from "@/components/AccountForms";
 import { AddChildForm, ConfirmSubmit } from "@/components/ChildForms";
+import { BonusForm } from "@/components/BonusForm";
 import { ChildLimitsForm } from "@/components/ChildLimitsForm";
 import { Card } from "@/components/ui";
 import { deleteAccount, deleteChild, logout, selectChild } from "@/lib/actions";
@@ -124,8 +125,21 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
             {quota && (
               <p className="mb-3 text-sm text-stone-600">
                 오늘 질문 {quota.questionsUsed}/{quota.questionLimit} · 게임 {quota.gamesUsed}/{quota.gameLimit} 썼어요.
+                {(quota.bonusQuestions > 0 || quota.bonusGames > 0) && (
+                  <span className="text-amber-700">
+                    {" "}
+                    (오늘만 추가: {[quota.bonusQuestions > 0 ? `질문 +${quota.bonusQuestions}` : "", quota.bonusGames > 0 ? `게임 +${quota.bonusGames}` : ""].filter(Boolean).join(", ")})
+                  </span>
+                )}
               </p>
             )}
+            <div className="mb-4 rounded-xl bg-stone-50 p-3 ring-1 ring-stone-200">
+              <p className="mb-2 text-sm font-semibold text-stone-700">오늘만 더 열어 주기</p>
+              <p className="mb-2 text-xs text-stone-500">
+                한도를 다 썼는데 꼭 더 하고 싶은 날, 오늘 하루만 더 열어 줘요. 자정이 지나면 원래 한도로 돌아가요.
+              </p>
+              <BonusForm childId={selected.id} />
+            </div>
             <ChildLimitsForm
               childId={selected.id}
               questionLimit={selected.dailyQuestionLimit}

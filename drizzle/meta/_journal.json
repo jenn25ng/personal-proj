@@ -57,6 +57,13 @@
       "when": 1791588763666,
       "tag": "0007_safety_events",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791610657076,
+      "tag": "0008_daily_bonuses",
+      "breakpoints": true
     }
   ]
 }

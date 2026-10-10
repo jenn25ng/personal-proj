@@ -24,9 +24,13 @@ const RESET_UTC_OFFSET_HOURS = Number(process.env.DAY_RESET_UTC_OFFSET_HOURS ?? 
 
 export type Quota = {
   questionsUsed: number;
+  /** 오늘 적용되는 한도 (기본 또는 부모 설정 + 오늘 추가분) */
   questionLimit: number;
   gamesUsed: number;
   gameLimit: number;
+  /** 부모가 오늘만 추가로 열어 준 수 */
+  bonusQuestions: number;
+  bonusGames: number;
   /** 다음 초기화 시각 (UTC Date) */
   resetsAt: Date;
 };
@@ -37,6 +41,50 @@ export function dayStart(now = new Date()): Date {
   const local = new Date(now.getTime() + offsetMs);
   const startLocal = Date.UTC(local.getUTCFullYear(), local.getUTCMonth(), local.getUTCDate());
   return new Date(startLocal - offsetMs);
+}
+
+/** 기준 시간대의 오늘 날짜 키 (YYYY-MM-DD) */
+export function dayKey(now = new Date()): string {
+  const offsetMs = RESET_UTC_OFFSET_HOURS * 60 * 60 * 1000;
+  return new Date(now.getTime() + offsetMs).toISOString().slice(0, 10);
+}
+
+/** 오늘 부모가 추가로 열어 준 수 */
+export async function getTodayBonus(childId: string): Promise<{ extraQuestions: number; extraGames: number }> {
+  const db = await getDb();
+  const row = await db.query.dailyBonuses.findFirst({
+    where: and(eq(schema.dailyBonuses.childId, childId), eq(schema.dailyBonuses.day, dayKey())),
+  });
+  return { extraQuestions: row?.extraQuestions ?? 0, extraGames: row?.extraGames ?? 0 };
+}
+
+/**
+ * 오늘만 추가로 열어 준다. 같은 날 여러 번 누르면 누적되고, 기본 한도와 합쳐 상한을 넘지 못한다.
+ * 돌려주는 값은 적용된 뒤의 오늘 한도.
+ */
+export async function grantTodayBonus(
+  child: ChildLimits,
+  extra: { questions: number; games: number },
+): Promise<{ ok: true; questionLimit: number; gameLimit: number } | { ok: false; error: string }> {
+  const base = limitsFor(child);
+  const current = await getTodayBonus(child.id);
+  const nextQ = current.extraQuestions + extra.questions;
+  const nextG = current.extraGames + extra.games;
+  if (base.questionLimit + nextQ > MAX_DAILY_QUESTION_LIMIT) {
+    return { ok: false, error: `오늘 질문 한도는 최대 ${MAX_DAILY_QUESTION_LIMIT}개까지만 열 수 있어요.` };
+  }
+  if (base.gameLimit + nextG > MAX_DAILY_GAME_LIMIT) {
+    return { ok: false, error: `오늘 게임 한도는 최대 ${MAX_DAILY_GAME_LIMIT}판까지만 열 수 있어요.` };
+  }
+  const db = await getDb();
+  await db
+    .insert(schema.dailyBonuses)
+    .values({ childId: child.id, day: dayKey(), extraQuestions: nextQ, extraGames: nextG })
+    .onConflictDoUpdate({
+      target: [schema.dailyBonuses.childId, schema.dailyBonuses.day],
+      set: { extraQuestions: nextQ, extraGames: nextG, updatedAt: new Date() },
+    });
+  return { ok: true, questionLimit: base.questionLimit + nextQ, gameLimit: base.gameLimit + nextG };
 }
 
 async function usedToday(childId: string, purpose: "think" | "game"): Promise<number> {
@@ -50,19 +98,27 @@ async function usedToday(childId: string, purpose: "think" | "game"): Promise<nu
 
 /** 질문은 "생각 단계" 호출을, 게임은 "문제 생성" 호출을 센다. 둘 다 한 번의 시작에 정확히 한 번 일어난다. */
 export async function getQuota(child: ChildLimits): Promise<Quota> {
-  const [questionsUsed, gamesUsed] = await Promise.all([usedToday(child.id, "think"), usedToday(child.id, "game")]);
+  const [questionsUsed, gamesUsed, bonus] = await Promise.all([
+    usedToday(child.id, "think"),
+    usedToday(child.id, "game"),
+    getTodayBonus(child.id),
+  ]);
+  const base = limitsFor(child);
   const start = dayStart();
   return {
     questionsUsed,
     gamesUsed,
-    ...limitsFor(child),
+    questionLimit: base.questionLimit + bonus.extraQuestions,
+    gameLimit: base.gameLimit + bonus.extraGames,
+    bonusQuestions: bonus.extraQuestions,
+    bonusGames: bonus.extraGames,
     resetsAt: new Date(start.getTime() + 24 * 60 * 60 * 1000),
   };
 }
 
 export const LIMIT_MESSAGE = {
-  question: `오늘 질문은 다 썼어요. 내일 다시 열려요. 궁금한 건 공책에 적어 뒀다가 내일 물어봐요!`,
-  game: `오늘 게임은 여기까지예요. 내일 다시 할 수 있어요.`,
+  question: `오늘 질문은 다 썼어요. 내일 다시 열려요. 궁금한 건 공책에 적어 뒀다가 내일 물어봐요! 꼭 지금 물어보고 싶으면 부모님께 말해 봐요.`,
+  game: `오늘 게임은 여기까지예요. 내일 다시 할 수 있어요. 더 하고 싶으면 부모님께 말해 봐요.`,
 };
 
 /**

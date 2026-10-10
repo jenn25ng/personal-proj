@@ -67,7 +67,7 @@ Drizzle ORM의 PostgreSQL 스키마 하나(`src/db/schema.ts`)를 씁니다. 드
 pnpm exec drizzle-kit generate --name <이름>
 ```
 
-테이블: `parents`, `auth_sessions`, `email_tokens`, `children`, `question_logs`, `game_results`, `ai_usage`, `safety_events`.
+테이블: `parents`, `auth_sessions`, `email_tokens`, `children`, `daily_bonuses`, `question_logs`, `game_results`, `ai_usage`, `safety_events`.
 
 세 제공사 중 **설정된 키가 있는 모델만** 사용됩니다. 생각 단계, 비교 판정, 반성 피드백은 기본적으로 Claude(`JUDGE_MODEL`)가 맡고, Claude 키가 없으면 설정된 다른 제공사로 대체됩니다.
 
@@ -98,7 +98,7 @@ pnpm exec drizzle-kit generate --name <이름>
 
 ### 하루 한도
 
-아이 한 명당 하루 질문 수(기본 10)와 게임 수(기본 5)를 제한합니다. **부모가 "우리 가족 기록"에서 아이별로 바꿀 수 있고**, 비우면 기본값으로 돌아갑니다. 상한은 질문 30·게임 10입니다. 기본값과 상한은 `DAILY_QUESTION_LIMIT`, `DAILY_GAME_LIMIT`, `MAX_DAILY_QUESTION_LIMIT`, `MAX_DAILY_GAME_LIMIT`로, 초기화 시간대는 `DAY_RESET_UTC_OFFSET_HOURS`(기본 한국)로 바꿉니다. 집계는 사용량 기록의 "생각 단계" 호출(질문)과 "문제 생성" 호출(게임)을 세고, 서버 API에서 막습니다. 화면에는 "오늘 남은 질문 N개"가 보이고, 다 쓰면 "내일 다시 열려요"라고 안내합니다.
+아이 한 명당 하루 질문 수(기본 10)와 게임 수(기본 5)를 제한합니다. **부모가 "우리 가족 기록"에서 아이별로 바꿀 수 있고**, 비우면 기본값으로 돌아갑니다. 상한은 질문 30·게임 10입니다. 한도를 다 쓴 날에는 부모가 같은 화면에서 **"오늘만 더 열어 주기"**(질문 +1/+3, 게임 +1)로 그날만 추가할 수 있고, 자정이 지나면 원래 한도로 돌아갑니다. 추가분도 상한을 넘지 못합니다. 기본값과 상한은 `DAILY_QUESTION_LIMIT`, `DAILY_GAME_LIMIT`, `MAX_DAILY_QUESTION_LIMIT`, `MAX_DAILY_GAME_LIMIT`로, 초기화 시간대는 `DAY_RESET_UTC_OFFSET_HOURS`(기본 한국)로 바꿉니다. 집계는 사용량 기록의 "생각 단계" 호출(질문)과 "문제 생성" 호출(게임)을 세고, 서버 API에서 막습니다. 화면에는 "오늘 남은 질문 N개"가 보이고, 다 쓰면 "내일 다시 열려요"라고 안내합니다.
 
 ### 관리자 화면과 비용 실측
 

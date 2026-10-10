@@ -1,4 +1,4 @@
-import { boolean, index, integer, jsonb, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { boolean, index, integer, jsonb, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
 import type { AnswerLog, GamePuzzle } from "@/lib/types";
 
 /** 부모 계정 */
@@ -155,3 +155,23 @@ export const safetyEvents = pgTable(
 );
 
 export type SafetyEvent = typeof safetyEvents.$inferSelect;
+
+/** 부모가 "오늘만" 추가로 열어 준 질문·게임 수. 날짜가 바뀌면 자연히 효력이 없어진다. */
+export const dailyBonuses = pgTable(
+  "daily_bonuses",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    childId: uuid("child_id")
+      .notNull()
+      .references(() => children.id, { onDelete: "cascade" }),
+    /** 기준 시간대의 날짜, YYYY-MM-DD */
+    day: text("day").notNull(),
+    extraQuestions: integer("extra_questions").notNull().default(0),
+    extraGames: integer("extra_games").notNull().default(0),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("daily_bonuses_child_day_idx").on(t.childId, t.day)],
+);
+
+export type DailyBonus = typeof dailyBonuses.$inferSelect;
