@@ -1,6 +1,6 @@
 # 생각 먼저 AI
 
-> 기획 문서: [docs/기획.md](docs/기획.md) · 개인정보 처리방침: [docs/개인정보처리방침.md](docs/개인정보처리방침.md) (앱의 `/privacy`에서 같은 문서를 보여 줍니다)
+> 기획 문서: [docs/기획.md](docs/기획.md) · 배포 가이드: [docs/배포.md](docs/배포.md) · 개인정보 처리방침: [docs/개인정보처리방침.md](docs/개인정보처리방침.md) (앱의 `/privacy`에서 같은 문서를 보여 줍니다)
 
 초등 고학년(10~12세) 어린이가 **AI에게 묻기 전에 먼저 생각하고**, **AI 답을 의심하고 확인하는 습관**을 기르도록 돕는 서비스의 MVP입니다.
 클로드, 제미나이, 챗지피티 세 모델에 같은 질문을 보내고, 답이 서로 다를 때 그것을 아이에게 보여 줘서 할루시네이션을 직접 체감하게 합니다.
@@ -108,6 +108,13 @@ pnpm exec drizzle-kit generate --name <이름>
 - 비용은 `src/lib/pricing.ts`의 요금표로 추정합니다. 제공사 요금이 바뀌면 그 파일만 고치면 됩니다. 요금이 없는 모델은 "미등록"으로 표시됩니다.
 - `MOCK_AI=1`에서는 글자 수로 어림한 사용량이 `mock` 모델로 기록되어 호출 횟수와 흐름을 확인할 수 있습니다.
 
+### 배포와 점검
+
+- 배포 순서(Vercel 또는 Docker Compose), 필수 환경변수, 점검표는 [docs/배포.md](docs/배포.md)에 있습니다.
+- `GET /api/health`: DB·메일·AI 키·관리자 설정 상태와 고쳐야 할 문제 목록. 운영에서 `DATABASE_URL`이 없으면 앱이 시작하지 않습니다.
+- `pnpm smoke`: 실제 키로 생각 → 답 → 비교 → 정리 → 게임을 한 번씩 돌려 단계별 결과·시간·토큰을 보여 줍니다(`/api/admin/smoke`, 관리자 토큰 필요).
+- `pnpm db:migrate`: `DATABASE_URL`의 PostgreSQL에 마이그레이션을 미리 적용합니다(앱 시작 시에도 자동 적용).
+
 ## 구조
 
 ```
@@ -127,6 +134,8 @@ src/lib/usage.ts, pricing.ts, usage-report.ts   호출별 사용량 기록, 요�
 src/lib/quota.ts            아이당 하루 한도
 src/lib/safety-rules.ts, safety.ts   입력·출력 안전 필터 (규칙, 모델)
 src/app/admin                관리자 화면 (ADMIN_TOKEN)
+src/app/api/health, admin/smoke   배포 상태 확인, 실제 키 점검
+Dockerfile, docker-compose.yml    단일 서버 배포
 scripts/usage.mjs            터미널 사용량 리포트
 src/components/QuestionFlow.tsx             단계별 흐름 (클라이언트)
 src/components/FindMistakeGame.tsx          게임 (클라이언트)

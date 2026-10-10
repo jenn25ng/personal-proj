@@ -16,6 +16,10 @@ if (!SMTP_URL && process.env.NODE_ENV === "production") {
 
 const transport = SMTP_URL ? nodemailer.createTransport(SMTP_URL) : null;
 
+export function mailKind(): "smtp" | "console" {
+  return transport ? "smtp" : "console";
+}
+
 export async function sendMail(to: string, subject: string, text: string, link: string): Promise<MailResult> {
   if (!transport) {
     console.log(`\n[mail → ${to}] ${subject}\n${text}\n링크: ${link}\n`);
