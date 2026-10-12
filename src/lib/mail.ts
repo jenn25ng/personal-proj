@@ -1,7 +1,9 @@
 import "server-only";
 import nodemailer from "nodemailer";
+import { reportError } from "./monitor";
 
 export type MailResult = { delivered: "smtp" } | { delivered: "console"; link: string };
+export type MailKind = MailResult["delivered"];
 
 const SMTP_URL = process.env.SMTP_URL;
 const MAIL_FROM = process.env.MAIL_FROM ?? "생각 먼저 AI <no-reply@localhost>";
@@ -25,17 +27,22 @@ export async function sendMail(to: string, subject: string, text: string, link: 
     console.log(`\n[mail → ${to}] ${subject}\n${text}\n링크: ${link}\n`);
     return { delivered: "console", link };
   }
-  await transport.sendMail({
-    from: MAIL_FROM,
-    to,
-    subject,
-    text,
-    html: text
-      .split("\n")
-      .map((line) => (line.trim() === link ? `<a href="${link}">${link}</a>` : escapeHtml(line)))
-      .join("<br>"),
-  });
-  return { delivered: "smtp" };
+  try {
+    await transport.sendMail({
+      from: MAIL_FROM,
+      to,
+      subject,
+      text,
+      html: text
+        .split("\n")
+        .map((line) => (line.trim() === link ? `<a href="${link}">${link}</a>` : escapeHtml(line)))
+        .join("<br>"),
+    });
+    return { delivered: "smtp" };
+  } catch (err) {
+    await reportError("mail", err, { subject });
+    throw new Error("메일을 보내지 못했어요. 잠시 후 다시 시도해 주세요.");
+  }
 }
 
 function escapeHtml(s: string) {

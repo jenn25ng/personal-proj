@@ -1,4 +1,6 @@
-import { dbKind, getDb } from "@/db";
+import { gte } from "drizzle-orm";
+import { dbKind, getDb, schema } from "@/db";
+import { alertConfigured } from "@/lib/monitor";
 import { mailKind } from "@/lib/mail";
 import { DEFAULT_MODELS, JUDGE_MODEL, MOCK_AI, configuredProviders } from "@/lib/providers";
 
@@ -9,9 +11,11 @@ import { DEFAULT_MODELS, JUDGE_MODEL, MOCK_AI, configuredProviders } from "@/lib
 export async function GET() {
   const problems: string[] = [];
   let db: "ok" | "error" = "ok";
+  let errors24h = 0;
   try {
     const conn = await getDb();
     await conn.query.parents.findFirst({ columns: { id: true } });
+    errors24h = (await conn.query.errorEvents.findMany({ where: gte(schema.errorEvents.createdAt, new Date(Date.now() - 24 * 60 * 60_000)), columns: { id: true } })).length;
   } catch (err) {
     db = "error";
     problems.push(`DB 연결 실패: ${err instanceof Error ? err.message : String(err)}`);
@@ -38,6 +42,7 @@ export async function GET() {
         outputFilter: process.env.OUTPUT_FILTER === "off" ? "off" : "model",
       },
       admin: Boolean(process.env.ADMIN_TOKEN),
+      monitoring: { webhook: alertConfigured(), errors24h },
       problems,
     },
     { status: db === "ok" ? 200 : 503 },

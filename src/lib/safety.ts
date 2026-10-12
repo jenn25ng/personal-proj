@@ -6,6 +6,7 @@ import { MOCK_AI, getHelperModel } from "./providers";
 import { AGE_GUIDE } from "./prompts";
 import { screenInput, screenOutput, type SafetyCategory } from "./safety-rules";
 import { tracked, type CallContext } from "./usage";
+import { reportError } from "./monitor";
 
 export { SAFETY_MESSAGE } from "./safety-rules";
 
@@ -95,7 +96,7 @@ export async function checkOutput(
     return object.safe;
   } catch (err) {
     // 검사기가 실패하면 보여 주지 않는 쪽이 안전하다.
-    console.error("[safety] 출력 검사 실패", err);
+    await reportError("safety.output", err, { route: ctx.route });
     return false;
   }
 }

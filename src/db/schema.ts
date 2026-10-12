@@ -190,3 +190,22 @@ export const authAttempts = pgTable(
   },
   (t) => [index("auth_attempts_key_idx").on(t.key, t.kind, t.createdAt)],
 );
+
+/** 서버·AI 호출·화면에서 잡힌 오류. 같은 오류는 fingerprint 로 묶어 세고, 알림은 10분에 한 번만 보낸다. */
+export const errorEvents = pgTable(
+  "error_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** 어디서: server, api.answer, ai.answer, mail, client, test ... */
+    scope: text("scope").notNull(),
+    fingerprint: text("fingerprint").notNull(),
+    message: text("message").notNull(),
+    stack: text("stack"),
+    meta: jsonb("meta").$type<Record<string, unknown> | null>(),
+    alerted: boolean("alerted").notNull().default(false),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("error_events_created_idx").on(t.createdAt), index("error_events_fp_idx").on(t.fingerprint, t.createdAt)],
+);
+
+export type ErrorEvent = typeof errorEvents.$inferSelect;

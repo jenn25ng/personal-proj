@@ -5,7 +5,9 @@ import { Card } from "@/components/ui";
 import { adminConfigured, requireAdmin } from "@/lib/admin";
 import { adminLogout } from "@/lib/admin-actions";
 import { DAILY_GAME_LIMIT, DAILY_QUESTION_LIMIT, MAX_DAILY_GAME_LIMIT, MAX_DAILY_QUESTION_LIMIT } from "@/lib/quota";
-import { buildOverview, buildSafetySummary, buildUsageReport } from "@/lib/usage-report";
+import { TestErrorButton } from "@/components/TestErrorButton";
+import { alertConfigured } from "@/lib/monitor";
+import { buildErrorSummary, buildOverview, buildSafetySummary, buildUsageReport } from "@/lib/usage-report";
 
 type Search = Promise<{ days?: string }>;
 const PERIODS = [1, 7, 30, 90];
@@ -47,7 +49,7 @@ async function AdminContent({ searchParams }: { searchParams: Search }) {
   await requireAdmin();
   const { days: daysParam } = await searchParams;
   const days = PERIODS.includes(Number(daysParam)) ? Number(daysParam) : 30;
-  const [overview, report, safety] = await Promise.all([buildOverview(), buildUsageReport(days), buildSafetySummary(days)]);
+  const [overview, report, safety, errors] = await Promise.all([buildOverview(), buildUsageReport(days), buildSafetySummary(days), buildErrorSummary(days)]);
   const th = "px-2 py-1.5 text-left text-xs font-semibold text-stone-500";
   const td = "px-2 py-1.5 text-sm text-stone-800 whitespace-nowrap";
   const tdr = `${td} text-right tabular-nums`;
@@ -223,6 +225,45 @@ async function AdminContent({ searchParams }: { searchParams: Search }) {
                     <td className={td}>{e.detector}</td>
                     <td className={td}>{e.category}</td>
                     <td className="px-2 py-1.5 text-xs text-stone-500">{e.excerpt}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Card>
+      </section>
+
+      <section className="space-y-3">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h2 className="text-base font-bold text-stone-800">오류 ({days}일)</h2>
+          <TestErrorButton />
+        </div>
+        <div className="grid grid-cols-3 gap-3">
+          <Tile label="오류" value={num(errors.total)} hint={`${errors.grouped.length}종류`} />
+          <Tile label="알림 보냄" value={num(errors.alerted)} hint={alertConfigured() ? "웹훅 설정됨" : "ALERT_WEBHOOK_URL 없음"} />
+          <Tile label="범위별" value={errors.byScope.length ? errors.byScope.map(([s, n]) => `${s} ${n}`).join(" · ") : "-"} />
+        </div>
+        <Card className="overflow-x-auto p-3">
+          <h3 className="mb-2 px-2 text-sm font-bold text-stone-700">자주 난 오류</h3>
+          {errors.grouped.length === 0 ? (
+            <p className="px-2 text-sm text-stone-500">이 기간에 오류가 없어요.</p>
+          ) : (
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className={th}>범위</th>
+                  <th className={th}>메시지</th>
+                  <th className={`${th} text-right`}>횟수</th>
+                  <th className={th}>마지막</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100">
+                {errors.grouped.map((g, i) => (
+                  <tr key={i}>
+                    <td className={td}>{g.scope}</td>
+                    <td className="px-2 py-1.5 text-sm text-stone-800">{g.message.slice(0, 160)}</td>
+                    <td className={tdr}>{num(g.count)}</td>
+                    <td className={td}>{g.last.toLocaleString("ko-KR")}</td>
                   </tr>
                 ))}
               </tbody>

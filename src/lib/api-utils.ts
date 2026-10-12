@@ -1,5 +1,6 @@
 import { NoProviderError } from "./ai";
 import { getActiveChild } from "./auth";
+import { reportError } from "./monitor";
 import type { Child } from "@/db/schema";
 
 export const MAX_QUESTION_LEN = 300;
@@ -10,11 +11,11 @@ export function clean(value: unknown, max: number): string {
   return value.replace(/\s+/g, " ").trim().slice(0, max);
 }
 
-export function errorResponse(err: unknown): Response {
+export async function errorResponse(err: unknown, route = "api"): Promise<Response> {
   if (err instanceof NoProviderError) {
     return Response.json({ error: err.message }, { status: 503 });
   }
-  console.error(err);
+  await reportError(`api.${route}`, err, { route });
   return Response.json({ error: "AI 호출 중 문제가 생겼어요. 잠시 후 다시 시도해 주세요." }, { status: 502 });
 }
 

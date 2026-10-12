@@ -11,6 +11,7 @@ import {
 import { ANSWER_SYSTEM, GAME_SYSTEM, JUDGE_SYSTEM, REFLECT_SYSTEM, THINK_FIRST_SYSTEM } from "./prompts";
 import { mockAnswer, mockCompare, mockGame, mockReflect, mockThink } from "./mock";
 import { newContext, recordMock, tracked, type CallContext } from "./usage";
+import { reportError } from "./monitor";
 import type {
   AnswerResult,
   CompareResult,
@@ -125,6 +126,7 @@ async function askOne(
       puzzles: mode === "direct" ? object.puzzles : [],
     };
   } catch (err) {
+    await reportError("ai.answer", err, { provider, model, mode });
     return {
       answer: {
         provider,

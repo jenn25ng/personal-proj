@@ -39,6 +39,6 @@ export async function POST(request: Request) {
     }
     return Response.json(result);
   } catch (err) {
-    return errorResponse(err);
+    return errorResponse(err, "think");
   }
 }

@@ -145,3 +145,31 @@ export async function buildSafetySummary(days: number) {
     recent: rows.slice(0, 20),
   };
 }
+
+/** 최근 오류 요약 (관리자 화면) */
+export async function buildErrorSummary(days: number) {
+  const db = await getDb();
+  const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
+  const rows = await db.query.errorEvents.findMany({
+    where: gte(schema.errorEvents.createdAt, since),
+    orderBy: [desc(schema.errorEvents.createdAt)],
+    limit: 500,
+  });
+  const byScope = new Map<string, number>();
+  const byFingerprint = new Map<string, { scope: string; message: string; count: number; last: Date }>();
+  for (const r of rows) {
+    byScope.set(r.scope, (byScope.get(r.scope) ?? 0) + 1);
+    const f = byFingerprint.get(r.fingerprint);
+    if (f) {
+      f.count += 1;
+      if (r.createdAt > f.last) f.last = r.createdAt;
+    } else byFingerprint.set(r.fingerprint, { scope: r.scope, message: r.message, count: 1, last: r.createdAt });
+  }
+  return {
+    total: rows.length,
+    alerted: rows.filter((r) => r.alerted).length,
+    byScope: [...byScope.entries()].sort((a, b) => b[1] - a[1]),
+    grouped: [...byFingerprint.values()].sort((a, b) => b.count - a.count).slice(0, 20),
+    recent: rows.slice(0, 10),
+  };
+}

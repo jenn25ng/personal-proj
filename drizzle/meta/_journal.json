@@ -71,6 +71,13 @@
       "when": 1791612142546,
       "tag": "0009_auth_attempts",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1791799341927,
+      "tag": "0010_error_events",
+      "breakpoints": true
     }
   ]
 }

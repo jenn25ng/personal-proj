@@ -71,7 +71,7 @@ Drizzle ORM의 PostgreSQL 스키마 하나(`src/db/schema.ts`)를 씁니다. 드
 pnpm exec drizzle-kit generate --name <이름>
 ```
 
-테이블: `parents`, `auth_sessions`, `auth_attempts`, `email_tokens`, `children`, `daily_bonuses`, `question_logs`, `game_results`, `ai_usage`, `safety_events`.
+테이블: `parents`, `auth_sessions`, `auth_attempts`, `email_tokens`, `children`, `daily_bonuses`, `question_logs`, `game_results`, `ai_usage`, `safety_events`, `error_events`.
 
 세 제공사 중 **설정된 키가 있는 모델만** 사용됩니다. 생각 단계, 비교 판정, 반성 피드백은 기본적으로 Claude(`JUDGE_MODEL`)가 맡고, Claude 키가 없으면 설정된 다른 제공사로 대체됩니다.
 
@@ -87,6 +87,7 @@ pnpm exec drizzle-kit generate --name <이름>
 | `APP_URL` | 요청 host | 메일 링크의 기준 주소, `pnpm usage`의 대상 |
 | `ADMIN_TOKEN` | – | 관리자 화면·사용량 API 비밀 토큰 |
 | `OUTPUT_FILTER` | `model` | AI 출력 모델 검사. `off`면 규칙만 |
+| `ALERT_WEBHOOK_URL` / `ALERT_COOLDOWN_MIN` | – / 10 | 오류 알림 웹훅과 같은 오류 재알림 간격(분) |
 | `DAILY_QUESTION_LIMIT` / `DAILY_GAME_LIMIT` | 10 / 5 | 아이당 하루 한도 기본값 (부모가 아이별로 조정) |
 | `MAX_DAILY_QUESTION_LIMIT` / `MAX_DAILY_GAME_LIMIT` | 30 / 10 | 부모가 올릴 수 있는 상한 |
 | `PGLITE_DIR` | `.data/pglite` | PGlite 데이터 폴더 |
@@ -103,6 +104,13 @@ pnpm exec drizzle-kit generate --name <이름>
 ### 하루 한도
 
 아이 한 명당 하루 질문 수(기본 10)와 게임 수(기본 5)를 제한합니다. **부모가 "우리 가족 기록"에서 아이별로 바꿀 수 있고**, 비우면 기본값으로 돌아갑니다. 상한은 질문 30·게임 10입니다. 한도를 다 쓴 날에는 부모가 같은 화면에서 **"오늘만 더 열어 주기"**(질문 +1/+3, 게임 +1)로 그날만 추가할 수 있고, 자정이 지나면 원래 한도로 돌아갑니다. 추가분도 상한을 넘지 못합니다. 기본값과 상한은 `DAILY_QUESTION_LIMIT`, `DAILY_GAME_LIMIT`, `MAX_DAILY_QUESTION_LIMIT`, `MAX_DAILY_GAME_LIMIT`로, 초기화 시간대는 `DAY_RESET_UTC_OFFSET_HOURS`(기본 한국)로 바꿉니다. 집계는 사용량 기록의 "생각 단계" 호출(질문)과 "문제 생성" 호출(게임)을 세고, 서버 API에서 막습니다. 화면에는 "오늘 남은 질문 N개"가 보이고, 다 쓰면 "내일 다시 열려요"라고 안내합니다.
+
+### 오류 모니터링
+
+- 서버가 잡지 못한 오류(`instrumentation.ts`의 `onRequestError`), AI 라우트 실패, 모델 호출 실패, 메일 발송 실패, 출력 검사기 실패, 화면 오류(`error.tsx`)를 모두 `error_events`에 기록합니다. 같은 오류는 지문(fingerprint)으로 묶어 셉니다.
+- `ALERT_WEBHOOK_URL`을 넣으면 Slack·Discord 등으로 알림을 보냅니다. 같은 오류는 `ALERT_COOLDOWN_MIN`(기본 10분) 안에 한 번만 알립니다.
+- `/admin`의 "오류" 섹션에서 기간별 오류 수, 알림 수, 범위별, 자주 난 오류를 보고, "테스트 오류 보내기"로 기록과 웹훅이 되는지 확인합니다. `/api/health`에도 최근 24시간 오류 수가 나옵니다.
+- 아이에게는 "앗, 뭔가 잘못됐어요. 다시 해 보기" 화면만 보입니다.
 
 ### 관리자 화면과 비용 실측
 
@@ -135,6 +143,7 @@ src/lib/auth.ts             비밀번호 해시, 세션 쿠키, 페이지 가드
 src/lib/actions.ts          서버 액션 (가입, 로그인, 인증, 재설정, 아이 추가·선택·삭제, 계정 삭제)
 src/lib/tokens.ts, mail.ts  일회성 토큰과 메일 발송
 src/lib/ratelimit.ts        로그인·가입·재설정 시도 횟수 제한
+src/lib/monitor.ts, src/instrumentation.ts, src/app/error.tsx   오류 모니터링
 src/lib/usage.ts, pricing.ts, usage-report.ts   호출별 사용량 기록, 요금표, 집계
 src/lib/quota.ts            아이당 하루 한도
 src/lib/safety-rules.ts, safety.ts   입력·출력 안전 필터 (규칙, 모델)
