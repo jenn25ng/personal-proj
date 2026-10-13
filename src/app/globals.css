@@ -17,9 +17,10 @@
   --color-warn-soft: #fff3e6;
   --color-bad: #d9534f;
   --color-bad-soft: #fdecec;
+  /* Pretendard Variable(자체 호스팅, 동적 서브셋) → 기기 기본 한글 서체 순 */
   --font-sans:
-    "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto,
-    sans-serif;
+    "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
 }
 
 html {

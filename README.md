@@ -136,7 +136,7 @@ pnpm exec drizzle-kit generate --name <이름>
 
 ### 화면 디자인
 
-챗지피티·클로드처럼 대화창 하나로 구성합니다. 질문은 오른쪽 말풍선, AI는 왼쪽 본문이고, 생각 단계·답·비교·정리가 모두 대화 안에서 이어지며 입력창은 아래에 고정됩니다. 장식 없이 흰 바탕과 포인트 색 하나, 기기 기본 한글 서체를 씁니다. 색 토큰은 `src/app/globals.css`, 공용 부품은 `src/components/ui.tsx`에 있습니다. 홈에 먼저 적용했고 나머지 화면은 기본 톤만 따라오는 상태입니다.
+챗지피티·클로드처럼 대화창 하나로 구성합니다. 질문은 오른쪽 말풍선, AI는 왼쪽 본문이고, 생각 단계·답·비교·정리가 모두 대화 안에서 이어지며 입력창은 아래에 고정됩니다. 장식 없이 흰 바탕과 포인트 색 하나를 쓰고, 서체는 Pretendard Variable을 `public/fonts/pretendard/`에 동적 서브셋으로 자체 호스팅합니다(`src/app/fonts.css`). 다른 서체로 바꾸려면 그 폴더와 `fonts.css`, `globals.css`의 `--font-sans`만 교체하면 됩니다. 색 토큰은 `src/app/globals.css`, 공용 부품은 `src/components/ui.tsx`에 있습니다. 홈에 먼저 적용했고 나머지 화면은 기본 톤만 따라오는 상태입니다.
 
 ## 구조
 
