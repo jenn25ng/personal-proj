@@ -10,7 +10,9 @@
     "usage": "node --env-file-if-exists=.env.local scripts/usage.mjs",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "smoke": "node --env-file-if-exists=.env.local scripts/smoke.mjs"
+    "smoke": "node --env-file-if-exists=.env.local scripts/smoke.mjs",
+    "backup": "node --env-file-if-exists=.env.local scripts/backup.mjs",
+    "restore": "node --env-file-if-exists=.env.local scripts/restore.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "4.0.78",

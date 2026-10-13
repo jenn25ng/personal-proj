@@ -36,6 +36,9 @@ yarn-error.log*
 # local PGlite database
 /.data
 
+# local backups
+/backups
+
 # vercel
 .vercel
 

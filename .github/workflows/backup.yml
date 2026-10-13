@@ -1,0 +1,39 @@
+# 매일 새벽(한국 03:00) 앱에서 전체 데이터를 JSON으로 받아 암호화한 뒤 GitHub 아티팩트로 보관한다.
+# 저장소 Secrets: APP_URL, ADMIN_TOKEN, BACKUP_PASSPHRASE(선택, 있으면 openssl 로 암호화)
+# 보관 기간은 retention-days. 더 오래 두려면 S3 같은 외부 저장소 업로드 단계를 추가한다.
+name: DB backup
+on:
+  schedule:
+    - cron: "0 18 * * *" # 18:00 UTC = 03:00 KST
+  workflow_dispatch:
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download backup
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          ADMIN_TOKEN: ${{ secrets.ADMIN_TOKEN }}
+        run: |
+          test -n "$APP_URL" && test -n "$ADMIN_TOKEN"
+          curl --fail --silent --show-error -H "Authorization: Bearer $ADMIN_TOKEN" "$APP_URL/api/admin/backup" -o backup.json
+          node -e 'const d=JSON.parse(require("fs").readFileSync("backup.json","utf8")); console.log("exportedAt", d.exportedAt); console.log(d.counts)'
+          gzip backup.json
+      - name: Encrypt (if passphrase set)
+        env:
+          BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          if [ -n "$BACKUP_PASSPHRASE" ]; then
+            openssl enc -aes-256-cbc -pbkdf2 -salt -in backup.json.gz -out backup.json.gz.enc -pass env:BACKUP_PASSPHRASE
+            rm backup.json.gz
+            echo "암호화함 (복호화: openssl enc -d -aes-256-cbc -pbkdf2 -in backup.json.gz.enc -out backup.json.gz -pass pass:...)"
+          else
+            echo "BACKUP_PASSPHRASE 가 없어 암호화하지 않았어요. 아티팩트는 저장소 권한이 있는 사람만 받을 수 있지만, 암호화를 권장해요."
+          fi
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: think-first-backup-${{ github.run_id }}
+          path: backup.json.gz*
+          retention-days: 30
+          if-no-files-found: error

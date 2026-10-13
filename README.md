@@ -112,6 +112,13 @@ pnpm exec drizzle-kit generate --name <이름>
 - `/admin`의 "오류" 섹션에서 기간별 오류 수, 알림 수, 범위별, 자주 난 오류를 보고, "테스트 오류 보내기"로 기록과 웹훅이 되는지 확인합니다. `/api/health`에도 최근 24시간 오류 수가 나옵니다.
 - 아이에게는 "앗, 뭔가 잘못됐어요. 다시 해 보기" 화면만 보입니다.
 
+### 백업과 복원
+
+- **앱 내장 백업**: `GET /api/admin/backup`(관리자 토큰)이 전체 테이블을 JSON으로 내보냅니다. `pnpm backup`은 이를 `backups/`에 gzip으로 저장하고 30일 지난 파일을 지웁니다. `.github/workflows/backup.yml`은 매일 03:00(한국)에 같은 작업을 GitHub Actions에서 돌려 아티팩트로 30일 보관하며, `BACKUP_PASSPHRASE` 시크릿이 있으면 암호화합니다. Vercel처럼 `pg_dump`를 못 쓰는 환경용입니다.
+- **복원**: 빈 PostgreSQL에 `pnpm db:migrate`로 스키마를 만든 뒤 `DATABASE_URL=... pnpm restore backups/파일.json.gz`. 외래키 순서대로 넣고, 같은 기본키가 이미 있으면 건너뛰며, 실패하면 전부 되돌립니다.
+- **Docker Compose**: `backup` 서비스가 24시간마다 `pg_dump`로 받아 `backups` 볼륨에 두고 30일 지난 파일을 지웁니다(`scripts/pg-backup.sh`).
+- 백업에는 비밀번호 해시와 아이의 질문 기록이 들어 있습니다. 암호화해서 보관하고, 관리형 DB(Neon, Supabase)의 자동 백업도 함께 켜 두세요.
+
 ### 관리자 화면과 비용 실측
 
 - 모든 AI 호출의 토큰 사용량(입력, 캐시 읽기, 출력, 사고)과 소요 시간, 오류를 `ai_usage` 테이블에 남깁니다. 아이 화면에는 쓰지 않는 운영용 기록입니다.
@@ -148,7 +155,9 @@ src/lib/usage.ts, pricing.ts, usage-report.ts   호출별 사용량 기록, 요�
 src/lib/quota.ts            아이당 하루 한도
 src/lib/safety-rules.ts, safety.ts   입력·출력 안전 필터 (규칙, 모델)
 src/app/admin                관리자 화면 (ADMIN_TOKEN)
-src/app/api/health, admin/smoke   배포 상태 확인, 실제 키 점검
+src/app/api/health, admin/smoke, admin/backup   배포 상태 확인, 실제 키 점검, 백업 내보내기
+scripts/backup.mjs, restore.mjs, pg-backup.sh   백업·복원
+.github/workflows/backup.yml      매일 자동 백업
 Dockerfile, docker-compose.yml    단일 서버 배포
 scripts/usage.mjs            터미널 사용량 리포트
 src/components/QuestionFlow.tsx             단계별 흐름 (클라이언트)
