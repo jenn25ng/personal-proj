@@ -134,6 +134,10 @@ pnpm exec drizzle-kit generate --name <이름>
 - `pnpm smoke`: 실제 키로 생각 → 답 → 비교 → 정리 → 게임을 한 번씩 돌려 단계별 결과·시간·토큰을 보여 줍니다(`/api/admin/smoke`, 관리자 토큰 필요).
 - `pnpm db:migrate`: `DATABASE_URL`의 PostgreSQL에 마이그레이션을 미리 적용합니다(앱 시작 시에도 자동 적용).
 
+### 화면 디자인
+
+"탐험 노트" 방향입니다. 공책 종이 카드, 줄 공책 입력칸, 번호 스티커, 마스코트 "생각이"의 말풍선, 진행 스티커. 색·서체 토큰은 `src/app/globals.css`, 마스코트는 `src/components/Mascot.tsx`, 공용 부품은 `src/components/ui.tsx`에 있습니다. 홈(질문 흐름)에 먼저 적용했고 나머지 화면은 기본 톤만 따라오는 상태입니다.
+
 ## 구조
 
 ```

@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { AnswerCard } from "./AnswerCard";
+import { Mascot, MascotSays } from "./Mascot";
+import { StepStickers } from "./StepStickers";
 import { AgreementBanner, Button, Card, Spinner, StepTitle, TextArea } from "./ui";
 import type { AnswerResult, CompareResult, Puzzle, ReflectResult, ThinkFirstResult } from "@/lib/types";
 
@@ -183,13 +185,31 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
   const followUps = result?.followUps ?? [];
   const puzzles = result?.puzzles ?? [];
 
+  // 진행 스티커: 생각 질문은 4단계, 바로 답하는 질문은 2단계
+  const stickerSteps = isDirect
+    ? [
+        { label: "질문", emoji: "❓" },
+        { label: "답", emoji: "💬" },
+      ]
+    : [
+        { label: "질문", emoji: "❓" },
+        { label: "생각", emoji: "🤔" },
+        { label: "답", emoji: "💬" },
+        { label: "정리", emoji: "✏️" },
+      ];
+  const currentSticker = isDirect
+    ? step === "ask" ? 0 : 1
+    : { ask: 0, think: 1, answer: 2, reflect: 3, done: 4 }[step];
+
   return (
     <div className="space-y-4">
+      {(think?.safe ?? true) && <StepStickers steps={stickerSteps} current={currentSticker} />}
+
       {/* 1. 질문 */}
       <Card>
         <StepTitle step={1}>궁금한 걸 적어 봐요</StepTitle>
         {step === "ask" && left === 0 ? (
-          <p className="text-[15px] leading-relaxed text-stone-800">🌙 오늘 질문은 다 썼어요. 내일 다시 열려요. 궁금한 건 공책에 적어 뒀다가 내일 물어봐요!</p>
+          <p className="text-[15px] leading-relaxed text-ink">🌙 오늘 질문은 다 썼어요. 내일 다시 열려요. 궁금한 건 공책에 적어 뒀다가 내일 물어봐요!</p>
         ) : step === "ask" ? (
           <form
             onSubmit={(e) => {
@@ -209,18 +229,18 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
               <Button type="submit" disabled={loading || draft.trim().length < 2}>
                 다음
               </Button>
-              {loading ? <Spinner text={loadingText} /> : <span className="text-xs text-stone-400">오늘 {left}개 더 물어볼 수 있어요</span>}
+              {loading ? <Spinner text={loadingText} /> : <span className="text-xs text-ink-soft">오늘 {left}개 더 물어볼 수 있어요</span>}
             </div>
           </form>
         ) : (
-          <p className="text-base font-medium text-stone-800">“{question}”</p>
+          <p className="font-display text-lg text-ink">“{question}”</p>
         )}
       </Card>
 
       {/* 부적절한 질문 */}
       {think && !think.safe && (
-        <Card className="ring-rose-200">
-          <p className="text-[15px] leading-relaxed text-stone-800">{think.redirectMessage}</p>
+        <Card>
+          <MascotSays mood="think">{think.redirectMessage}</MascotSays>
           <div className="mt-3">
             <Button onClick={reset} variant="secondary">
               다른 질문 하기
@@ -235,16 +255,14 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
           <StepTitle step={2}>AI에게 묻기 전에, 먼저 생각해 봐요</StepTitle>
           {step === "think" ? (
             <div className="space-y-4">
-              <p className="rounded-xl bg-amber-50 p-3 text-[15px] leading-relaxed text-stone-800">
-                🤔 {think.guidingQuestion}
-              </p>
+              <MascotSays mood="think">{think.guidingQuestion}</MascotSays>
               <TextArea
                 label="내가 이미 아는 것, 떠오르는 생각"
                 value={priorKnowledge}
                 onChange={setPriorKnowledge}
                 placeholder="짧아도 괜찮아요."
               />
-              <p className="text-[15px] leading-relaxed text-stone-700">✏️ {think.predictionPrompt}</p>
+              <p className="text-[15px] leading-relaxed text-ink">✏️ {think.predictionPrompt}</p>
               <TextArea
                 label="내 예상 (꼭 적어야 다음으로 갈 수 있어요)"
                 value={prediction}
@@ -253,9 +271,9 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
                 rows={2}
               />
               {showHint ? (
-                <p className="rounded-xl bg-stone-100 p-3 text-sm text-stone-700">💡 힌트: {think.hint}</p>
+                <p className="rounded-xl bg-sun-soft p-3 text-sm text-ink">💡 힌트: {think.hint}</p>
               ) : (
-                <button type="button" onClick={() => setShowHint(true)} className="text-sm text-amber-700 underline">
+                <button type="button" onClick={() => setShowHint(true)} className="text-sm text-tangerine-deep underline">
                   막혔어요, 힌트 보여 주세요
                 </button>
               )}
@@ -267,10 +285,10 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
               </div>
             </div>
           ) : (
-            <div className="space-y-1 text-sm text-stone-700">
+            <div className="space-y-1 text-sm text-ink-soft">
               {priorKnowledge && <p>아는 것: {priorKnowledge}</p>}
               <p>
-                내 예상: <span className="font-semibold">{prediction}</span>
+                내 예상: <span className="font-display text-base text-ink">{prediction}</span>
               </p>
             </div>
           )}
@@ -282,15 +300,17 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
         <Card>
           <StepTitle step={answerStep}>{isDirect ? "바로 알려 줄게요" : "AI의 답을 읽어 봐요"}</StepTitle>
           {isDirect && (
-            <p className="mb-3 text-sm text-stone-500">이건 생각할 것보다 알면 되는 거라 바로 답해요. 그래도 AI 답은 한 번 확인해 봐요.</p>
+            <div className="mb-3">
+              <MascotSays mood="happy">이건 생각할 것보다 알면 되는 거라 바로 답해요. 그래도 AI 답은 한 번 확인해 봐요!</MascotSays>
+            </div>
           )}
           {primary ? (
             <div className="space-y-4">
               <AnswerCard answer={primary} highlight />
 
               {!comparison ? (
-                <div className="rounded-xl border border-dashed border-stone-300 p-4 text-center">
-                  <p className="mb-3 text-sm text-stone-600">
+                <div className="rounded-2xl border-1.5 border-dashed border-line bg-sky-soft/50 p-4 text-center">
+                  <p className="mb-3 text-sm text-ink">
                     AI는 가끔 틀린 걸 자신 있게 말해요. 다른 AI는 뭐라고 하는지 비교해 볼까요?
                   </p>
                   <Button onClick={compare} disabled={comparing}>
@@ -305,7 +325,7 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
               ) : (
                 <div className="space-y-3">
                   {others.length === 0 && failed.length === 0 && (
-                    <p className="text-xs text-stone-400">지금은 비교할 다른 AI가 없어요. 그래도 아래에서 확인할 부분을 봐요.</p>
+                    <p className="text-xs text-ink-soft">지금은 비교할 다른 AI가 없어요. 그래도 아래에서 확인할 부분을 봐요.</p>
                   )}
                   {others.map((a) => (
                     <AnswerCard key={a.provider} answer={a} />
@@ -314,13 +334,13 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
                     <AnswerCard key={a.provider} answer={a} />
                   ))}
                   {judge && (
-                    <div className="space-y-3 rounded-xl bg-white p-4 ring-1 ring-stone-200">
+                    <div className="space-y-3 rounded-2xl bg-paper p-4 ring-1 ring-line">
                       <AgreementBanner agreement={judge.agreement} />
-                      <p className="text-[15px] leading-relaxed text-stone-800">{judge.kidSummary}</p>
+                      <p className="text-[15px] leading-relaxed text-ink">{judge.kidSummary}</p>
                       {judge.differences.length > 0 && (
                         <div>
-                          <p className="mb-1 text-sm font-semibold text-stone-700">서로 달랐던 점</p>
-                          <ul className="list-disc space-y-0.5 pl-5 text-sm text-stone-700">
+                          <p className="mb-1 font-display text-base text-ink">서로 달랐던 점</p>
+                          <ul className="list-disc space-y-0.5 pl-5 text-sm text-ink">
                             {judge.differences.map((d) => (
                               <li key={d}>{d}</li>
                             ))}
@@ -329,8 +349,8 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
                       )}
                       {judge.riskyClaims.length > 0 && (
                         <div>
-                          <p className="mb-1 text-sm font-semibold text-rose-700">⚠️ 틀리기 쉬운 부분</p>
-                          <ul className="space-y-1 text-sm text-stone-700">
+                          <p className="mb-1 font-display text-base text-berry">⚠️ 틀리기 쉬운 부분</p>
+                          <ul className="space-y-1 text-sm text-ink">
                             {judge.riskyClaims.map((r) => (
                               <li key={r.claim}>
                                 <span className="font-medium">{r.claim}</span> · {r.why}
@@ -340,8 +360,8 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
                         </div>
                       )}
                       <div>
-                        <p className="mb-1 text-sm font-semibold text-emerald-700">✅ 직접 확인하는 방법</p>
-                        <ul className="list-disc space-y-0.5 pl-5 text-sm text-stone-700">
+                        <p className="mb-1 font-display text-base text-leaf">✅ 직접 확인하는 방법</p>
+                        <ul className="list-disc space-y-0.5 pl-5 text-sm text-ink">
                           {judge.checkTips.map((t) => (
                             <li key={t}>{t}</li>
                           ))}
@@ -361,7 +381,7 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
               )}
             </div>
           ) : (
-            <p className="text-sm text-stone-600">AI들이 지금은 답을 주지 못했어요. 잠시 후 다시 해 봐요.</p>
+            <p className="text-sm text-ink-soft">AI들이 지금은 답을 주지 못했어요. 잠시 후 다시 해 봐요.</p>
           )}
         </Card>
       )}
@@ -370,9 +390,12 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
       {isDirect && result && primary && (
         <>
           {followUps.length > 0 && (
-            <Card className="bg-amber-50/60">
-              <h2 className="mb-1 text-base font-bold text-stone-800">🙋 이번엔 내가 물어볼게요</h2>
-              <p className="mb-3 text-xs text-stone-500">먼저 머릿속으로 찍어 보고, 궁금하면 눌러요. 그 질문으로 이어져요.</p>
+            <Card className="bg-sun-soft">
+              <div className="mb-3 flex items-center gap-2">
+                <Mascot mood="curious" size={40} />
+                <h2 className="font-display text-xl text-ink">이번엔 내가 물어볼게요</h2>
+              </div>
+              <p className="mb-3 text-xs text-ink-soft">먼저 머릿속으로 찍어 보고, 궁금하면 눌러요. 그 질문으로 이어져요.</p>
               <ul className="space-y-2">
                 {followUps.map((q) => (
                   <li key={q}>
@@ -380,7 +403,7 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
                       type="button"
                       disabled={loading}
                       onClick={() => askWonder(q)}
-                      className="w-full rounded-xl bg-white p-3 text-left text-[15px] text-stone-800 ring-1 ring-amber-200 hover:bg-amber-100 disabled:opacity-40"
+                      className="btn-chunky-soft w-full rounded-2xl bg-paper p-3 text-left text-[15px] text-ink ring-1 ring-line hover:bg-paper/80 disabled:opacity-40"
                     >
                       {q}
                     </button>
@@ -397,8 +420,8 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
 
           {puzzles.length > 0 && (
             <Card>
-              <h2 className="mb-1 text-base font-bold text-stone-800">🧩 이걸로 풀어 보는 문제</h2>
-              <p className="mb-3 text-xs text-stone-500">방금 알게 된 걸로 어림해 봐요. 내 답을 적어야 풀이를 볼 수 있어요.</p>
+              <h2 className="mb-1 font-display text-xl text-ink">🧩 이걸로 풀어 보는 문제</h2>
+              <p className="mb-3 text-xs text-ink-soft">방금 알게 된 걸로 어림해 봐요. 내 답을 적어야 풀이를 볼 수 있어요.</p>
               <div className="space-y-4">
                 {puzzles.map((pz, i) => (
                   <PuzzleCard key={i} puzzle={pz} />
@@ -427,8 +450,8 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
                 onChange={setReflection}
                 rows={2}
               />
-              <label className="flex items-center gap-2 text-sm text-stone-700">
-                <input type="checkbox" checked={doubted} onChange={(e) => setDoubted(e.target.checked)} />
+              <label className="flex items-center gap-2 text-sm text-ink">
+                <input type="checkbox" checked={doubted} onChange={(e) => setDoubted(e.target.checked)} className="accent-tangerine" />
                 AI 답 중에 “정말일까?” 싶어서 확인해 보고 싶은 부분이 있었어요
               </label>
               <div className="flex items-center gap-3">
@@ -440,14 +463,14 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
             </div>
           ) : (
             feedback && (
-              <div className="space-y-3 text-[15px] leading-relaxed text-stone-800">
-                <p className="rounded-xl bg-emerald-50 p-3">🎉 {feedback.encouragement}</p>
+              <div className="space-y-3 text-[15px] leading-relaxed text-ink">
+                <MascotSays mood="happy">🎉 {feedback.encouragement}</MascotSays>
                 <p>{feedback.comparison}</p>
                 <p>
-                  <span className="font-semibold">확인해 보기:</span> {feedback.verifyTip}
+                  <span className="font-display text-base">확인해 보기:</span> {feedback.verifyTip}
                 </p>
-                <p className="rounded-xl bg-amber-50 p-3">
-                  <span className="font-semibold">다음에 궁금해할 만한 것:</span> {feedback.nextQuestion}
+                <p className="rounded-xl bg-sun-soft p-3">
+                  <span className="font-display text-base">다음에 궁금해할 만한 것:</span> {feedback.nextQuestion}
                 </p>
                 <div className="pt-1">
                   <Button onClick={reset}>새 질문 하기</Button>
@@ -458,7 +481,7 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
         </Card>
       )}
 
-      {error && <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-800 ring-1 ring-rose-200">{error}</p>}
+      {error && <p className="rounded-xl bg-berry-soft p-3 text-sm text-berry ring-1 ring-berry/30">{error}</p>}
     </div>
   );
 }
@@ -469,8 +492,8 @@ function PuzzleCard({ puzzle }: { puzzle: Puzzle }) {
   const [hint, setHint] = useState(false);
   const [revealed, setRevealed] = useState(false);
   return (
-    <div className="rounded-xl bg-stone-50 p-4 ring-1 ring-stone-200">
-      <p className="text-[15px] leading-relaxed text-stone-800">{puzzle.question}</p>
+    <div className="rounded-2xl bg-paper p-4 ring-1 ring-line">
+      <p className="text-[15px] leading-relaxed text-ink">{puzzle.question}</p>
       <div className="mt-3 flex gap-2">
         <input
           value={attempt}
@@ -478,7 +501,7 @@ function PuzzleCard({ puzzle }: { puzzle: Puzzle }) {
           disabled={revealed}
           placeholder="내 답 (어림해도 괜찮아요)"
           aria-label="내 답"
-          className="min-w-0 flex-1 rounded-xl border border-stone-300 px-3 py-2 text-base outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-200 disabled:bg-stone-100"
+          className="min-w-0 flex-1 rounded-xl border-1.5 border-line bg-paper px-3 py-2 text-base text-ink outline-none focus:border-tangerine focus:ring-2 focus:ring-sun disabled:bg-cream"
         />
         {!revealed && (
           <Button onClick={() => setRevealed(true)} disabled={attempt.trim().length < 1}>
@@ -488,19 +511,19 @@ function PuzzleCard({ puzzle }: { puzzle: Puzzle }) {
       </div>
       {!revealed &&
         (hint ? (
-          <p className="mt-2 text-sm text-stone-600">💡 {puzzle.hint}</p>
+          <p className="mt-2 text-sm text-ink-soft">💡 {puzzle.hint}</p>
         ) : (
-          <button type="button" onClick={() => setHint(true)} className="mt-2 text-sm text-amber-700 underline">
+          <button type="button" onClick={() => setHint(true)} className="mt-2 text-sm text-tangerine-deep underline">
             힌트 보기
           </button>
         ))}
       {revealed && (
         <div className="mt-3 space-y-1 text-sm">
-          <p className="text-stone-600">
-            내 답: <span className="font-semibold text-stone-800">{attempt}</span>
+          <p className="text-ink-soft">
+            내 답: <span className="font-display text-base text-ink">{attempt}</span>
           </p>
-          <p className="rounded-lg bg-white p-3 leading-relaxed text-stone-800 ring-1 ring-emerald-200">✅ {puzzle.solution}</p>
-          <p className="text-xs text-stone-500">딱 맞지 않아도 괜찮아요. 어림하는 방법을 떠올린 게 진짜예요.</p>
+          <p className="rounded-xl bg-leaf-soft p-3 leading-relaxed text-ink ring-1 ring-leaf/30">✅ {puzzle.solution}</p>
+          <p className="text-xs text-ink-soft">딱 맞지 않아도 괜찮아요. 어림하는 방법을 떠올린 게 진짜예요.</p>
         </div>
       )}
     </div>
