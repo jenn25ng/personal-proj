@@ -1,30 +1,21 @@
 import { PROVIDER_LABEL, type ModelAnswer } from "@/lib/types";
 import { ConfidenceBadge } from "./ui";
 
-const PROVIDER_STICKER: Record<ModelAnswer["provider"], string> = {
-  claude: "bg-tangerine text-white",
-  gemini: "bg-sky text-white",
-  chatgpt: "bg-leaf text-white",
-};
-
-export function AnswerCard({ answer, highlight = false }: { answer: ModelAnswer; highlight?: boolean }) {
+/** 대화 안의 AI 답 한 개. compact면 비교 목록용으로 작게. */
+export function AnswerCard({ answer, compact = false }: { answer: ModelAnswer; compact?: boolean }) {
   return (
-    <div className={`rounded-2xl p-4 ${highlight ? "bg-sun-soft ring-1.5 ring-sun" : "bg-paper ring-1 ring-line"}`}>
-      <div className="mb-2 flex flex-wrap items-center gap-2">
-        <span className={`sticker px-2.5 py-0.5 text-sm ${PROVIDER_STICKER[answer.provider]}`}>{PROVIDER_LABEL[answer.provider]}</span>
+    <div className={compact ? "rounded-xl border border-line p-3" : ""}>
+      <div className="mb-1.5 flex flex-wrap items-center gap-2">
+        <span className="text-[13px] font-semibold text-ink">{PROVIDER_LABEL[answer.provider]}</span>
         {answer.ok && <ConfidenceBadge level={answer.selfConfidence} />}
       </div>
       {answer.ok ? (
         <>
-          <p className="whitespace-pre-wrap text-[15px] leading-relaxed text-ink">{answer.text}</p>
+          <p className={`whitespace-pre-wrap leading-relaxed text-ink ${compact ? "text-sm" : "text-[15px]"}`}>{answer.text}</p>
           {answer.uncertainParts.length > 0 && (
-            <div className="mt-3 rounded-xl bg-paper p-3 text-sm ring-1 ring-berry/30">
-              <p className="mb-1 font-display text-berry">🔍 꼭 확인해 봐야 할 부분</p>
-              <ul className="list-disc space-y-0.5 pl-5 text-ink">
-                {answer.uncertainParts.map((u) => (
-                  <li key={u}>{u}</li>
-                ))}
-              </ul>
+            <div className="mt-2 rounded-xl bg-warn-soft px-3 py-2 text-[13px] text-ink">
+              <span className="font-medium text-warn">꼭 확인해 봐야 할 부분: </span>
+              {answer.uncertainParts.join(" · ")}
             </div>
           )}
         </>

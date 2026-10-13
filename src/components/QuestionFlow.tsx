@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { AnswerCard } from "./AnswerCard";
-import { Mascot, MascotSays } from "./Mascot";
-import { StepStickers } from "./StepStickers";
-import { AgreementBanner, Button, Card, Spinner, StepTitle, TextArea } from "./ui";
+import { AgreementBanner, Button, Spinner, TextArea } from "./ui";
 import type { AnswerResult, CompareResult, Puzzle, ReflectResult, ThinkFirstResult } from "@/lib/types";
 
 type Step = "ask" | "think" | "answer" | "reflect" | "done";
@@ -20,7 +18,43 @@ async function post<T>(url: string, body: unknown, method = "POST"): Promise<T> 
   return data as T;
 }
 
-export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
+const EXAMPLES = ["달은 왜 모양이 바뀌어요?", "달까지 거리는 얼마예요?", "비는 왜 내려요?"];
+
+/** AI 쪽 메시지: 작은 아바타 + 본문 (말풍선 없이) */
+function AiMsg({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex gap-3">
+      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-soft text-[11px] font-bold text-accent">
+        AI
+      </span>
+      <div className="min-w-0 flex-1 space-y-3 text-[15px] leading-relaxed text-ink">{children}</div>
+    </div>
+  );
+}
+
+/** 아이 쪽 메시지: 오른쪽 말풍선 */
+function UserMsg({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex justify-end">
+      <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-surface px-4 py-2.5 text-[15px] leading-relaxed text-ink">{children}</div>
+    </div>
+  );
+}
+
+function Chip({ children, onClick, disabled }: { children: React.ReactNode; onClick: () => void; disabled?: boolean }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="rounded-full border border-line bg-bg px-3.5 py-1.5 text-left text-[13px] text-ink hover:bg-surface disabled:opacity-40"
+    >
+      {children}
+    </button>
+  );
+}
+
+export function QuestionFlow({ questionsLeft, nickname }: { questionsLeft: number; nickname: string }) {
   const [left, setLeft] = useState(questionsLeft);
   const [step, setStep] = useState<Step>("ask");
   const [loading, setLoading] = useState(false);
@@ -79,8 +113,10 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
   /** 질문 제출. 바로 답할 질문이면 생각 단계를 건너뛰고 곧장 답을 가져온다. */
   function submitQuestion(text: string) {
     const q = text.trim();
-    if (q.length < 2) return;
+    if (q.length < 2 || loading) return;
+    if (step !== "ask") reset();
     setQuestion(q);
+    setDraft("");
     return run(
       "질문을 살펴보고 있어요",
       () => post<ThinkFirstResult>("/api/think", { question: q }),
@@ -92,11 +128,10 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
           setStep("think");
           return;
         }
-        setLoadingText("AI 세 개에게 동시에 묻고 있어요");
+        setLoadingText("답을 찾고 있어요");
         const r = await post<AnswerResult>("/api/answer", { question: q, prediction: "", priorKnowledge: "", mode: "direct" });
         setResult(r);
         setStep("answer");
-        // 바로 답한 질문은 지금 기록한다. 실패해도 아이에게는 알리지 않는다.
         post<{ id: string }>("/api/logs/question", {
           question: q,
           mode: "direct",
@@ -111,7 +146,7 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
 
   const submitThinking = () =>
     run(
-      "AI 세 개에게 동시에 묻고 있어요",
+      "답을 찾고 있어요",
       () => post<AnswerResult>("/api/answer", { question, prediction, priorKnowledge }),
       (r) => {
         setResult(r);
@@ -119,7 +154,6 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
       },
     );
 
-  /** 버튼을 눌렀을 때만 나머지 모델을 부른다. */
   async function compare() {
     if (!result || comparing) return;
     setComparing(true);
@@ -170,288 +204,185 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
     );
   };
 
-  /** "더 궁금해질 만한 것"을 누르면 그 질문으로 새로 시작한다. */
-  function askWonder(q: string) {
-    reset();
-    setDraft(q);
-    submitQuestion(q);
-  }
-
   const primary = result?.answer.ok ? result.answer : undefined;
   const others = comparison?.answers.filter((a) => a.ok) ?? [];
   const failed = comparison?.answers.filter((a) => !a.ok) ?? [];
   const judge = comparison?.judge ?? null;
-  const answerStep = isDirect ? 2 : 3;
   const followUps = result?.followUps ?? [];
   const puzzles = result?.puzzles ?? [];
-
-  // 진행 스티커: 생각 질문은 4단계, 바로 답하는 질문은 2단계
-  const stickerSteps = isDirect
-    ? [
-        { label: "질문", emoji: "❓" },
-        { label: "답", emoji: "💬" },
-      ]
-    : [
-        { label: "질문", emoji: "❓" },
-        { label: "생각", emoji: "🤔" },
-        { label: "답", emoji: "💬" },
-        { label: "정리", emoji: "✏️" },
-      ];
-  const currentSticker = isDirect
-    ? step === "ask" ? 0 : 1
-    : { ask: 0, think: 1, answer: 2, reflect: 3, done: 4 }[step];
+  const canAsk = (step === "ask" && !question) || step === "done" || (think != null && !think.safe) || (isDirect && step === "answer");
 
   return (
-    <div className="space-y-4">
-      {(think?.safe ?? true) && <StepStickers steps={stickerSteps} current={currentSticker} />}
-
-      {/* 1. 질문 */}
-      <Card>
-        <StepTitle step={1}>궁금한 걸 적어 봐요</StepTitle>
-        {step === "ask" && left === 0 ? (
-          <p className="text-[15px] leading-relaxed text-ink">🌙 오늘 질문은 다 썼어요. 내일 다시 열려요. 궁금한 건 공책에 적어 뒀다가 내일 물어봐요!</p>
-        ) : step === "ask" ? (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              submitQuestion(draft);
-            }}
-            className="space-y-3"
-          >
-            <TextArea
-              label="질문"
-              value={draft}
-              onChange={setDraft}
-              placeholder="예) 달은 왜 모양이 바뀌어요?  /  달까지 거리는 얼마예요?"
-              rows={2}
-            />
-            <div className="flex items-center gap-3">
-              <Button type="submit" disabled={loading || draft.trim().length < 2}>
-                다음
-              </Button>
-              {loading ? <Spinner text={loadingText} /> : <span className="text-xs text-ink-soft">오늘 {left}개 더 물어볼 수 있어요</span>}
+    <div className="flex flex-1 flex-col">
+      {/* ---------- 대화 ---------- */}
+      <div className="flex-1 space-y-6 py-4">
+        {step === "ask" && !question && !loading && (
+          <div className="flex flex-col items-start gap-4 py-10">
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight text-ink">{nickname}, 뭐가 궁금해?</h1>
+              <p className="mt-1 text-sm text-ink-soft">바로 답을 보기 전에 한 번 생각해 보고, AI 답은 꼭 확인해 봐요.</p>
             </div>
-          </form>
-        ) : (
-          <p className="font-display text-lg text-ink">“{question}”</p>
+            <div className="flex flex-wrap gap-2">
+              {EXAMPLES.map((q) => (
+                <Chip key={q} onClick={() => submitQuestion(q)}>
+                  {q}
+                </Chip>
+              ))}
+            </div>
+          </div>
         )}
-      </Card>
 
-      {/* 부적절한 질문 */}
-      {think && !think.safe && (
-        <Card>
-          <MascotSays mood="think">{think.redirectMessage}</MascotSays>
-          <div className="mt-3">
-            <Button onClick={reset} variant="secondary">
-              다른 질문 하기
-            </Button>
-          </div>
-        </Card>
-      )}
+        {question && <UserMsg>{question}</UserMsg>}
 
-      {/* 2. 생각 먼저 (생각이 필요한 질문만) */}
-      {think && think.safe && !isDirect && (
-        <Card>
-          <StepTitle step={2}>AI에게 묻기 전에, 먼저 생각해 봐요</StepTitle>
-          {step === "think" ? (
-            <div className="space-y-4">
-              <MascotSays mood="think">{think.guidingQuestion}</MascotSays>
-              <TextArea
-                label="내가 이미 아는 것, 떠오르는 생각"
-                value={priorKnowledge}
-                onChange={setPriorKnowledge}
-                placeholder="짧아도 괜찮아요."
-              />
-              <p className="text-[15px] leading-relaxed text-ink">✏️ {think.predictionPrompt}</p>
-              <TextArea
-                label="내 예상 (꼭 적어야 다음으로 갈 수 있어요)"
-                value={prediction}
-                onChange={setPrediction}
-                placeholder="예) 지구 그림자 때문일 것 같아요"
-                rows={2}
-              />
-              {showHint ? (
-                <p className="rounded-xl bg-sun-soft p-3 text-sm text-ink">💡 힌트: {think.hint}</p>
-              ) : (
-                <button type="button" onClick={() => setShowHint(true)} className="text-sm text-tangerine-deep underline">
-                  막혔어요, 힌트 보여 주세요
-                </button>
-              )}
-              <div className="flex items-center gap-3">
-                <Button onClick={submitThinking} disabled={loading || prediction.trim().length < 2}>
-                  이제 AI에게 물어보기
-                </Button>
-                {loading && <Spinner text={loadingText} />}
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-1 text-sm text-ink-soft">
-              {priorKnowledge && <p>아는 것: {priorKnowledge}</p>}
+        {loading && step === "ask" && (
+          <AiMsg>
+            <Spinner text={loadingText} />
+          </AiMsg>
+        )}
+
+        {/* 부적절한 질문 */}
+        {think && !think.safe && (
+          <AiMsg>
+            <p>{think.redirectMessage}</p>
+          </AiMsg>
+        )}
+
+        {/* 생각 먼저 */}
+        {think?.safe && !isDirect && (
+          <>
+            <AiMsg>
               <p>
-                내 예상: <span className="font-display text-base text-ink">{prediction}</span>
+                <span className="font-medium">먼저 생각해 볼까?</span> {think.guidingQuestion}
               </p>
-            </div>
-          )}
-        </Card>
-      )}
-
-      {/* 3. 답변 */}
-      {result && (
-        <Card>
-          <StepTitle step={answerStep}>{isDirect ? "바로 알려 줄게요" : "AI의 답을 읽어 봐요"}</StepTitle>
-          {isDirect && (
-            <div className="mb-3">
-              <MascotSays mood="happy">이건 생각할 것보다 알면 되는 거라 바로 답해요. 그래도 AI 답은 한 번 확인해 봐요!</MascotSays>
-            </div>
-          )}
-          {primary ? (
-            <div className="space-y-4">
-              <AnswerCard answer={primary} highlight />
-
-              {!comparison ? (
-                <div className="rounded-2xl border-1.5 border-dashed border-line bg-sky-soft/50 p-4 text-center">
-                  <p className="mb-3 text-sm text-ink">
-                    AI는 가끔 틀린 걸 자신 있게 말해요. 다른 AI는 뭐라고 하는지 비교해 볼까요?
-                  </p>
-                  <Button onClick={compare} disabled={comparing}>
-                    다른 AI는 뭐라고 할까? 🔎
-                  </Button>
-                  {comparing && (
-                    <div className="mt-3 flex justify-center">
-                      <Spinner text="다른 AI들에게 묻고 비교하고 있어요" />
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {others.length === 0 && failed.length === 0 && (
-                    <p className="text-xs text-ink-soft">지금은 비교할 다른 AI가 없어요. 그래도 아래에서 확인할 부분을 봐요.</p>
-                  )}
-                  {others.map((a) => (
-                    <AnswerCard key={a.provider} answer={a} />
-                  ))}
-                  {failed.map((a) => (
-                    <AnswerCard key={a.provider} answer={a} />
-                  ))}
-                  {judge && (
-                    <div className="space-y-3 rounded-2xl bg-paper p-4 ring-1 ring-line">
-                      <AgreementBanner agreement={judge.agreement} />
-                      <p className="text-[15px] leading-relaxed text-ink">{judge.kidSummary}</p>
-                      {judge.differences.length > 0 && (
-                        <div>
-                          <p className="mb-1 font-display text-base text-ink">서로 달랐던 점</p>
-                          <ul className="list-disc space-y-0.5 pl-5 text-sm text-ink">
-                            {judge.differences.map((d) => (
-                              <li key={d}>{d}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                      {judge.riskyClaims.length > 0 && (
-                        <div>
-                          <p className="mb-1 font-display text-base text-berry">⚠️ 틀리기 쉬운 부분</p>
-                          <ul className="space-y-1 text-sm text-ink">
-                            {judge.riskyClaims.map((r) => (
-                              <li key={r.claim}>
-                                <span className="font-medium">{r.claim}</span> · {r.why}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                      <div>
-                        <p className="mb-1 font-display text-base text-leaf">✅ 직접 확인하는 방법</p>
-                        <ul className="list-disc space-y-0.5 pl-5 text-sm text-ink">
-                          {judge.checkTips.map((t) => (
-                            <li key={t}>{t}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {!isDirect && step === "answer" && (
-                <div className="pt-1">
-                  <Button onClick={() => setStep("reflect")} variant="secondary">
-                    다 읽었어요, 정리하기
-                  </Button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <p className="text-sm text-ink-soft">AI들이 지금은 답을 주지 못했어요. 잠시 후 다시 해 봐요.</p>
-          )}
-        </Card>
-      )}
-
-      {/* 바로 답한 질문: AI가 되묻기 + 그 사실로 풀어 보는 문제 */}
-      {isDirect && result && primary && (
-        <>
-          {followUps.length > 0 && (
-            <Card className="bg-sun-soft">
-              <div className="mb-3 flex items-center gap-2">
-                <Mascot mood="curious" size={40} />
-                <h2 className="font-display text-xl text-ink">이번엔 내가 물어볼게요</h2>
-              </div>
-              <p className="mb-3 text-xs text-ink-soft">먼저 머릿속으로 찍어 보고, 궁금하면 눌러요. 그 질문으로 이어져요.</p>
-              <ul className="space-y-2">
-                {followUps.map((q) => (
-                  <li key={q}>
-                    <button
-                      type="button"
-                      disabled={loading}
-                      onClick={() => askWonder(q)}
-                      className="btn-chunky-soft w-full rounded-2xl bg-paper p-3 text-left text-[15px] text-ink ring-1 ring-line hover:bg-paper/80 disabled:opacity-40"
-                    >
-                      {q}
+              {step === "think" && (
+                <div className="space-y-3 rounded-2xl border border-line p-4">
+                  <TextArea label="내가 이미 아는 것, 떠오르는 생각" value={priorKnowledge} onChange={setPriorKnowledge} placeholder="짧아도 괜찮아요." rows={2} />
+                  <p className="text-sm text-ink-soft">{think.predictionPrompt}</p>
+                  <TextArea label="내 예상 (적어야 답을 볼 수 있어요)" value={prediction} onChange={setPrediction} placeholder="예) 지구 그림자 때문일 것 같아요" rows={2} />
+                  {showHint ? (
+                    <p className="rounded-xl bg-accent-soft px-3 py-2 text-sm text-ink">힌트: {think.hint}</p>
+                  ) : (
+                    <button type="button" onClick={() => setShowHint(true)} className="text-[13px] text-accent underline">
+                      막혔어요, 힌트 보여 주세요
                     </button>
-                  </li>
-                ))}
-              </ul>
-              {loading && (
-                <div className="mt-3">
-                  <Spinner text={loadingText} />
+                  )}
+                  <div className="flex items-center gap-3">
+                    <Button onClick={submitThinking} disabled={loading || prediction.trim().length < 2}>
+                      AI에게 물어보기
+                    </Button>
+                    {loading && <Spinner text={loadingText} />}
+                  </div>
                 </div>
               )}
-            </Card>
-          )}
+            </AiMsg>
+            {step !== "think" && (
+              <UserMsg>
+                {priorKnowledge && `아는 것: ${priorKnowledge}\n`}
+                {`내 예상: ${prediction}`}
+              </UserMsg>
+            )}
+          </>
+        )}
 
-          {puzzles.length > 0 && (
-            <Card>
-              <h2 className="mb-1 font-display text-xl text-ink">🧩 이걸로 풀어 보는 문제</h2>
-              <p className="mb-3 text-xs text-ink-soft">방금 알게 된 걸로 어림해 봐요. 내 답을 적어야 풀이를 볼 수 있어요.</p>
-              <div className="space-y-4">
-                {puzzles.map((pz, i) => (
-                  <PuzzleCard key={i} puzzle={pz} />
-                ))}
-              </div>
-            </Card>
-          )}
+        {/* 답 */}
+        {result && (
+          <AiMsg>
+            {isDirect && <p className="text-[13px] text-ink-soft">이건 생각할 것보다 알면 되는 거라 바로 답해요. 그래도 AI 답은 한 번 확인해 봐요.</p>}
+            {primary ? (
+              <>
+                <AnswerCard answer={primary} />
 
-          <div className="flex items-center gap-3">
-            <Button onClick={reset} variant="secondary">
-              다른 거 물어보기
-            </Button>
-          </div>
-        </>
-      )}
+                {!comparison ? (
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Button variant="secondary" size="sm" onClick={compare} disabled={comparing}>
+                      다른 AI는 뭐라고 할까?
+                    </Button>
+                    {comparing ? <Spinner text="다른 AI들에게 묻고 비교하고 있어요" /> : <span className="text-[12px] text-ink-soft">AI는 가끔 틀린 걸 자신 있게 말해요</span>}
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-[13px] font-medium text-ink-soft">다른 AI의 답</p>
+                    {others.length === 0 && failed.length === 0 && <p className="text-[13px] text-ink-soft">지금은 비교할 다른 AI가 없어요.</p>}
+                    {others.map((a) => (
+                      <AnswerCard key={a.provider} answer={a} compact />
+                    ))}
+                    {failed.map((a) => (
+                      <AnswerCard key={a.provider} answer={a} compact />
+                    ))}
+                    {judge && (
+                      <div className="space-y-2.5 rounded-2xl border border-line p-4">
+                        <AgreementBanner agreement={judge.agreement} />
+                        <p>{judge.kidSummary}</p>
+                        {judge.differences.length > 0 && (
+                          <p className="text-sm">
+                            <span className="font-medium">서로 달랐던 점:</span> {judge.differences.join(" / ")}
+                          </p>
+                        )}
+                        {judge.riskyClaims.length > 0 && (
+                          <p className="text-sm">
+                            <span className="font-medium text-bad">틀리기 쉬운 부분:</span>{" "}
+                            {judge.riskyClaims.map((r) => `${r.claim} (${r.why})`).join(" / ")}
+                          </p>
+                        )}
+                        <div className="text-sm">
+                          <span className="font-medium text-ok">직접 확인하는 방법</span>
+                          <ul className="mt-1 list-disc space-y-0.5 pl-5">
+                            {judge.checkTips.map((t) => (
+                              <li key={t}>{t}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
 
-      {/* 4. 반성 (생각이 필요한 질문만) */}
-      {!isDirect && (step === "reflect" || step === "done") && (
-        <Card>
-          <StepTitle step={4}>한 줄로 정리해 봐요</StepTitle>
-          {step === "reflect" ? (
-            <div className="space-y-3">
-              <TextArea
-                label="오늘 새로 알게 된 것, 또는 내 예상과 달랐던 것"
-                value={reflection}
-                onChange={setReflection}
-                rows={2}
-              />
+                {isDirect && followUps.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-[13px] font-medium text-ink-soft">이번엔 내가 물어볼게. 먼저 머릿속으로 찍어 보고 눌러요.</p>
+                    <div className="flex flex-wrap gap-2">
+                      {followUps.map((q) => (
+                        <Chip key={q} onClick={() => submitQuestion(q)} disabled={loading}>
+                          {q}
+                        </Chip>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {isDirect && puzzles.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-[13px] font-medium text-ink-soft">이걸로 풀어 보는 문제</p>
+                    {puzzles.map((pz, i) => (
+                      <PuzzleCard key={i} puzzle={pz} />
+                    ))}
+                  </div>
+                )}
+                {loading && isDirect && <Spinner text={loadingText} />}
+
+                {!isDirect && step === "answer" && (
+                  <div>
+                    <Button variant="secondary" size="sm" onClick={() => setStep("reflect")}>
+                      다 읽었어요, 정리하기
+                    </Button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <p className="text-ink-soft">AI들이 지금은 답을 주지 못했어요. 잠시 후 다시 해 봐요.</p>
+            )}
+          </AiMsg>
+        )}
+
+        {/* 정리 */}
+        {!isDirect && step === "reflect" && (
+          <AiMsg>
+            <p>
+              <span className="font-medium">한 줄로 정리해 볼까?</span> 오늘 새로 알게 된 것, 또는 내 예상과 달랐던 것을 적어 봐요.
+            </p>
+            <div className="space-y-3 rounded-2xl border border-line p-4">
+              <TextArea label="정리" value={reflection} onChange={setReflection} rows={2} placeholder="예) 그림자가 아니라 햇빛 받는 부분이 달라서였다" />
               <label className="flex items-center gap-2 text-sm text-ink">
-                <input type="checkbox" checked={doubted} onChange={(e) => setDoubted(e.target.checked)} className="accent-tangerine" />
+                <input type="checkbox" checked={doubted} onChange={(e) => setDoubted(e.target.checked)} className="accent-accent" />
                 AI 답 중에 “정말일까?” 싶어서 확인해 보고 싶은 부분이 있었어요
               </label>
               <div className="flex items-center gap-3">
@@ -461,27 +392,69 @@ export function QuestionFlow({ questionsLeft }: { questionsLeft: number }) {
                 {loading && <Spinner text={loadingText} />}
               </div>
             </div>
-          ) : (
-            feedback && (
-              <div className="space-y-3 text-[15px] leading-relaxed text-ink">
-                <MascotSays mood="happy">🎉 {feedback.encouragement}</MascotSays>
-                <p>{feedback.comparison}</p>
-                <p>
-                  <span className="font-display text-base">확인해 보기:</span> {feedback.verifyTip}
-                </p>
-                <p className="rounded-xl bg-sun-soft p-3">
-                  <span className="font-display text-base">다음에 궁금해할 만한 것:</span> {feedback.nextQuestion}
-                </p>
-                <div className="pt-1">
-                  <Button onClick={reset}>새 질문 하기</Button>
-                </div>
+          </AiMsg>
+        )}
+        {step === "done" && feedback && (
+          <>
+            <UserMsg>{reflection}</UserMsg>
+            <AiMsg>
+              <p>{feedback.encouragement}</p>
+              <p>{feedback.comparison}</p>
+              <p>
+                <span className="font-medium">확인해 보기:</span> {feedback.verifyTip}
+              </p>
+              <div className="space-y-2">
+                <p className="text-[13px] font-medium text-ink-soft">다음에 궁금해할 만한 것</p>
+                <Chip onClick={() => submitQuestion(feedback.nextQuestion)} disabled={loading}>
+                  {feedback.nextQuestion}
+                </Chip>
               </div>
-            )
-          )}
-        </Card>
-      )}
+            </AiMsg>
+          </>
+        )}
 
-      {error && <p className="rounded-xl bg-berry-soft p-3 text-sm text-berry ring-1 ring-berry/30">{error}</p>}
+        {error && <p className="rounded-xl bg-bad-soft px-3 py-2 text-sm text-bad">{error}</p>}
+      </div>
+
+      {/* ---------- 입력창 ---------- */}
+      <div className="sticky bottom-0 bg-gradient-to-t from-bg via-bg to-transparent pb-3 pt-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            submitQuestion(draft);
+          }}
+          className="flex items-end gap-2 rounded-2xl border border-line bg-bg p-2 shadow-sm focus-within:border-accent focus-within:ring-2 focus-within:ring-accent-soft"
+        >
+          <textarea
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+                e.preventDefault();
+                submitQuestion(draft);
+              }
+            }}
+            disabled={!canAsk || loading || left === 0}
+            rows={1}
+            placeholder={left === 0 ? "오늘 질문은 다 썼어요" : canAsk ? "궁금한 걸 적어 봐요" : "위의 단계를 먼저 끝내요"}
+            aria-label="질문"
+            className="max-h-40 min-h-[40px] flex-1 resize-none bg-transparent px-2 py-2 text-[15px] leading-relaxed text-ink outline-none placeholder:text-ink-soft/60 disabled:opacity-60"
+          />
+          <button
+            type="submit"
+            disabled={!canAsk || loading || draft.trim().length < 2 || left === 0}
+            aria-label="보내기"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent text-white transition hover:bg-accent-deep disabled:opacity-30"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8 13V3M8 3L3.5 7.5M8 3l4.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+        </form>
+        <p className="mt-1.5 px-2 text-[11px] text-ink-soft">
+          {left > 0 ? `오늘 ${left}개 더 물어볼 수 있어요` : "내일 다시 열려요"} · Enter로 보내기, Shift+Enter로 줄바꿈
+        </p>
+      </div>
     </div>
   );
 }
@@ -492,38 +465,38 @@ function PuzzleCard({ puzzle }: { puzzle: Puzzle }) {
   const [hint, setHint] = useState(false);
   const [revealed, setRevealed] = useState(false);
   return (
-    <div className="rounded-2xl bg-paper p-4 ring-1 ring-line">
-      <p className="text-[15px] leading-relaxed text-ink">{puzzle.question}</p>
-      <div className="mt-3 flex gap-2">
+    <div className="rounded-xl border border-line p-3">
+      <p className="text-sm leading-relaxed text-ink">{puzzle.question}</p>
+      <div className="mt-2 flex gap-2">
         <input
           value={attempt}
           onChange={(e) => setAttempt(e.target.value)}
           disabled={revealed}
           placeholder="내 답 (어림해도 괜찮아요)"
           aria-label="내 답"
-          className="min-w-0 flex-1 rounded-xl border-1.5 border-line bg-paper px-3 py-2 text-base text-ink outline-none focus:border-tangerine focus:ring-2 focus:ring-sun disabled:bg-cream"
+          className="min-w-0 flex-1 rounded-lg border border-line bg-bg px-3 py-1.5 text-sm text-ink outline-none focus:border-accent focus:ring-2 focus:ring-accent-soft disabled:bg-surface"
         />
         {!revealed && (
-          <Button onClick={() => setRevealed(true)} disabled={attempt.trim().length < 1}>
+          <Button size="sm" onClick={() => setRevealed(true)} disabled={attempt.trim().length < 1}>
             풀이 보기
           </Button>
         )}
       </div>
       {!revealed &&
         (hint ? (
-          <p className="mt-2 text-sm text-ink-soft">💡 {puzzle.hint}</p>
+          <p className="mt-2 text-[13px] text-ink-soft">힌트: {puzzle.hint}</p>
         ) : (
-          <button type="button" onClick={() => setHint(true)} className="mt-2 text-sm text-tangerine-deep underline">
+          <button type="button" onClick={() => setHint(true)} className="mt-2 text-[13px] text-accent underline">
             힌트 보기
           </button>
         ))}
       {revealed && (
-        <div className="mt-3 space-y-1 text-sm">
+        <div className="mt-2 space-y-1 text-sm">
           <p className="text-ink-soft">
-            내 답: <span className="font-display text-base text-ink">{attempt}</span>
+            내 답: <span className="font-medium text-ink">{attempt}</span>
           </p>
-          <p className="rounded-xl bg-leaf-soft p-3 leading-relaxed text-ink ring-1 ring-leaf/30">✅ {puzzle.solution}</p>
-          <p className="text-xs text-ink-soft">딱 맞지 않아도 괜찮아요. 어림하는 방법을 떠올린 게 진짜예요.</p>
+          <p className="rounded-lg bg-ok-soft px-3 py-2 leading-relaxed text-ink">{puzzle.solution}</p>
+          <p className="text-[12px] text-ink-soft">딱 맞지 않아도 괜찮아요. 어림하는 방법을 떠올린 게 진짜예요.</p>
         </div>
       )}
     </div>
