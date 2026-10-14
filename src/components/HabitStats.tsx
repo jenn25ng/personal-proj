@@ -2,10 +2,10 @@ import type { GameResult, QuestionLog } from "@/db/schema";
 
 function Stat({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
-    <div className="rounded-xl bg-white p-4 ring-1 ring-stone-200">
-      <p className="text-xs text-stone-500">{label}</p>
-      <p className="mt-1 text-2xl font-extrabold text-stone-900">{value}</p>
-      {hint && <p className="mt-1 text-xs text-stone-400">{hint}</p>}
+    <div className="rounded-2xl border border-line bg-bg p-4">
+      <p className="text-[12px] text-ink-soft">{label}</p>
+      <p className="mt-1 text-2xl font-semibold tracking-tight text-ink">{value}</p>
+      {hint && <p className="mt-1 text-[11px] leading-snug text-ink-soft">{hint}</p>}
     </div>
   );
 }
@@ -49,24 +49,52 @@ export function HabitStats({ logs, games }: { logs: QuestionLog[]; games: GameRe
   );
 }
 
-export const AGREEMENT_LABEL: Record<string, string> = { agree: "🟢 일치", partly: "🟡 부분 일치", disagree: "🔴 불일치" };
+const AGREEMENT: Record<string, { label: string; dot: string }> = {
+  agree: { label: "AI끼리 일치", dot: "bg-ok" },
+  partly: { label: "부분 일치", dot: "bg-warn" },
+  disagree: { label: "불일치", dot: "bg-bad" },
+};
+
+function Meta({ children }: { children: React.ReactNode }) {
+  return <span className="inline-flex items-center gap-1.5 text-[12px] text-ink-soft">{children}</span>;
+}
 
 export function QuestionItem({ log }: { log: QuestionLog }) {
+  const ag = log.agreement ? AGREEMENT[log.agreement] : null;
   return (
-    <li className="py-3 text-sm">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="font-semibold text-stone-800">{log.question}</p>
-        <span className="text-xs text-stone-400">{log.createdAt.toLocaleString("ko-KR")}</span>
+    <li className="py-3.5">
+      <div className="flex items-start justify-between gap-3">
+        <p className="text-[15px] leading-relaxed text-ink">{log.question}</p>
+        <span className="shrink-0 pt-0.5 text-[12px] tabular-nums text-ink-soft">
+          {log.createdAt.toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" })}
+        </span>
       </div>
-      <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-stone-500">
-        {log.topicLabel && <span>주제: {log.topicLabel}</span>}
-        {log.agreement && <span>{AGREEMENT_LABEL[log.agreement]}</span>}
-        {log.comparedModels && <span>비교함</span>}
-        {log.doubtedAi && <span>의심함</span>}
-        {log.usedHint && <span>힌트 사용</span>}
+      <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+        {log.topicLabel && !log.question.startsWith(log.topicLabel) && <Meta>{log.topicLabel}</Meta>}
+        {ag && (
+          <Meta>
+            <span className={`h-1.5 w-1.5 rounded-full ${ag.dot}`} aria-hidden="true" />
+            {ag.label}
+          </Meta>
+        )}
+        {log.comparedModels && <Meta>비교함</Meta>}
+        {log.doubtedAi && <Meta>의심함</Meta>}
+        {log.usedHint && <Meta>힌트 사용</Meta>}
       </div>
-      {log.prediction && <p className="mt-1 text-stone-700">예상: {log.prediction}</p>}
-      {log.reflection && <p className="text-stone-700">정리: {log.reflection}</p>}
+      {(log.prediction || log.reflection) && (
+        <div className="mt-2 space-y-1 border-l-2 border-line pl-3 text-[13px] leading-relaxed text-ink-soft">
+          {log.prediction && (
+            <p>
+              <span className="text-ink">내 예상</span> {log.prediction}
+            </p>
+          )}
+          {log.reflection && (
+            <p>
+              <span className="text-ink">정리</span> {log.reflection}
+            </p>
+          )}
+        </div>
+      )}
     </li>
   );
 }
@@ -74,14 +102,18 @@ export function QuestionItem({ log }: { log: QuestionLog }) {
 export function GameList({ games }: { games: GameResult[] }) {
   if (games.length === 0) return null;
   return (
-    <ul className="divide-y divide-stone-100">
+    <ul className="divide-y divide-line">
       {games.slice(0, 10).map((g) => (
-        <li key={g.id} className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm">
-          <span className="font-semibold text-stone-800">{g.topic}</span>
-          <span className="text-stone-600">
-            {g.wrongCount}개 중 {g.found}개 찾음{g.falseAlarms > 0 && ` · 맞는 문장 ${g.falseAlarms}개 의심`}
+        <li key={g.id} className="flex items-start justify-between gap-3 py-3">
+          <div className="min-w-0">
+            <p className="text-[15px] text-ink">{g.topic}</p>
+            <p className="mt-0.5 text-[12px] text-ink-soft">
+              {g.wrongCount}개 중 {g.found}개 찾음{g.falseAlarms > 0 && ` · 맞는 문장 ${g.falseAlarms}개 의심`}
+            </p>
+          </div>
+          <span className="shrink-0 pt-0.5 text-[12px] tabular-nums text-ink-soft">
+            {g.createdAt.toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" })}
           </span>
-          <span className="text-xs text-stone-400">{g.createdAt.toLocaleDateString("ko-KR")}</span>
         </li>
       ))}
     </ul>
