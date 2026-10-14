@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AnswerCard } from "./AnswerCard";
+import { AiMsg, Chip, Composer, UserMsg } from "./chat";
 import { AgreementBanner, Button, Spinner, TextArea } from "./ui";
 import type { AnswerResult, CompareResult, Puzzle, ReflectResult, ThinkFirstResult } from "@/lib/types";
 
@@ -19,40 +20,6 @@ async function post<T>(url: string, body: unknown, method = "POST"): Promise<T> 
 }
 
 const EXAMPLES = ["달은 왜 모양이 바뀌어요?", "달까지 거리는 얼마예요?", "비는 왜 내려요?"];
-
-/** AI 쪽 메시지: 작은 아바타 + 본문 (말풍선 없이) */
-function AiMsg({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex gap-3">
-      <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent-soft text-[11px] font-bold text-accent">
-        AI
-      </span>
-      <div className="min-w-0 flex-1 space-y-3 text-[15px] leading-relaxed text-ink">{children}</div>
-    </div>
-  );
-}
-
-/** 아이 쪽 메시지: 오른쪽 말풍선 */
-function UserMsg({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex justify-end">
-      <div className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-surface px-4 py-2.5 text-[15px] leading-relaxed text-ink">{children}</div>
-    </div>
-  );
-}
-
-function Chip({ children, onClick, disabled }: { children: React.ReactNode; onClick: () => void; disabled?: boolean }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className="rounded-full border border-line bg-bg px-3.5 py-1.5 text-left text-[13px] text-ink hover:bg-surface disabled:opacity-40"
-    >
-      {children}
-    </button>
-  );
-}
 
 export function QuestionFlow({ questionsLeft, nickname }: { questionsLeft: number; nickname: string }) {
   const [left, setLeft] = useState(questionsLeft);
@@ -417,44 +384,14 @@ export function QuestionFlow({ questionsLeft, nickname }: { questionsLeft: numbe
       </div>
 
       {/* ---------- 입력창 ---------- */}
-      <div className="sticky bottom-0 bg-gradient-to-t from-bg via-bg to-transparent pb-3 pt-4">
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            submitQuestion(draft);
-          }}
-          className="flex items-end gap-2 rounded-2xl border border-line bg-bg p-2 shadow-sm focus-within:border-accent focus-within:ring-2 focus-within:ring-accent-soft"
-        >
-          <textarea
-            value={draft}
-            onChange={(e) => setDraft(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
-                e.preventDefault();
-                submitQuestion(draft);
-              }
-            }}
-            disabled={!canAsk || loading || left === 0}
-            rows={1}
-            placeholder={left === 0 ? "오늘 질문은 다 썼어요" : canAsk ? "궁금한 걸 적어 봐요" : "위의 단계를 먼저 끝내요"}
-            aria-label="질문"
-            className="max-h-40 min-h-[40px] flex-1 resize-none bg-transparent px-2 py-2 text-[15px] leading-relaxed text-ink outline-none placeholder:text-ink-soft/60 disabled:opacity-60"
-          />
-          <button
-            type="submit"
-            disabled={!canAsk || loading || draft.trim().length < 2 || left === 0}
-            aria-label="보내기"
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent text-white transition hover:bg-accent-deep disabled:opacity-30"
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M8 13V3M8 3L3.5 7.5M8 3l4.5 4.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </form>
-        <p className="mt-1.5 px-2 text-[11px] text-ink-soft">
-          {left > 0 ? `오늘 ${left}개 더 물어볼 수 있어요` : "내일 다시 열려요"} · Enter로 보내기, Shift+Enter로 줄바꿈
-        </p>
-      </div>
+      <Composer
+        value={draft}
+        onChange={setDraft}
+        onSubmit={() => submitQuestion(draft)}
+        disabled={!canAsk || loading || left === 0}
+        placeholder={left === 0 ? "오늘 질문은 다 썼어요" : canAsk ? "궁금한 걸 적어 봐요" : "위의 단계를 먼저 끝내요"}
+        hint={`${left > 0 ? `오늘 ${left}개 더 물어볼 수 있어요` : "내일 다시 열려요"} · Enter로 보내기, Shift+Enter로 줄바꿈`}
+      />
     </div>
   );
 }
