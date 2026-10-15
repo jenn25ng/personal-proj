@@ -2,41 +2,36 @@
 
 import { useActionState } from "react";
 import { addChild, type FormState } from "@/lib/actions";
-import { Button } from "./ui";
-
-const inputCls =
-  "w-full rounded-xl border border-stone-300 px-3 py-2.5 text-base outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-200";
+import { Button, Field, FormNotice, buttonClass, inputClass } from "./ui";
 
 export function AddChildForm() {
   const [state, action, pending] = useActionState<FormState, FormData>(addChild, undefined);
   return (
     <form action={action} className="space-y-3">
       <div className="grid grid-cols-[1fr_auto] gap-2">
-        <label className="block">
-          <span className="mb-1 block text-sm font-medium text-stone-600">아이 별명</span>
-          <input name="nickname" required maxLength={20} placeholder="예) 민수" defaultValue={state?.values?.nickname} className={inputCls} />
-        </label>
-        <label className="block">
-          <span className="mb-1 block text-sm font-medium text-stone-600">학년</span>
-          <select name="grade" defaultValue={state?.values?.grade ?? "5"} className={inputCls}>
+        <Field label="아이 별명">
+          <input name="nickname" required maxLength={20} placeholder="예) 민수" defaultValue={state?.values?.nickname} className={inputClass} />
+        </Field>
+        <Field label="학년">
+          <select name="grade" defaultValue={state?.values?.grade ?? "5"} className={inputClass}>
             <option value="4">4학년</option>
             <option value="5">5학년</option>
             <option value="6">6학년</option>
           </select>
-        </label>
+        </Field>
       </div>
-      <p className="rounded-xl bg-amber-50 p-3 text-xs leading-relaxed text-amber-900 ring-1 ring-amber-200">
-        부모님은 아이가 몇 번 질문했는지, 먼저 생각했는지 같은 <span className="font-semibold">숫자만</span> 볼 수 있어요.
-        질문 내용은 보이지 않아요. 아이도 같은 숫자를 봐요.
+      <p className="text-[12px] leading-relaxed text-ink-soft">
+        부모님은 아이가 몇 번 질문했는지, 먼저 생각했는지 같은 <span className="text-ink">숫자만</span> 볼 수 있어요. 질문 내용은
+        보이지 않아요. 아이도 같은 숫자를 봐요.
       </p>
-      <label className="flex items-start gap-2 rounded-xl bg-stone-100 p-3 text-xs leading-relaxed text-stone-700">
-        <input type="checkbox" name="consent" required className="mt-0.5" />
+      <label className="flex items-start gap-2.5 rounded-xl bg-surface p-3 text-[12px] leading-relaxed text-ink-soft">
+        <input type="checkbox" name="consent" required className="mt-0.5 accent-accent" />
         <span>
           저는 이 아이의 법정대리인이며, 만 14세 미만 아동의 개인정보(별명, 학년, 이 서비스에서의 질문·예상·정리 기록)를
           위에 적힌 목적으로 수집·이용하는 것에 동의합니다. 동의는 계정 또는 프로필을 지우면 철회돼요.
         </span>
       </label>
-      {state?.error && <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-800 ring-1 ring-rose-200">{state.error}</p>}
+      <FormNotice state={state} />
       <Button type="submit" disabled={pending}>
         {pending ? "만드는 중..." : "아이 프로필 만들기"}
       </Button>
@@ -48,18 +43,16 @@ export function AddChildForm() {
 export function ConfirmSubmit({
   message,
   children,
-  variant = "secondary",
+  variant = "danger",
 }: {
   message: string;
   children: React.ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "danger";
 }) {
-  const base = "rounded-xl px-3 py-2 text-xs font-semibold transition";
-  const cls = variant === "primary" ? "bg-amber-500 text-white hover:bg-amber-600" : "bg-stone-100 text-stone-600 hover:bg-rose-100 hover:text-rose-800";
   return (
     <button
       type="submit"
-      className={`${base} ${cls}`}
+      className={buttonClass(variant, "sm")}
       onClick={(e) => {
         if (!window.confirm(message)) e.preventDefault();
       }}
