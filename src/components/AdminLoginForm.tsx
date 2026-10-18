@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { adminLogin } from "@/lib/admin-actions";
 import type { FormState } from "@/lib/actions";
-import { Button, Field, FormNotice, inputClass } from "./ui";
+import { Field, FormNotice, inputClass } from "./ui";
 
 export function AdminLoginForm() {
   const [state, action, pending] = useActionState<FormState, FormData>(adminLogin, undefined);
@@ -19,9 +19,9 @@ export function AdminLoginForm() {
         />
       </Field>
       <FormNotice state={state} />
-      <Button type="submit" disabled={pending}>
+      <button type="submit" disabled={pending} className="w-full rounded-xl bg-accent py-2.5 text-sm font-medium text-white transition hover:bg-accent-deep disabled:opacity-40">
         {pending ? "확인 중..." : "들어가기"}
-      </Button>
+      </button>
     </form>
   );
 }

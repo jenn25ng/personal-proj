@@ -1,16 +1,10 @@
 import { AdminLoginForm } from "@/components/AdminLoginForm";
-import { Card } from "@/components/ui";
+import { AuthShell } from "@/components/AuthShell";
 
 export default function AdminLoginPage() {
   return (
-    <div className="space-y-5">
-      <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-ink">관리자</h1>
-        <p className="mt-1 text-sm text-ink-soft">서버의 ADMIN_TOKEN 값을 입력해요. 12시간 동안 유지돼요.</p>
-      </div>
-      <Card>
-        <AdminLoginForm />
-      </Card>
-    </div>
+    <AuthShell title="관리자" description="서버의 ADMIN_TOKEN 값을 입력해요. 12시간 동안 유지돼요.">
+      <AdminLoginForm />
+    </AuthShell>
   );
 }
