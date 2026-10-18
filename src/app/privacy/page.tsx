@@ -8,5 +8,5 @@ export const metadata = { title: "개인정보 처리방침 · 생각 먼저 AI"
 const SOURCE = readFileSync(path.join(process.cwd(), "docs", "개인정보처리방침.md"), "utf8");
 
 export default function PrivacyPage() {
-  return <article className="space-y-3 pb-8">{renderMarkdown(SOURCE)}</article>;
+  return <article className="space-y-3 py-8">{renderMarkdown(SOURCE)}</article>;
 }
