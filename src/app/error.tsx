@@ -13,17 +13,12 @@ export default function ErrorPage({ error, retry }: { error: Error & { digest?: 
   }, [error]);
 
   return (
-    <div className="space-y-4 rounded-2xl bg-white p-6 text-center ring-1 ring-stone-200">
-      <p className="text-3xl">🙈</p>
-      <p className="text-[15px] leading-relaxed text-stone-800">앗, 뭔가 잘못됐어요. 다시 해 보면 대부분 괜찮아져요.</p>
-      <button
-        type="button"
-        onClick={retry}
-        className="rounded-xl bg-amber-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-600"
-      >
+    <div className="flex flex-1 flex-col items-center justify-center gap-4 py-16 text-center">
+      <p className="text-[15px] leading-relaxed text-ink">앗, 뭔가 잘못됐어요. 다시 해 보면 대부분 괜찮아져요.</p>
+      <button type="button" onClick={retry} className="rounded-xl bg-accent px-4 py-2.5 text-sm font-medium text-white transition hover:bg-accent-deep">
         다시 해 보기
       </button>
-      {error.digest && <p className="text-xs text-stone-400">오류 번호 {error.digest}</p>}
+      {error.digest && <p className="text-[11px] text-ink-soft">오류 번호 {error.digest}</p>}
     </div>
   );
 }

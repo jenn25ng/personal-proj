@@ -19,11 +19,11 @@ export function ForgotPasswordForm() {
         <input name="email" type="email" required autoComplete="email" defaultValue={state?.values?.email} className={inputClass} />
       </Field>
       <FormNotice state={state} />
-      <Button type="submit" disabled={pending}>
+      <button type="submit" disabled={pending} className="w-full rounded-xl bg-accent py-2.5 text-sm font-medium text-white transition hover:bg-accent-deep disabled:opacity-40">
         {pending ? "보내는 중..." : "재설정 링크 보내기"}
-      </Button>
-      <p className="text-sm">
-        <Link href="/login" className="text-accent underline">
+      </button>
+      <p className="text-center text-[13px] text-ink-soft">
+        <Link href="/login" className="hover:text-ink hover:underline">
           로그인으로 돌아가기
         </Link>
       </p>
@@ -43,9 +43,9 @@ export function ResetPasswordForm({ token }: { token: string }) {
         <input name="confirm" type="password" required minLength={8} autoComplete="new-password" className={inputClass} />
       </Field>
       <FormNotice state={state} />
-      <Button type="submit" disabled={pending}>
+      <button type="submit" disabled={pending} className="w-full rounded-xl bg-accent py-2.5 text-sm font-medium text-white transition hover:bg-accent-deep disabled:opacity-40">
         {pending ? "바꾸는 중..." : "비밀번호 바꾸기"}
-      </Button>
+      </button>
     </form>
   );
 }
@@ -56,9 +56,9 @@ export function VerifyEmailForm({ token }: { token: string }) {
     <form action={action} className="space-y-4">
       <input type="hidden" name="token" value={token} />
       <FormNotice state={state} />
-      <Button type="submit" disabled={pending}>
+      <button type="submit" disabled={pending} className="w-full rounded-xl bg-accent py-2.5 text-sm font-medium text-white transition hover:bg-accent-deep disabled:opacity-40">
         {pending ? "확인 중..." : "인증 완료"}
-      </Button>
+      </button>
     </form>
   );
 }

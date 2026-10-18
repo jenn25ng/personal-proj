@@ -5,12 +5,11 @@ export default function GlobalError({ error, retry }: { error: Error & { digest?
   return (
     <html lang="ko">
       <body style={{ fontFamily: "sans-serif", padding: 24, textAlign: "center" }}>
-        <p style={{ fontSize: 32 }}>🙈</p>
         <p>앗, 뭔가 잘못됐어요. 다시 해 보면 대부분 괜찮아져요.</p>
-        <button type="button" onClick={retry} style={{ padding: "10px 16px", borderRadius: 12, border: "none", background: "#f59e0b", color: "white", fontWeight: 600 }}>
+        <button type="button" onClick={retry} style={{ padding: "10px 16px", borderRadius: 12, border: "none", background: "#4f6df5", color: "white", fontWeight: 600 }}>
           다시 해 보기
         </button>
-        {error.digest && <p style={{ color: "#999", fontSize: 12 }}>오류 번호 {error.digest}</p>}
+        {error.digest && <p style={{ color: "#6b6b73", fontSize: 12 }}>오류 번호 {error.digest}</p>}
       </body>
     </html>
   );

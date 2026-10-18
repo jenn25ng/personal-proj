@@ -3,45 +3,30 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { login, signup, type FormState } from "@/lib/actions";
-import { Button } from "./ui";
-
-const inputCls =
-  "w-full rounded-xl border border-stone-300 px-3 py-2.5 text-base outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-200";
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="block">
-      <span className="mb-1 block text-sm font-medium text-stone-600">{label}</span>
-      {children}
-    </label>
-  );
-}
+import { Field, FormNotice, inputClass } from "./ui";
 
 export function LoginForm() {
   const [state, action, pending] = useActionState<FormState, FormData>(login, undefined);
   return (
     <form action={action} className="space-y-4">
       <Field label="이메일">
-        <input name="email" type="email" required autoComplete="email" defaultValue={state?.values?.email} className={inputCls} />
+        <input name="email" type="email" required autoComplete="email" defaultValue={state?.values?.email} className={inputClass} />
       </Field>
       <Field label="비밀번호">
-        <input name="password" type="password" required autoComplete="current-password" className={inputCls} />
+        <input name="password" type="password" required autoComplete="current-password" className={inputClass} />
       </Field>
-      {state?.error && <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-800 ring-1 ring-rose-200">{state.error}</p>}
-      <Button type="submit" disabled={pending}>
+      <FormNotice state={state} />
+      <button type="submit" disabled={pending} className="w-full rounded-xl bg-accent py-2.5 text-sm font-medium text-white transition hover:bg-accent-deep disabled:opacity-40">
         {pending ? "확인 중..." : "로그인"}
-      </Button>
-      <p className="text-sm text-stone-600">
-        <Link href="/forgot-password" className="text-stone-500 underline">
+      </button>
+      <div className="flex items-center justify-between text-[13px] text-ink-soft">
+        <Link href="/forgot-password" className="hover:text-ink hover:underline">
           비밀번호를 잊었어요
         </Link>
-      </p>
-      <p className="text-sm text-stone-600">
-        아직 계정이 없나요?{" "}
-        <Link href="/signup" className="font-semibold text-amber-700 underline">
+        <Link href="/signup" className="text-accent hover:underline">
           부모 계정 만들기
         </Link>
-      </p>
+      </div>
     </form>
   );
 }
@@ -51,30 +36,30 @@ export function SignupForm() {
   return (
     <form action={action} className="space-y-4">
       <Field label="이름 또는 별명">
-        <input name="name" required maxLength={40} defaultValue={state?.values?.name} className={inputCls} />
+        <input name="name" required maxLength={40} defaultValue={state?.values?.name} className={inputClass} />
       </Field>
       <Field label="이메일">
-        <input name="email" type="email" required autoComplete="email" defaultValue={state?.values?.email} className={inputCls} />
+        <input name="email" type="email" required autoComplete="email" defaultValue={state?.values?.email} className={inputClass} />
       </Field>
       <Field label="비밀번호 (8자 이상)">
-        <input name="password" type="password" required minLength={8} autoComplete="new-password" className={inputCls} />
+        <input name="password" type="password" required minLength={8} autoComplete="new-password" className={inputClass} />
       </Field>
-      <p className="rounded-xl bg-stone-100 p-3 text-xs leading-relaxed text-stone-600">
-        수집하는 정보는 부모의 이메일·이름, 아이의 별명·학년, 그리고 아이가 이 서비스에서 한 질문·예상·정리 기록이에요.
-        아이 기록은 아이 본인 화면에서만 볼 수 있고, 계정을 지우면 모든 기록이 함께 지워져요. 질문 내용은 답변을 만들기
-        위해 미국에 있는 AI 제공사(Anthropic, Google, OpenAI)에 전송돼요. 자세한 내용은{" "}
-        <Link href="/privacy" className="underline">
+      <p className="text-[12px] leading-relaxed text-ink-soft">
+        수집하는 정보는 부모의 이메일·이름, 아이의 별명·학년, 그리고 아이가 이 서비스에서 한 질문·예상·정리 기록이에요. 아이
+        기록은 아이 본인 화면에서만 볼 수 있고, 계정을 지우면 모든 기록이 함께 지워져요. 질문 내용은 답변을 만들기 위해 미국에
+        있는 AI 제공사(Anthropic, Google, OpenAI)에 전송돼요. 자세한 내용은{" "}
+        <Link href="/privacy" className="text-ink underline">
           개인정보 처리방침
         </Link>
         에 있어요.
       </p>
-      {state?.error && <p className="rounded-xl bg-rose-50 p-3 text-sm text-rose-800 ring-1 ring-rose-200">{state.error}</p>}
-      <Button type="submit" disabled={pending}>
+      <FormNotice state={state} />
+      <button type="submit" disabled={pending} className="w-full rounded-xl bg-accent py-2.5 text-sm font-medium text-white transition hover:bg-accent-deep disabled:opacity-40">
         {pending ? "만드는 중..." : "계정 만들기"}
-      </Button>
-      <p className="text-sm text-stone-600">
+      </button>
+      <p className="text-center text-[13px] text-ink-soft">
         이미 계정이 있나요?{" "}
-        <Link href="/login" className="font-semibold text-amber-700 underline">
+        <Link href="/login" className="text-accent hover:underline">
           로그인
         </Link>
       </p>
