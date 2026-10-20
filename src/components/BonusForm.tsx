@@ -13,10 +13,10 @@ export function BonusForm({ childId }: { childId: string }) {
       <input type="hidden" name="childId" value={childId} />
       <div className="flex flex-wrap gap-2">
         <button type="submit" name="questions" value="1" disabled={pending} className={btn}>
-          질문 +1
+          주제 +1
         </button>
         <button type="submit" name="questions" value="3" disabled={pending} className={btn}>
-          질문 +3
+          주제 +3
         </button>
         <button type="submit" name="games" value="1" disabled={pending} className={btn}>
           게임 +1

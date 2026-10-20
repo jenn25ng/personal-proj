@@ -4,9 +4,8 @@ import { useState } from "react";
 import { AnswerCard } from "./AnswerCard";
 import { AiMsg, Chip, Composer, UserMsg } from "./chat";
 import { AgreementBanner, Button, Spinner, TextArea } from "./ui";
-import type { AnswerResult, CompareResult, Puzzle, ReflectResult, ThinkFirstResult } from "@/lib/types";
-
-type Step = "ask" | "think" | "answer" | "reflect" | "done";
+import type { MessageResponse } from "@/app/api/message/route";
+import type { AnswerResult, CompareResult, Puzzle, ReflectResult } from "@/lib/types";
 
 async function post<T>(url: string, body: unknown, method = "POST"): Promise<T> {
   const res = await fetch(url, {
@@ -15,256 +14,358 @@ async function post<T>(url: string, body: unknown, method = "POST"): Promise<T> 
     body: JSON.stringify(body),
   });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error ?? "문제가 생겼어요.");
+  if (!res.ok) {
+    const err = new Error(data.error ?? "문제가 생겼어요.") as Error & { code?: string };
+    err.code = data.code;
+    throw err;
+  }
   return data as T;
 }
 
 const EXAMPLES = ["달은 왜 모양이 바뀌어요?", "달까지 거리는 얼마예요?", "비는 왜 내려요?"];
 
-export function QuestionFlow({ questionsLeft, nickname }: { questionsLeft: number; nickname: string }) {
-  const [left, setLeft] = useState(questionsLeft);
-  const [step, setStep] = useState<Step>("ask");
-  const [loading, setLoading] = useState(false);
-  const [loadingText, setLoadingText] = useState("");
-  const [error, setError] = useState<string | null>(null);
+type Step = "loading" | "think" | "answer" | "reflect" | "done";
 
-  const [question, setQuestion] = useState("");
+/** 대화의 한 턴. 아이의 메시지 하나와 그에 대한 모든 것. */
+type Turn = {
+  id: number;
+  question: string;
+  res?: MessageResponse;
+  priorKnowledge: string;
+  prediction: string;
+  showHint: boolean;
+  skipped: boolean;
+  /** 생각 먼저 질문의 답 (/api/answer) */
+  answer?: AnswerResult & { logId: string | null };
+  comparison?: CompareResult | null;
+  comparing?: boolean;
+  reflection: string;
+  doubted: boolean;
+  feedback?: ReflectResult;
+  step: Step;
+  error?: string;
+};
+
+export type ActiveThread = { id: string; topic: string; turnCount: number } | null;
+
+export function QuestionFlow({
+  questionsLeft,
+  comparesLeft,
+  nickname,
+  activeThread,
+  turnLimit,
+}: {
+  questionsLeft: number;
+  comparesLeft: number;
+  nickname: string;
+  activeThread: ActiveThread;
+  turnLimit: number;
+}) {
+  const [turns, setTurns] = useState<Turn[]>([]);
   const [draft, setDraft] = useState("");
-  const [think, setThink] = useState<ThinkFirstResult | null>(null);
-  const [priorKnowledge, setPriorKnowledge] = useState("");
-  const [prediction, setPrediction] = useState("");
-  const [showHint, setShowHint] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [left, setLeft] = useState(questionsLeft);
+  const [compares, setCompares] = useState(comparesLeft);
+  const [thread, setThread] = useState<ActiveThread>(activeThread);
+  const [newThreadPending, setNewThreadPending] = useState(false);
+  const [seq, setSeq] = useState(0);
 
-  const [result, setResult] = useState<AnswerResult | null>(null);
-  const [comparison, setComparison] = useState<CompareResult | null>(null);
-  const [comparing, setComparing] = useState(false);
-  const [logId, setLogId] = useState<string | null>(null);
-
-  const [reflection, setReflection] = useState("");
-  const [doubted, setDoubted] = useState(false);
-  const [feedback, setFeedback] = useState<ReflectResult | null>(null);
-
-  const isDirect = think?.mode === "direct";
-
-  function reset() {
-    setStep("ask");
-    setError(null);
-    setQuestion("");
-    setDraft("");
-    setThink(null);
-    setPriorKnowledge("");
-    setPrediction("");
-    setShowHint(false);
-    setResult(null);
-    setComparison(null);
-    setComparing(false);
-    setLogId(null);
-    setReflection("");
-    setDoubted(false);
-    setFeedback(null);
+  function patch(id: number, p: Partial<Turn> | ((t: Turn) => Partial<Turn>)) {
+    setTurns((ts) => ts.map((t) => (t.id === id ? { ...t, ...(typeof p === "function" ? p(t) : p) } : t)));
   }
 
-  async function run<T>(text: string, fn: () => Promise<T>, then: (v: T) => void | Promise<void>) {
+  const last = turns[turns.length - 1];
+  const pendingThink = last?.step === "think";
+  const canAsk = !loading && !pendingThink && (left > 0 || (thread != null && !newThreadPending));
+
+  /** 메시지 하나 보내기. 호출 1회로 종류와 답이 온다. */
+  async function send(text: string) {
+    const q = text.trim();
+    if (q.length < 1 || !canAsk) return;
+    const id = seq + 1;
+    setSeq(id);
+    setDraft("");
     setLoading(true);
-    setLoadingText(text);
-    setError(null);
+    const startNew = newThreadPending || thread == null;
+    setNewThreadPending(false);
+    setTurns((ts) => [...ts, { id, question: q, priorKnowledge: "", prediction: "", showHint: false, skipped: false, reflection: "", doubted: false, step: "loading" }]);
     try {
-      await then(await fn());
+      const res = await post<MessageResponse>("/api/message", { message: q, newThread: newThreadPending });
+      if (res.threadId) setThread({ id: res.threadId, topic: res.thread?.topic ?? "", turnCount: res.thread?.turnCount ?? 1 });
+      setLeft(res.questionsLeft);
+      const pending = res.safe && !res.care && !res.clarify && res.kind === "think";
+      patch(id, { res, step: pending ? "think" : "answer" });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "문제가 생겼어요.");
+      const err = e as Error & { code?: string };
+      patch(id, { step: "answer", error: err.message });
+      if (err.code === "LIMIT" && startNew) setLeft(0);
     } finally {
       setLoading(false);
     }
   }
 
-  /** 질문 제출. 바로 답할 질문이면 생각 단계를 건너뛰고 곧장 답을 가져온다. */
-  function submitQuestion(text: string) {
-    const q = text.trim();
-    if (q.length < 2 || loading) return;
-    if (step !== "ask") reset();
-    setQuestion(q);
-    setDraft("");
-    return run(
-      "질문을 살펴보고 있어요",
-      () => post<ThinkFirstResult>("/api/think", { question: q }),
-      async (t) => {
-        setThink(t);
-        setLeft((n) => Math.max(0, n - 1));
-        if (!t.safe) return;
-        if (t.mode === "think") {
-          setStep("think");
-          return;
-        }
-        setLoadingText("답을 찾고 있어요");
-        const r = await post<AnswerResult>("/api/answer", { question: q, prediction: "", priorKnowledge: "", mode: "direct" });
-        setResult(r);
-        setStep("answer");
-        post<{ id: string }>("/api/logs/question", {
-          question: q,
-          mode: "direct",
-          topicLabel: t.topicLabel,
-          answers: { answer: r.answer, comparison: null },
-        })
-          .then((saved) => setLogId(saved.id))
-          .catch((err) => console.error("기록 저장 실패", err));
-      },
-    );
-  }
-
-  const submitThinking = () =>
-    run(
-      "답을 찾고 있어요",
-      () => post<AnswerResult>("/api/answer", { question, prediction, priorKnowledge }),
-      (r) => {
-        setResult(r);
-        setStep("answer");
-      },
-    );
-
-  async function compare() {
-    if (!result || comparing) return;
-    setComparing(true);
-    setError(null);
+  /** 생각 먼저: 예상을 적었거나 건너뛰었을 때 답을 가져온다. */
+  async function submitThinking(t: Turn, skipped: boolean) {
+    setLoading(true);
+    patch(t.id, { skipped, error: undefined });
     try {
-      const c = await post<CompareResult>("/api/compare", {
-        question,
-        prediction,
-        priorKnowledge,
-        mode: think?.mode ?? "think",
-        primary: result.answer,
+      const r = await post<AnswerResult & { logId: string | null }>("/api/answer", {
+        threadId: thread?.id,
+        question: t.question,
+        prediction: skipped ? "" : t.prediction,
+        priorKnowledge: t.priorKnowledge,
+        usedHint: t.showHint,
+        topicLabel: t.res?.topic ?? "",
+        skipped,
       });
-      setComparison(c);
-      if (isDirect && logId) {
-        post(`/api/logs/question/${logId}`, { comparedModels: true, agreement: c.judge?.agreement ?? null, comparison: c }, "PATCH").catch(
-          (err) => console.error("기록 갱신 실패", err),
-        );
-      }
+      patch(t.id, { answer: r, step: "answer" });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "문제가 생겼어요.");
+      patch(t.id, { error: (e as Error).message });
     } finally {
-      setComparing(false);
+      setLoading(false);
     }
   }
 
-  const submitReflection = () => {
-    const answerSummary = comparison?.judge?.kidSummary ?? result?.answer.text.slice(0, 500) ?? "";
-    return run(
-      "정리하고 있어요",
-      () => post<ReflectResult>("/api/reflect", { question, prediction, answerSummary, reflection }),
-      (f) => {
-        setFeedback(f);
-        setStep("done");
-        post("/api/logs/question", {
-          question,
-          mode: "think",
-          topicLabel: think?.topicLabel ?? "",
-          prediction,
-          priorKnowledge,
-          usedHint: showHint,
-          agreement: comparison?.judge?.agreement ?? null,
-          comparedModels: comparison != null,
-          reflection,
-          doubtedAi: doubted,
-          answers: result ? { answer: result.answer, comparison } : null,
-        }).catch((err) => console.error("기록 저장 실패", err));
-      },
-    );
-  };
+  function primaryOf(t: Turn) {
+    return t.answer?.answer.ok ? t.answer.answer : t.res?.answer ?? null;
+  }
+  function logIdOf(t: Turn) {
+    return t.answer?.logId ?? t.res?.logId ?? null;
+  }
 
-  const primary = result?.answer.ok ? result.answer : undefined;
-  const others = comparison?.answers.filter((a) => a.ok) ?? [];
-  const failed = comparison?.answers.filter((a) => !a.ok) ?? [];
-  const judge = comparison?.judge ?? null;
-  const followUps = result?.followUps ?? [];
-  const puzzles = result?.puzzles ?? [];
-  const canAsk = (step === "ask" && !question) || step === "done" || (think != null && !think.safe) || (isDirect && step === "answer");
+  async function compare(t: Turn) {
+    const primary = primaryOf(t);
+    if (!primary || t.comparing) return;
+    patch(t.id, { comparing: true, error: undefined });
+    try {
+      const c = await post<CompareResult>("/api/compare", {
+        threadId: thread?.id,
+        question: t.question,
+        prediction: t.prediction,
+        priorKnowledge: t.priorKnowledge,
+        mode: t.res?.kind ?? "direct",
+        primary,
+      });
+      patch(t.id, { comparison: c });
+      setCompares((n) => Math.max(0, n - 1));
+      const logId = logIdOf(t);
+      if (logId) {
+        post(`/api/logs/question/${logId}`, { comparedModels: true, agreement: c.judge?.agreement ?? null, comparison: c }, "PATCH").catch((err) =>
+          console.error("기록 갱신 실패", err),
+        );
+      }
+    } catch (e) {
+      const err = e as Error & { code?: string };
+      patch(t.id, { error: err.message });
+      if (err.code === "LIMIT") setCompares(0);
+    } finally {
+      patch(t.id, { comparing: false });
+    }
+  }
+
+  async function submitReflection(t: Turn) {
+    const primary = primaryOf(t);
+    const answerSummary = t.comparison?.judge?.kidSummary ?? primary?.text.slice(0, 500) ?? "";
+    setLoading(true);
+    try {
+      const f = await post<ReflectResult>("/api/reflect", { question: t.question, prediction: t.prediction, answerSummary, reflection: t.reflection });
+      patch(t.id, { feedback: f, step: "done" });
+      const logId = logIdOf(t);
+      if (logId) post(`/api/logs/question/${logId}`, { reflection: t.reflection, doubtedAi: t.doubted }, "PATCH").catch((err) => console.error("기록 갱신 실패", err));
+    } catch (e) {
+      patch(t.id, { error: (e as Error).message });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function startNewTopic() {
+    setTurns([]);
+    setThread(null);
+    setNewThreadPending(true);
+  }
+
+  const turnCount = thread?.turnCount ?? 0;
+  const hint =
+    left > 0
+      ? `오늘 새 주제 ${left}개 더${thread ? ` · 이 주제 ${turnCount}/${turnLimit}` : ""}`
+      : thread
+        ? `오늘 새 주제는 다 썼어요 · 이 주제는 ${turnLimit - turnCount}번 더 이어서 물어볼 수 있어요`
+        : "오늘 새 주제는 다 썼어요. 내일 다시 열려요";
 
   return (
     <div className="flex flex-1 flex-col">
-      {/* ---------- 대화 ---------- */}
       <div className="flex-1 space-y-6 py-4">
-        {step === "ask" && !question && !loading && (
+        {turns.length === 0 && !loading && (
           <div className="flex flex-col items-start gap-4 py-10">
             <div>
               <h1 className="text-2xl font-semibold tracking-tight text-ink">{nickname}, 뭐가 궁금해?</h1>
-              <p className="mt-1 text-sm text-ink-soft">바로 답을 보기 전에 한 번 생각해 보고, AI 답은 꼭 확인해 봐요.</p>
+              <p className="mt-1 text-sm text-ink-soft">AI 답은 꼭 확인해 봐요. 궁금한 게 생기면 이어서 물어봐도 돼요.</p>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {EXAMPLES.map((q) => (
-                <Chip key={q} onClick={() => submitQuestion(q)}>
-                  {q}
-                </Chip>
-              ))}
-            </div>
+            {thread && !newThreadPending ? (
+              <div className="flex flex-wrap items-center gap-2 text-[13px] text-ink-soft">
+                <span>
+                  아까 하던 <span className="text-ink">“{thread.topic || "주제"}”</span>에 이어서 물어볼 수 있어요.
+                </span>
+                <button type="button" onClick={startNewTopic} className="text-accent hover:underline">
+                  새 주제로 시작
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                {EXAMPLES.map((q) => (
+                  <Chip key={q} onClick={() => send(q)}>
+                    {q}
+                  </Chip>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
-        {question && <UserMsg>{question}</UserMsg>}
-
-        {loading && step === "ask" && (
-          <AiMsg>
-            <Spinner text={loadingText} />
-          </AiMsg>
+        {turns.length > 0 && thread && (
+          <div className="flex items-center justify-between gap-3 text-[12px] text-ink-soft">
+            <span className="truncate">
+              주제 · <span className="text-ink">{thread.topic || "…"}</span>
+            </span>
+            <button type="button" onClick={startNewTopic} disabled={loading || pendingThink} className="shrink-0 hover:text-ink hover:underline disabled:opacity-40">
+              새 주제
+            </button>
+          </div>
         )}
 
-        {/* 부적절한 질문 */}
-        {think && !think.safe && (
-          <AiMsg>
-            <p>{think.redirectMessage}</p>
-          </AiMsg>
-        )}
+        {turns.map((t) => (
+          <TurnView
+            key={t.id}
+            t={t}
+            loading={loading}
+            comparesLeft={compares}
+            onPatch={(p) => patch(t.id, p)}
+            onThink={(skipped) => submitThinking(t, skipped)}
+            onCompare={() => compare(t)}
+            onReflect={() => submitReflection(t)}
+            onAsk={(q) => send(q)}
+          />
+        ))}
+      </div>
 
-        {/* 생각 먼저 */}
-        {think?.safe && !isDirect && (
-          <>
-            <AiMsg>
-              <p>
-                <span className="font-medium">먼저 생각해 볼까?</span> {think.guidingQuestion}
-              </p>
-              {step === "think" && (
-                <div className="space-y-3 rounded-2xl border border-line p-4">
-                  <TextArea label="내가 이미 아는 것, 떠오르는 생각" value={priorKnowledge} onChange={setPriorKnowledge} placeholder="짧아도 괜찮아요." rows={2} />
-                  <p className="text-sm text-ink-soft">{think.predictionPrompt}</p>
-                  <TextArea label="내 예상 (적어야 답을 볼 수 있어요)" value={prediction} onChange={setPrediction} placeholder="예) 지구 그림자 때문일 것 같아요" rows={2} />
-                  {showHint ? (
-                    <p className="rounded-xl bg-accent-soft px-3 py-2 text-sm text-ink">힌트: {think.hint}</p>
-                  ) : (
-                    <button type="button" onClick={() => setShowHint(true)} className="text-[13px] text-accent underline">
-                      막혔어요, 힌트 보여 주세요
-                    </button>
-                  )}
-                  <div className="flex items-center gap-3">
-                    <Button onClick={submitThinking} disabled={loading || prediction.trim().length < 2}>
-                      AI에게 물어보기
-                    </Button>
-                    {loading && <Spinner text={loadingText} />}
-                  </div>
+      <Composer
+        value={draft}
+        onChange={setDraft}
+        onSubmit={() => send(draft)}
+        disabled={!canAsk}
+        minLength={1}
+        placeholder={pendingThink ? "먼저 위에서 예상을 적거나 건너뛰어요" : canAsk ? (turns.length ? "이어서 물어봐요" : "궁금한 걸 적어 봐요") : "오늘 새 주제는 다 썼어요"}
+        hint={`${hint} · Enter로 보내기, Shift+Enter로 줄바꿈`}
+      />
+    </div>
+  );
+}
+
+function TurnView({
+  t,
+  loading,
+  comparesLeft,
+  onPatch,
+  onThink,
+  onCompare,
+  onReflect,
+  onAsk,
+}: {
+  t: Turn;
+  loading: boolean;
+  comparesLeft: number;
+  onPatch: (p: Partial<Turn>) => void;
+  onThink: (skipped: boolean) => void;
+  onCompare: () => void;
+  onReflect: () => void;
+  onAsk: (q: string) => void;
+}) {
+  const r = t.res;
+  const isThink = r?.kind === "think" && r.safe && !r.care && !r.clarify;
+  const primary = t.answer?.answer.ok ? t.answer.answer : r?.answer ?? null;
+  const others = t.comparison?.answers.filter((a) => a.ok) ?? [];
+  const failed = t.comparison?.answers.filter((a) => !a.ok) ?? [];
+  const judge = t.comparison?.judge ?? null;
+
+  return (
+    <>
+      <UserMsg>{t.question}</UserMsg>
+
+      {t.step === "loading" && (
+        <AiMsg>
+          <Spinner text="읽고 있어요" />
+        </AiMsg>
+      )}
+
+      {r && (!r.safe || r.care) && (
+        <AiMsg>
+          <p>{r.redirect}</p>
+        </AiMsg>
+      )}
+
+      {r && r.safe && !r.care && r.clarify && (
+        <AiMsg>
+          <p>{r.clarify}</p>
+        </AiMsg>
+      )}
+
+      {isThink && r && (
+        <>
+          <AiMsg>
+            <p>
+              <span className="font-medium">먼저 생각해 볼까?</span> {r.guide}
+            </p>
+            {t.step === "think" && (
+              <div className="space-y-3 rounded-2xl border border-line p-4">
+                <TextArea label="내가 이미 아는 것, 떠오르는 생각" value={t.priorKnowledge} onChange={(v) => onPatch({ priorKnowledge: v })} placeholder="짧아도 괜찮아요." rows={2} />
+                <p className="text-sm text-ink-soft">{r.predict}</p>
+                <TextArea label="내 예상" value={t.prediction} onChange={(v) => onPatch({ prediction: v })} placeholder="예) 지구 그림자 때문일 것 같아요" rows={2} />
+                {t.showHint ? (
+                  <p className="rounded-xl bg-accent-soft px-3 py-2 text-sm text-ink">힌트: {r.hint}</p>
+                ) : (
+                  <button type="button" onClick={() => onPatch({ showHint: true })} className="text-[13px] text-accent underline">
+                    막혔어요, 힌트 보여 주세요
+                  </button>
+                )}
+                <div className="flex flex-wrap items-center gap-3">
+                  <Button onClick={() => onThink(false)} disabled={loading || t.prediction.trim().length < 2}>
+                    AI에게 물어보기
+                  </Button>
+                  <button type="button" onClick={() => onThink(true)} disabled={loading} className="text-[13px] text-ink-soft hover:text-ink hover:underline disabled:opacity-40">
+                    이번엔 그냥 답 볼래요
+                  </button>
+                  {loading && <Spinner text="답을 찾고 있어요" />}
                 </div>
-              )}
-            </AiMsg>
-            {step !== "think" && (
-              <UserMsg>
-                {priorKnowledge && `아는 것: ${priorKnowledge}\n`}
-                {`내 예상: ${prediction}`}
-              </UserMsg>
+              </div>
             )}
-          </>
-        )}
+          </AiMsg>
+          {t.step !== "think" && (
+            <UserMsg>
+              {t.priorKnowledge && `아는 것: ${t.priorKnowledge}\n`}
+              {t.skipped ? "이번엔 그냥 답 볼래요" : `내 예상: ${t.prediction}`}
+            </UserMsg>
+          )}
+        </>
+      )}
 
-        {/* 답 */}
-        {result && (
-          <AiMsg>
-            {isDirect && <p className="text-[13px] text-ink-soft">이건 생각할 것보다 알면 되는 거라 바로 답해요. 그래도 AI 답은 한 번 확인해 봐요.</p>}
-            {primary ? (
-              <>
-                <AnswerCard answer={primary} />
+      {r && r.safe && !r.care && !r.clarify && (primary || (isThink && t.step !== "think" && t.answer)) && (
+        <AiMsg>
+          {primary ? (
+            <>
+              {r.kind === "talk" ? <p className="whitespace-pre-wrap">{primary.text}</p> : <AnswerCard answer={primary} />}
 
-                {!comparison ? (
+              {r.kind !== "talk" &&
+                (!t.comparison ? (
                   <div className="flex flex-wrap items-center gap-3">
-                    <Button variant="secondary" size="sm" onClick={compare} disabled={comparing}>
-                      다른 AI는 뭐라고 할까?
+                    <Button variant={r.suggestCompare ? "primary" : "secondary"} size="sm" onClick={onCompare} disabled={t.comparing || comparesLeft === 0}>
+                      {r.suggestCompare ? "다른 AI한테도 물어볼까?" : "다른 AI는 뭐라고 할까?"}
                     </Button>
-                    {comparing ? <Spinner text="다른 AI들에게 묻고 비교하고 있어요" /> : <span className="text-[12px] text-ink-soft">AI는 가끔 틀린 걸 자신 있게 말해요</span>}
+                    {t.comparing ? (
+                      <Spinner text="다른 AI들에게 묻고 비교하고 있어요" />
+                    ) : (
+                      <span className="text-[12px] text-ink-soft">{comparesLeft === 0 ? "오늘 비교는 다 썼어요" : `AI는 가끔 틀린 걸 자신 있게 말해요 · 오늘 ${comparesLeft}번 더`}</span>
+                    )}
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -287,112 +388,98 @@ export function QuestionFlow({ questionsLeft, nickname }: { questionsLeft: numbe
                         )}
                         {judge.riskyClaims.length > 0 && (
                           <p className="text-sm">
-                            <span className="font-medium text-bad">틀리기 쉬운 부분:</span>{" "}
-                            {judge.riskyClaims.map((r) => `${r.claim} (${r.why})`).join(" / ")}
+                            <span className="font-medium text-bad">틀리기 쉬운 부분:</span> {judge.riskyClaims.map((x) => `${x.claim} (${x.why})`).join(" / ")}
                           </p>
                         )}
                         <div className="text-sm">
                           <span className="font-medium text-ok">직접 확인하는 방법</span>
                           <ul className="mt-1 list-disc space-y-0.5 pl-5">
-                            {judge.checkTips.map((t) => (
-                              <li key={t}>{t}</li>
+                            {judge.checkTips.map((tip) => (
+                              <li key={tip}>{tip}</li>
                             ))}
                           </ul>
                         </div>
                       </div>
                     )}
                   </div>
-                )}
+                ))}
 
-                {isDirect && followUps.length > 0 && (
-                  <div className="space-y-2">
-                    <p className="text-[13px] font-medium text-ink-soft">이번엔 내가 물어볼게. 먼저 머릿속으로 찍어 보고 눌러요.</p>
-                    <div className="flex flex-wrap gap-2">
-                      {followUps.map((q) => (
-                        <Chip key={q} onClick={() => submitQuestion(q)} disabled={loading}>
-                          {q}
-                        </Chip>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {isDirect && puzzles.length > 0 && (
-                  <div className="space-y-2">
-                    <p className="text-[13px] font-medium text-ink-soft">이걸로 풀어 보는 문제</p>
-                    {puzzles.map((pz, i) => (
-                      <PuzzleCard key={i} puzzle={pz} />
+              {r.followUps.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-[13px] font-medium text-ink-soft">이번엔 내가 물어볼게. 먼저 머릿속으로 찍어 보고 눌러요.</p>
+                  <div className="flex flex-wrap gap-2">
+                    {r.followUps.map((q) => (
+                      <Chip key={q} onClick={() => onAsk(q)} disabled={loading}>
+                        {q}
+                      </Chip>
                     ))}
                   </div>
-                )}
-                {loading && isDirect && <Spinner text={loadingText} />}
+                </div>
+              )}
+              {r.puzzles.length > 0 && (
+                <div className="space-y-2">
+                  <p className="text-[13px] font-medium text-ink-soft">이걸로 풀어 보는 문제</p>
+                  {r.puzzles.map((pz, i) => (
+                    <PuzzleCard key={i} puzzle={pz} />
+                  ))}
+                </div>
+              )}
 
-                {!isDirect && step === "answer" && (
-                  <div>
-                    <Button variant="secondary" size="sm" onClick={() => setStep("reflect")}>
-                      다 읽었어요, 정리하기
-                    </Button>
-                  </div>
-                )}
-              </>
-            ) : (
-              <p className="text-ink-soft">AI들이 지금은 답을 주지 못했어요. 잠시 후 다시 해 봐요.</p>
-            )}
-          </AiMsg>
-        )}
+              {isThink && t.step === "answer" && (
+                <div>
+                  <Button variant="secondary" size="sm" onClick={() => onPatch({ step: "reflect" })}>
+                    다 읽었어요, 정리하기
+                  </Button>
+                </div>
+              )}
+            </>
+          ) : (
+            <p className="text-ink-soft">AI가 지금은 답을 주지 못했어요. 잠시 후 다시 해 봐요.</p>
+          )}
+        </AiMsg>
+      )}
 
-        {/* 정리 */}
-        {!isDirect && step === "reflect" && (
+      {isThink && t.step === "reflect" && (
+        <AiMsg>
+          <p>
+            <span className="font-medium">한 줄로 정리해 볼까?</span> 오늘 새로 알게 된 것, 또는 내 예상과 달랐던 것을 적어 봐요.
+          </p>
+          <div className="space-y-3 rounded-2xl border border-line p-4">
+            <TextArea label="정리" value={t.reflection} onChange={(v) => onPatch({ reflection: v })} rows={2} placeholder="예) 그림자가 아니라 햇빛 받는 부분이 달라서였다" />
+            <label className="flex items-center gap-2 text-sm text-ink">
+              <input type="checkbox" checked={t.doubted} onChange={(e) => onPatch({ doubted: e.target.checked })} className="accent-accent" />
+              AI 답 중에 “정말일까?” 싶어서 확인해 보고 싶은 부분이 있었어요
+            </label>
+            <div className="flex items-center gap-3">
+              <Button onClick={onReflect} disabled={loading || t.reflection.trim().length < 2}>
+                마무리
+              </Button>
+              {loading && <Spinner text="정리하고 있어요" />}
+            </div>
+          </div>
+        </AiMsg>
+      )}
+      {t.step === "done" && t.feedback && (
+        <>
+          <UserMsg>{t.reflection}</UserMsg>
           <AiMsg>
+            <p>{t.feedback.encouragement}</p>
+            <p>{t.feedback.comparison}</p>
             <p>
-              <span className="font-medium">한 줄로 정리해 볼까?</span> 오늘 새로 알게 된 것, 또는 내 예상과 달랐던 것을 적어 봐요.
+              <span className="font-medium">확인해 보기:</span> {t.feedback.verifyTip}
             </p>
-            <div className="space-y-3 rounded-2xl border border-line p-4">
-              <TextArea label="정리" value={reflection} onChange={setReflection} rows={2} placeholder="예) 그림자가 아니라 햇빛 받는 부분이 달라서였다" />
-              <label className="flex items-center gap-2 text-sm text-ink">
-                <input type="checkbox" checked={doubted} onChange={(e) => setDoubted(e.target.checked)} className="accent-accent" />
-                AI 답 중에 “정말일까?” 싶어서 확인해 보고 싶은 부분이 있었어요
-              </label>
-              <div className="flex items-center gap-3">
-                <Button onClick={submitReflection} disabled={loading || reflection.trim().length < 2}>
-                  마무리
-                </Button>
-                {loading && <Spinner text={loadingText} />}
-              </div>
+            <div className="space-y-2">
+              <p className="text-[13px] font-medium text-ink-soft">다음에 궁금해할 만한 것</p>
+              <Chip onClick={() => onAsk(t.feedback!.nextQuestion)} disabled={loading}>
+                {t.feedback.nextQuestion}
+              </Chip>
             </div>
           </AiMsg>
-        )}
-        {step === "done" && feedback && (
-          <>
-            <UserMsg>{reflection}</UserMsg>
-            <AiMsg>
-              <p>{feedback.encouragement}</p>
-              <p>{feedback.comparison}</p>
-              <p>
-                <span className="font-medium">확인해 보기:</span> {feedback.verifyTip}
-              </p>
-              <div className="space-y-2">
-                <p className="text-[13px] font-medium text-ink-soft">다음에 궁금해할 만한 것</p>
-                <Chip onClick={() => submitQuestion(feedback.nextQuestion)} disabled={loading}>
-                  {feedback.nextQuestion}
-                </Chip>
-              </div>
-            </AiMsg>
-          </>
-        )}
+        </>
+      )}
 
-        {error && <p className="rounded-xl bg-bad-soft px-3 py-2 text-sm text-bad">{error}</p>}
-      </div>
-
-      {/* ---------- 입력창 ---------- */}
-      <Composer
-        value={draft}
-        onChange={setDraft}
-        onSubmit={() => submitQuestion(draft)}
-        disabled={!canAsk || loading || left === 0}
-        placeholder={left === 0 ? "오늘 질문은 다 썼어요" : canAsk ? "궁금한 걸 적어 봐요" : "위의 단계를 먼저 끝내요"}
-        hint={`${left > 0 ? `오늘 ${left}개 더 물어볼 수 있어요` : "내일 다시 열려요"} · Enter로 보내기, Shift+Enter로 줄바꿈`}
-      />
-    </div>
+      {t.error && <p className="rounded-xl bg-bad-soft px-3 py-2 text-sm text-bad">{t.error}</p>}
+    </>
   );
 }
 

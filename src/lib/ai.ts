@@ -8,8 +8,9 @@ import {
   getHelperModel,
   getModel,
 } from "./providers";
-import { ANSWER_SYSTEM, GAME_SYSTEM, JUDGE_SYSTEM, REFLECT_SYSTEM, THINK_FIRST_SYSTEM } from "./prompts";
-import { mockAnswer, mockCompare, mockGame, mockReflect, mockThink } from "./mock";
+import { ANSWER_SYSTEM, GAME_SYSTEM, JUDGE_SYSTEM, REFLECT_SYSTEM, RESPOND_SYSTEM } from "./prompts";
+import { mockAnswer, mockCompare, mockGame, mockReflect, mockRespond } from "./mock";
+import { contextToPrompt, EMPTY_CONTEXT, type ThreadContext } from "./threads";
 import { newContext, recordMock, tracked, type CallContext } from "./usage";
 import { reportError } from "./monitor";
 import type {
@@ -21,7 +22,7 @@ import type {
   ProviderId,
   QuestionMode,
   ReflectResult,
-  ThinkFirstResult,
+  RespondResult,
 } from "./types";
 
 export class NoProviderError extends Error {
@@ -30,22 +31,35 @@ export class NoProviderError extends Error {
   }
 }
 
-const thinkSchema = z.object({
+const puzzleSchema = z.object({ question: z.string(), hint: z.string(), solution: z.string() });
+
+/** 한 번의 호출로 종류 판단 + (생각 먼저가 아니면) 답 + 요약 갱신. 필드 이름은 출력 토큰을 아끼려고 짧게 둔다. */
+const respondSchema = z.object({
+  kind: z.enum(["think", "direct", "talk", "task"]),
+  newTopic: z.boolean(),
+  topic: z.string(),
   safe: z.boolean(),
-  redirectMessage: z.string(),
-  topicLabel: z.string(),
-  mode: z.enum(["think", "direct"]),
-  guidingQuestion: z.string(),
-  predictionPrompt: z.string(),
+  care: z.boolean(),
+  redirect: z.string(),
+  clarify: z.string(),
+  guide: z.string(),
+  predict: z.string(),
   hint: z.string(),
+  answer: z.string(),
+  conf: z.enum(["high", "medium", "low"]),
+  unsure: z.array(z.string()).max(2),
+  followUps: z.array(z.string()).max(2),
+  puzzles: z.array(puzzleSchema).max(1),
+  suggestCompare: z.boolean(),
+  suggestedAdult: z.boolean(),
+  memory: z.string(),
 });
 
 const answerSchema = z.object({
   answer: z.string(),
   selfConfidence: z.enum(["high", "medium", "low"]),
-  uncertainParts: z.array(z.string()).max(3),
-  followUps: z.array(z.string()).max(3),
-  puzzles: z.array(z.object({ question: z.string(), hint: z.string(), solution: z.string() })).max(2),
+  uncertainParts: z.array(z.string()).max(2),
+  memory: z.string(),
 });
 
 const judgeSchema = z.object({
@@ -63,28 +77,55 @@ const reflectSchema = z.object({
   nextQuestion: z.string(),
 });
 
-/** 1단계: 생각 먼저 */
-export async function thinkFirst(question: string, ctx: CallContext = newContext()): Promise<ThinkFirstResult> {
+/** 서버가 스레드 상태를 갱신하는 데 쓰는, 모델이 함께 돌려준 값 */
+export type RespondOutcome = { result: RespondResult; memory: string; suggestedAdult: boolean; provider: ProviderId; model: string };
+
+/**
+ * 메시지 하나에 대한 호출 1회. 종류를 판단하고, 생각 먼저가 아니면 같은 호출에서 답과 요약까지 받는다.
+ * 대부분의 메시지(이어 묻기, 바로 답, 마음 이야기, 작업 지시)가 이 호출 하나로 끝난다.
+ */
+export async function respond(message: string, thread: ThreadContext = EMPTY_CONTEXT, ctx: CallContext = newContext()): Promise<RespondOutcome> {
   if (MOCK_AI) {
-    const r = mockThink(question);
-    await recordMock(ctx, "think", THINK_FIRST_SYSTEM.length + question.length, JSON.stringify(r).length);
+    const r = mockRespond(message, thread);
+    await recordMock(ctx, "respond", RESPOND_SYSTEM.length + message.length + thread.memory.length, JSON.stringify(r).length);
     return r;
   }
-  const helper = getHelperModel();
-  if (!helper) throw new NoProviderError();
-
-  const { object } = await tracked({ ctx, purpose: "think", provider: helper.provider, model: helper.id }, () =>
+  const provider = primaryProvider();
+  if (!provider) throw new NoProviderError();
+  const model = DEFAULT_MODELS[provider];
+  const { object } = await tracked({ ctx, purpose: "respond", provider, model }, () =>
     generateObject({
-      model: helper.model,
-      schema: thinkSchema,
-      system: THINK_FIRST_SYSTEM,
-      prompt: `어린이의 질문: """${question}"""`,
+      model: getModel(provider),
+      schema: respondSchema,
+      system: RESPOND_SYSTEM,
+      prompt: `${contextToPrompt(thread)}\n\n아이의 메시지: """${message}"""`,
+      providerOptions: answerProviderOptions(provider),
     }),
   );
-  return object;
+  const kind = object.kind === "think" && !thread.thinkAllowed ? "direct" : object.kind;
+  const hasAnswer = object.safe && !object.care && !object.clarify && kind !== "think" && object.answer.trim().length > 0;
+  const result: RespondResult = {
+    kind,
+    newTopic: object.newTopic,
+    topic: object.topic,
+    safe: object.safe,
+    care: object.care,
+    redirect: object.redirect,
+    clarify: object.clarify,
+    guide: kind === "think" ? object.guide : "",
+    predict: kind === "think" ? object.predict : "",
+    hint: kind === "think" ? object.hint : "",
+    answer: hasAnswer
+      ? { provider, model, ok: true, text: object.answer, selfConfidence: object.conf, uncertainParts: object.unsure }
+      : null,
+    followUps: hasAnswer && kind === "direct" && !thread.firstDirectDone ? object.followUps : [],
+    puzzles: hasAnswer && kind === "direct" && !thread.firstDirectDone ? object.puzzles : [],
+    suggestCompare: hasAnswer && object.suggestCompare,
+  };
+  return { result, memory: object.memory, suggestedAdult: object.suggestedAdult, provider, model };
 }
 
-type AskOneResult = { answer: ModelAnswer; followUps: string[]; puzzles: AnswerResult["puzzles"] };
+type AskOneResult = { answer: ModelAnswer; followUps: string[]; puzzles: AnswerResult["puzzles"]; memory: string };
 
 async function askOne(
   provider: ProviderId,
@@ -93,13 +134,15 @@ async function askOne(
   priorKnowledge: string,
   mode: QuestionMode,
   ctx: CallContext,
+  memory = "",
 ): Promise<AskOneResult> {
   const model = DEFAULT_MODELS[provider];
   const prompt = [
+    memory ? `대화 요약: """${memory}"""` : "",
     `어린이의 질문: """${question}"""`,
-    `질문 종류: ${mode === "direct" ? "바로 답한 질문(단순 사실)" : "생각 먼저 질문"}`,
+    `질문 종류: ${mode === "think" ? "생각 먼저 질문" : "바로 답한 질문"}`,
     priorKnowledge ? `아이가 이미 알고 있다고 적은 것: """${priorKnowledge}"""` : "",
-    prediction ? `아이의 예상: """${prediction}"""` : "",
+    prediction ? `아이의 예상: """${prediction}"""` : "아이의 예상: (건너뜀)",
   ]
     .filter(Boolean)
     .join("\n");
@@ -122,8 +165,9 @@ async function askOne(
         selfConfidence: object.selfConfidence,
         uncertainParts: object.uncertainParts,
       },
-      followUps: mode === "direct" ? object.followUps : [],
-      puzzles: mode === "direct" ? object.puzzles : [],
+      followUps: [],
+      puzzles: [],
+      memory: object.memory,
     };
   } catch (err) {
     await reportError("ai.answer", err, { provider, model, mode });
@@ -139,6 +183,7 @@ async function askOne(
       },
       followUps: [],
       puzzles: [],
+      memory: "",
     };
   }
 }
@@ -175,22 +220,24 @@ function primaryProvider(): ProviderId | null {
   return providers.includes("claude") ? "claude" : providers[0];
 }
 
-/** 2단계: 첫 답. 모델 하나만 부른다. 비용의 대부분이 여기서 결정된다. */
+/** 생각 먼저 질문의 답. 아이가 예상을 적은(또는 건너뛴) 뒤 한 번 부른다. */
 export async function askPrimary(
   question: string,
   prediction: string,
   priorKnowledge: string,
   mode: QuestionMode = "think",
   ctx: CallContext = newContext(),
-): Promise<AnswerResult> {
+  memory = "",
+): Promise<AnswerResult & { memory: string }> {
   if (MOCK_AI) {
     const r = mockAnswer(question, mode);
-    await recordMock(ctx, "answer", ANSWER_SYSTEM.length + question.length + prediction.length, r.answer.text.length);
-    return r;
+    await recordMock(ctx, "answer", ANSWER_SYSTEM.length + question.length + prediction.length + memory.length, r.answer.text.length);
+    return { ...r, memory: `주제: ${question.slice(0, 20)}. 예상: ${prediction.slice(0, 40) || "건너뜀"}.` };
   }
   const provider = primaryProvider();
   if (!provider) throw new NoProviderError();
-  return askOne(provider, question, prediction, priorKnowledge, mode, ctx);
+  const r = await askOne(provider, question, prediction, priorKnowledge, mode, ctx, memory);
+  return { answer: r.answer, followUps: [], puzzles: [], memory: r.memory };
 }
 
 /** "다른 AI는 뭐라고 할까?"를 눌렀을 때만: 나머지 모델에 묻고, 첫 답까지 합쳐 비교한다. */
@@ -201,17 +248,19 @@ export async function compareAnswers(
   mode: QuestionMode,
   primary: ModelAnswer,
   ctx: CallContext = newContext(),
+  memory = "",
 ): Promise<CompareResult> {
   if (MOCK_AI) {
     const r = mockCompare(question);
-    const promptChars = ANSWER_SYSTEM.length + question.length + prediction.length;
+    const promptChars = ANSWER_SYSTEM.length + question.length + prediction.length + memory.length;
     await Promise.all(r.answers.map((a) => recordMock(ctx, "answer", promptChars, a.text.length)));
     await recordMock(ctx, "judge", JUDGE_SYSTEM.length + r.answers.reduce((n, a) => n + a.text.length, 0), JSON.stringify(r.judge).length);
     return r;
   }
   const providers = configuredProviders().filter((p) => p !== primary.provider);
+  // 다른 AI에게는 대화 전체가 아니라 요약만 보낸다. 입력이 비싼 모델이라 문맥 길이를 고정한다.
   const others = await Promise.all(
-    providers.map((p) => askOne(p, question, prediction, priorKnowledge, mode, ctx).then((r) => r.answer)),
+    providers.map((p) => askOne(p, question, prediction, priorKnowledge, mode, ctx, memory).then((r) => r.answer)),
   );
   const judged = await judgeAnswers(question, mode, [primary, ...others], ctx);
   return { answers: others, judge: judged?.judge ?? null, judgeModel: judged?.judgeModel ?? null };

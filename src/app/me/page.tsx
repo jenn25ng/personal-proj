@@ -29,7 +29,10 @@ async function MeContent() {
 
         <section>
           <h2 className="text-base font-semibold text-ink">내 질문</h2>
-          <p className="mt-0.5 text-[12px] text-ink-soft">여기 있는 질문은 나만 볼 수 있어요.</p>
+          <p className="mt-0.5 text-[12px] leading-relaxed text-ink-soft">
+            여기 있는 질문은 나만 볼 수 있어요. 부모님은 위의 숫자만 봐요. 딱 하나, 내가 많이 힘들다는 말(스스로를 해치고 싶다는 말 같은
+            것)을 적으면 부모님께 “힘든 마음을 표현했어요”라고만 알려요. 무슨 말을 했는지는 안 보여요.
+          </p>
           {logs.length === 0 ? (
             <p className="mt-4 text-sm text-ink-soft">아직 질문이 없어요.</p>
           ) : (

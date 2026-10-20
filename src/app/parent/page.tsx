@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ChildDashboard } from "@/components/ChildDashboard";
 import { ResendVerificationForm } from "@/components/AccountForms";
+import { DistressAlertForm } from "@/components/DistressAlertForm";
 import { AddChildForm, ConfirmSubmit } from "@/components/ChildForms";
 import { BonusForm } from "@/components/BonusForm";
 import { ChildLimitsForm } from "@/components/ChildLimitsForm";
@@ -138,9 +139,9 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
             title={`${selected.nickname}의 하루 한도`}
             hint={
               quota
-                ? `오늘 질문 ${quota.questionsUsed}/${quota.questionLimit} · 게임 ${quota.gamesUsed}/${quota.gameLimit} 썼어요.${
+                ? `오늘 주제 ${quota.questionsUsed}/${quota.questionLimit} · 게임 ${quota.gamesUsed}/${quota.gameLimit} · 비교 ${quota.comparesUsed}/${quota.compareLimit} 썼어요.${
                     quota.bonusQuestions > 0 || quota.bonusGames > 0
-                      ? ` 오늘만 추가: ${[quota.bonusQuestions > 0 ? `질문 +${quota.bonusQuestions}` : "", quota.bonusGames > 0 ? `게임 +${quota.bonusGames}` : ""].filter(Boolean).join(", ")}`
+                      ? ` 오늘만 추가: ${[quota.bonusQuestions > 0 ? `주제 +${quota.bonusQuestions}` : "", quota.bonusGames > 0 ? `게임 +${quota.bonusGames}` : ""].filter(Boolean).join(", ")}`
                       : ""
                   }`
                 : undefined
@@ -165,6 +166,13 @@ async function ParentContent({ searchParams }: { searchParams: Search }) {
           </Section>
         </>
       )}
+
+      <Section
+        title="힘든 신호 알림"
+        hint="아이가 자해나 위험을 뜻하는 말을 적으면, 아이에게는 돌봄 안내(믿을 수 있는 어른, 1388)를 보여 주고 부모님께는 하루 한 번 메일로 알려요. 무슨 말을 적었는지는 보내지 않아요. 아이에게도 이 약속을 미리 알려 줘요."
+      >
+        <DistressAlertForm on={parent.alertOnDistress} />
+      </Section>
 
       <Section title="계정 지우기" hint="부모 계정과 모든 아이 프로필, 질문·게임 기록이 함께 지워져요.">
         <form action={deleteAccount}>

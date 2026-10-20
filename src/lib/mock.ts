@@ -1,22 +1,81 @@
-import type { AnswerResult, CompareResult, GamePuzzle, ModelAnswer, QuestionMode, ReflectResult, ThinkFirstResult } from "./types";
+import type { AnswerResult, CompareResult, GamePuzzle, ModelAnswer, QuestionMode, ReflectResult, RespondResult } from "./types";
+import type { ThreadContext } from "./threads";
 
 /** API 키 없이 UI를 돌려 보기 위한 가짜 응답 (MOCK_AI=1) */
 
-export function mockThink(question: string): ThinkFirstResult {
-  // 목 모드: "왜/어떻게/될까"가 들어가면 생각 질문, 아니면 바로 답하는 질문
-  const think = /왜|어떻게|될까|어떨까|나을까/.test(question);
-  if (!think) {
-    return { safe: true, redirectMessage: "", topicLabel: question.slice(0, 12), mode: "direct", guidingQuestion: "", predictionPrompt: "", hint: "" };
-  }
-  return {
+/**
+ * 목 모드의 한 번 호출. 간단한 규칙으로 종류를 나눈다.
+ * - "새 주제:"로 시작하면 newTopic
+ * - "왜/어떻게/될까"면 think (허용될 때만)
+ * - 마음 이야기·작업 지시 낱말이 있으면 talk/task
+ * - "뭐라고?"가 들어가면 되묻기(clarify) 예시
+ */
+export function mockRespond(message: string, thread: ThreadContext) {
+  const newTopic = /^새 주제[: ]/.test(message) || !thread.memory;
+  const text = message.replace(/^새 주제[: ]\s*/, "");
+  const topic = text.slice(0, 12);
+  const base: RespondResult = {
+    kind: "direct",
+    newTopic,
+    topic,
     safe: true,
-    redirectMessage: "",
-    topicLabel: question.slice(0, 12),
-    mode: "think",
-    guidingQuestion: "이 질문과 비슷한 걸 본 적이 있나요? 그때 어떤 모습이었는지 떠올려 봐요.",
-    predictionPrompt: "답이 뭘지 한번 예상해 봐요. 틀려도 전혀 괜찮아요. 예상하는 것 자체가 공부예요.",
-    hint: "'왜'가 아니라 '어떻게 되는지'를 먼저 떠올리면 실마리가 보여요.",
+    care: false,
+    redirect: "",
+    clarify: "",
+    guide: "",
+    predict: "",
+    hint: "",
+    answer: null,
+    followUps: [],
+    puzzles: [],
+    suggestCompare: false,
   };
+  const memory = `주제: ${topic}. 턴 ${thread.turnCount + 1}. 확정된 사실: 목 모드 예시.`;
+  const done = (r: Partial<RespondResult>, suggestedAdult = false) => ({ result: { ...base, ...r }, memory, suggestedAdult, provider: "claude" as const, model: "mock-claude" });
+  if (/뭐라고\?/.test(text)) return done({ clarify: "혹시 '달까지 거리'를 말하는 거예요?" });
+  if (/사라지고 싶|없어졌으면/.test(text)) {
+    return done({ kind: "talk", care: true, redirect: "많이 힘들었구나. 그런 마음이 들 땐 혼자 두지 말고 믿을 수 있는 어른에게 꼭 말해요. 청소년 상담전화 1388은 언제든 받아 줘요." });
+  }
+  const answer = (t: string, conf: ModelAnswer["selfConfidence"] = "medium", unsure: string[] = []): ModelAnswer => ({ provider: "claude", model: "mock-claude", ok: true, text: t, selfConfidence: conf, uncertainParts: unsure });
+  if (/맞아\?|검증|진짜야/.test(text)) {
+    return done({ kind: "task", answer: answer("솔직히 말하면 제 답의 숫자 부분은 확실하지 않아요. 다른 AI한테도 같은 걸 물어서 비교해 보면 어디가 다른지 보여요.", "low", ["숫자 부분"]), suggestCompare: true });
+  }
+  if (/정리|다시|자세히|쉽게|핵심/.test(text)) {
+    return done({ kind: "task", answer: answer(`직전 답을 바탕으로 정리했어요. ${thread.lastAnswer ? "핵심은 첫 문장에 있어요." : "앞 답이 없어서 간단히만 적을게요."}`, "high") });
+  }
+  if (/좋아해|사귈래|힘들|어려워|못하면|멍충|꿈이|어떻게 해야/.test(text)) {
+    const stuck = /아무리 해도|전혀/.test(text) && !thread.adultSuggested;
+    return done(
+      {
+        kind: "talk",
+        answer: answer(stuck ? "그랬구나. 열심히 했는데 안 늘면 정말 속상하죠. 이런 건 어디서 막히는지 선생님이 보면 금방 찾아 줄 수 있어요. 지금은 어떤 문제가 제일 어려워요?" : "그랬구나. 그런 마음이 들 수 있어요. 지금 어렵다고 앞으로도 못하는 건 아니에요. 제일 막히는 게 뭐예요?", "high"),
+      },
+      stuck,
+    );
+  }
+  if (thread.thinkAllowed && /왜|어떻게|될까|어떨까|나을까/.test(text)) {
+    return done({
+      kind: "think",
+      guide: "이 질문과 비슷한 걸 본 적이 있나요? 그때 어떤 모습이었는지 떠올려 봐요.",
+      predict: "답이 뭘지 한번 예상해 봐요. 틀려도 전혀 괜찮아요. 예상하는 것 자체가 공부예요.",
+      hint: "'왜'가 아니라 '어떻게 되는지'를 먼저 떠올리면 실마리가 보여요.",
+    });
+  }
+  const first = !thread.firstDirectDone;
+  return done({
+    kind: "direct",
+    answer: answer(`"${text}"에 대한 답이에요. 가장 중요한 건 이거예요. 이 현상은 1년에 약 12번 일어나요. 이 부분은 확실하지 않아요.`, "medium", ["1년에 12번이라는 횟수"]),
+    followUps: first ? ["그럼 해까지는 얼마나 멀까? 달보다 몇 배쯤일 것 같아?", "비행기로 달까지 가면 며칠이나 걸릴까?"] : [],
+    puzzles: first
+      ? [
+          {
+            question: "달까지는 약 38만 km예요. 시속 100km로 달리는 자동차로 쉬지 않고 가면 며칠이 걸릴까요?",
+            hint: "먼저 몇 시간이 걸리는지 구한 다음, 하루는 24시간이라는 걸 떠올려요.",
+            solution: "380,000 ÷ 100 = 3,800시간. 3,800 ÷ 24 ≈ 158일. 약 다섯 달 넘게 걸려요.",
+          },
+        ]
+      : [],
+  });
 }
 
 function mockAnswers(question: string): ModelAnswer[] {
@@ -50,25 +109,10 @@ function mockAnswers(question: string): ModelAnswer[] {
   ];
 }
 
-/** 첫 답 하나. 바로 답한 질문이면 되묻는 질문과 퍼즐도 함께. */
+/** 생각 먼저 질문의 답 */
 export function mockAnswer(question: string, mode: QuestionMode = "think"): AnswerResult {
-  return {
-    answer: mockAnswers(question)[0],
-    followUps:
-      mode === "direct"
-        ? ["그럼 해까지는 얼마나 멀까? 달보다 몇 배쯤일 것 같아?", "비행기로 달까지 가면 며칠이나 걸릴까?"]
-        : [],
-    puzzles:
-      mode === "direct"
-        ? [
-            {
-              question: "달까지는 약 38만 km예요. 시속 100km로 달리는 자동차로 쉬지 않고 가면 며칠이 걸릴까요?",
-              hint: "먼저 몇 시간이 걸리는지 구한 다음, 하루는 24시간이라는 걸 떠올려요.",
-              solution: "380,000 ÷ 100 = 3,800시간. 3,800 ÷ 24 ≈ 158일. 약 다섯 달 넘게 걸려요.",
-            },
-          ]
-        : [],
-  };
+  void mode;
+  return { answer: mockAnswers(question)[0], followUps: [], puzzles: [] };
 }
 
 /** 비교를 눌렀을 때: 나머지 모델의 답과 판정 */

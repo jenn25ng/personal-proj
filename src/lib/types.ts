@@ -6,19 +6,43 @@ export const PROVIDER_LABEL: Record<ProviderId, string> = {
   chatgpt: "챗지피티",
 };
 
-/** 질문 종류: 아이가 스스로 추론해 볼 만한 질문(think) vs 단순 사실·정의·환산(direct) */
-export type QuestionMode = "think" | "direct";
+/** 메시지 종류. think: 생각 먼저, direct: 바로 답, talk: 마음 이야기, task: 작업 지시 */
+export type MessageKind = "think" | "direct" | "talk" | "task";
+/** 예전 이름. 답 호출에서는 생각 먼저인지 아닌지만 구분한다. */
+export type QuestionMode = MessageKind;
 
-/** 1단계: 질문을 받고 종류를 나눈 뒤, 생각이 필요한 질문이면 "생각 먼저" 안내를 만든다. */
-export type ThinkFirstResult = {
+export const KIND_LABEL: Record<MessageKind, string> = {
+  think: "생각 먼저",
+  direct: "바로 답",
+  talk: "마음 이야기",
+  task: "작업 지시",
+};
+
+/**
+ * 메시지 하나에 대한 한 번의 호출 결과. 종류를 판단하고, 생각 먼저가 아니면 같은 호출에서 답까지 낸다.
+ * 생각 먼저면 answer는 비어 있고 guide/predict/hint가 채워진다.
+ */
+export type RespondResult = {
+  kind: MessageKind;
+  /** 지금 스레드와 다른 새 주제인가 */
+  newTopic: boolean;
+  topic: string;
   safe: boolean;
-  mode: QuestionMode;
-  /** safe가 false일 때 아이에게 보여줄 부드러운 안내 */
-  redirectMessage: string;
-  topicLabel: string;
-  guidingQuestion: string;
-  predictionPrompt: string;
+  /** 힘든 신호(간접 표현). 차단이 아니라 돌봄 안내. */
+  care: boolean;
+  /** safe=false 또는 care=true일 때 아이에게 보여 줄 말 */
+  redirect: string;
+  /** 뜻이 불명확할 때 되묻는 한 문장. 있으면 답 대신 이것만 보여 준다. */
+  clarify: string;
+  guide: string;
+  predict: string;
   hint: string;
+  /** 생각 먼저가 아닐 때의 답 */
+  answer: ModelAnswer | null;
+  followUps: string[];
+  puzzles: Puzzle[];
+  /** "맞아? 검증해 줘" 같은 요청이면 비교를 제안한다 */
+  suggestCompare: boolean;
 };
 
 /** 모델 하나의 답변 */

@@ -1,4 +1,4 @@
-import { askPrimary, compareAnswers, makeGamePuzzle, reflect, thinkFirst } from "@/lib/ai";
+import { askPrimary, compareAnswers, makeGamePuzzle, reflect, respond } from "@/lib/ai";
 import { isAdminRequest } from "@/lib/admin";
 import { configuredProviders } from "@/lib/providers";
 import { newContext } from "@/lib/usage";
@@ -32,17 +32,12 @@ export async function POST(request: Request) {
   const thinkQ = "달은 왜 모양이 바뀌어요?";
   const directQ = "달까지 거리는 얼마예요?";
 
-  const think = await run("think (생각 질문 분류)", () => thinkFirst(thinkQ, ctx), (v) => ({ mode: v.mode, safe: v.safe, guidingQuestion: v.guidingQuestion }));
-  const thinkDirect = await run("think (사실 질문 분류)", () => thinkFirst(directQ, ctx), (v) => ({ mode: v.mode, safe: v.safe }));
+  const think = await run("respond (생각 질문)", () => respond(thinkQ, undefined, ctx), (v) => ({ kind: v.result.kind, safe: v.result.safe, guide: v.result.guide, memory: v.memory.slice(0, 120) }));
+  const thinkDirect = await run("respond (사실 질문, 호출 1회로 답까지)", () => respond(directQ, undefined, ctx), (v) => ({ kind: v.result.kind, answer: v.result.answer?.text.slice(0, 160), followUps: v.result.followUps, puzzles: v.result.puzzles.length }));
   const primary = await run(
     "answer (첫 답, 생각 질문)",
     () => askPrimary(thinkQ, "지구 그림자 때문일 것 같아요", "", "think", ctx),
     (v) => ({ provider: v.answer.provider, model: v.answer.model, ok: v.answer.ok, confidence: v.answer.selfConfidence, text: v.answer.text.slice(0, 160), error: v.answer.error }),
-  );
-  const direct = await run(
-    "answer (첫 답, 사실 질문 + 되묻기·퍼즐)",
-    () => askPrimary(directQ, "", "", "direct", ctx),
-    (v) => ({ ok: v.answer.ok, text: v.answer.text.slice(0, 160), followUps: v.followUps, puzzles: v.puzzles.length, error: v.answer.error }),
   );
   if (primary?.answer.ok) {
     await run(
@@ -80,6 +75,6 @@ export async function POST(request: Request) {
     usage: { ...totals, byCall: usage.map((u) => ({ purpose: u.purpose, provider: u.provider, model: u.model, input: u.inputTokens, output: u.outputTokens, ms: u.durationMs, ok: u.ok, error: u.error })) },
     hint: "비용은 /admin 의 AI 호출 비용 표에서 확인하세요. 이 실행은 requestId 하나로 묶여 있어요.",
     requestId: ctx.requestId,
-    classified: { think: think?.mode ?? null, direct: thinkDirect?.mode ?? null, directHasFollowUps: (direct?.followUps.length ?? 0) > 0 },
+    classified: { think: think?.result.kind ?? null, direct: thinkDirect?.result.kind ?? null, directHasFollowUps: (thinkDirect?.result.followUps.length ?? 0) > 0 },
   });
 }

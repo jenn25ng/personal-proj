@@ -78,6 +78,13 @@
       "when": 1791799341927,
       "tag": "0010_error_events",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1792486876952,
+      "tag": "0011_threads",
+      "breakpoints": true
     }
   ]
 }

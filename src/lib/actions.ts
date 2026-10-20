@@ -143,7 +143,7 @@ export async function updateChildLimits(_prev: FormState, form: FormData): Promi
   };
   const q = parse("dailyQuestionLimit", MAX_DAILY_QUESTION_LIMIT);
   const g = parse("dailyGameLimit", MAX_DAILY_GAME_LIMIT);
-  if (q === "bad") return { error: `하루 질문 수는 1~${MAX_DAILY_QUESTION_LIMIT} 사이로 정해 주세요.` };
+  if (q === "bad") return { error: `하루 주제 수는 1~${MAX_DAILY_QUESTION_LIMIT} 사이로 정해 주세요.` };
   if (g === "bad") return { error: `하루 게임 수는 1~${MAX_DAILY_GAME_LIMIT} 사이로 정해 주세요.` };
 
   await db.update(schema.children).set({ dailyQuestionLimit: q, dailyGameLimit: g }).where(eq(schema.children.id, child.id));
@@ -165,7 +165,7 @@ export async function grantBonus(_prev: FormState, form: FormData): Promise<Form
 
   const r = await grantTodayBonus(child, { questions, games });
   if (!r.ok) return { error: r.error };
-  const parts = [questions > 0 ? `질문 +${questions}` : "", games > 0 ? `게임 +${games}` : ""].filter(Boolean).join(", ");
+  const parts = [questions > 0 ? `주제 +${questions}` : "", games > 0 ? `게임 +${games}` : ""].filter(Boolean).join(", ");
   return { ok: `오늘만 ${parts} 열어 줬어요. (오늘 한도: 질문 ${r.questionLimit}, 게임 ${r.gameLimit})` };
 }
 
@@ -257,4 +257,14 @@ function devAware(state: { ok: string }, result: Awaited<ReturnType<typeof sendM
     return { ...state, devLink: result.link };
   }
   return state;
+}
+
+/** 힘든 신호 알림 켜고 끄기 (부모) */
+export async function updateDistressAlert(_prev: FormState, form: FormData): Promise<FormState> {
+  const parent = await getParent();
+  if (!parent) redirect("/login");
+  const on = form.get("alertOnDistress") === "on";
+  const db = await getDb();
+  await db.update(schema.parents).set({ alertOnDistress: on }).where(eq(schema.parents.id, parent.id));
+  return { ok: on ? "힘든 신호가 보이면 하루 한 번 메일로 알려 드릴게요." : "힘든 신호 알림을 껐어요. 아이에게는 돌봄 안내만 보여 줘요." };
 }

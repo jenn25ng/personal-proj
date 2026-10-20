@@ -88,7 +88,9 @@ pnpm exec drizzle-kit generate --name <이름>
 | `ADMIN_TOKEN` | – | 관리자 화면·사용량 API 비밀 토큰 |
 | `OUTPUT_FILTER` | `model` | AI 출력 모델 검사. `off`면 규칙만 |
 | `ALERT_WEBHOOK_URL` / `ALERT_COOLDOWN_MIN` | – / 10 | 오류 알림 웹훅과 같은 오류 재알림 간격(분) |
-| `DAILY_QUESTION_LIMIT` / `DAILY_GAME_LIMIT` | 10 / 5 | 아이당 하루 한도 기본값 (부모가 아이별로 조정) |
+| `DAILY_QUESTION_LIMIT` / `DAILY_GAME_LIMIT` | 10 / 5 | 아이당 하루 한도 기본값: 새 주제(스레드) 수와 게임 수 (부모가 아이별로 조정) |
+| `THREAD_TURN_LIMIT` / `THREAD_RESUME_MINUTES` | 40 / 30 | 한 주제에서 이어 묻는 턴 상한, 하던 주제를 이어 가는 시간(분) |
+| `DAILY_COMPARE_LIMIT` / `DAILY_THINK_LIMIT` | 3 / 5 | 하루 비교 횟수, 하루 생각 단계 횟수 |
 | `MAX_DAILY_QUESTION_LIMIT` / `MAX_DAILY_GAME_LIMIT` | 30 / 10 | 부모가 올릴 수 있는 상한 |
 | `PGLITE_DIR` | `.data/pglite` | PGlite 데이터 폴더 |
 
@@ -103,7 +105,7 @@ pnpm exec drizzle-kit generate --name <이름>
 
 ### 하루 한도
 
-아이 한 명당 하루 질문 수(기본 10)와 게임 수(기본 5)를 제한합니다. **부모가 "우리 가족 기록"에서 아이별로 바꿀 수 있고**, 비우면 기본값으로 돌아갑니다. 상한은 질문 30·게임 10입니다. 한도를 다 쓴 날에는 부모가 같은 화면에서 **"오늘만 더 열어 주기"**(질문 +1/+3, 게임 +1)로 그날만 추가할 수 있고, 자정이 지나면 원래 한도로 돌아갑니다. 추가분도 상한을 넘지 못합니다. 기본값과 상한은 `DAILY_QUESTION_LIMIT`, `DAILY_GAME_LIMIT`, `MAX_DAILY_QUESTION_LIMIT`, `MAX_DAILY_GAME_LIMIT`로, 초기화 시간대는 `DAY_RESET_UTC_OFFSET_HOURS`(기본 한국)로 바꿉니다. 집계는 사용량 기록의 "생각 단계" 호출(질문)과 "문제 생성" 호출(게임)을 세고, 서버 API에서 막습니다. 화면에는 "오늘 남은 질문 N개"가 보이고, 다 쓰면 "내일 다시 열려요"라고 안내합니다.
+아이 한 명당 하루 **새 주제** 수(기본 10)와 게임 수(기본 5)를 제한합니다. 한 주제 안에서 이어 묻는 건 세지 않고 주제당 턴 상한(기본 40)만 둡니다. 비교는 원가의 대부분이라 하루 횟수(기본 3)를 따로 셉니다. **부모가 "가족" 화면에서 아이별로 바꿀 수 있고**, 비우면 기본값으로 돌아갑니다. 상한은 주제 30·게임 10입니다. 한도를 다 쓴 날에는 부모가 같은 화면에서 **"오늘만 더 열어 주기"**(주제 +1/+3, 게임 +1)로 그날만 추가할 수 있고, 자정이 지나면 원래 한도로 돌아갑니다. 추가분도 상한을 넘지 못합니다. 기본값과 상한은 `DAILY_QUESTION_LIMIT`, `DAILY_GAME_LIMIT`, `MAX_DAILY_QUESTION_LIMIT`, `MAX_DAILY_GAME_LIMIT`, `THREAD_TURN_LIMIT`, `DAILY_COMPARE_LIMIT`로, 초기화 시간대는 `DAY_RESET_UTC_OFFSET_HOURS`(기본 한국)로 바꿉니다. 집계는 오늘 만든 스레드 수(주제), "문제 생성" 호출(게임), "판정" 호출(비교)을 세고, 서버 API에서 막습니다. 화면에는 "오늘 남은 새 주제 N개"가 보이고, 다 쓰면 하던 주제는 이어서 물어볼 수 있다고 안내합니다.
 
 ### 오류 모니터링
 
@@ -147,7 +149,7 @@ src/app/game/page.tsx       틀린 거 찾기 게임
 src/app/me/page.tsx         아이용 "내 습관" (부모와 같은 집계 + 내 질문)
 src/app/parent/page.tsx     "우리 가족 기록" (집계만)
 src/components/HabitStats.tsx   부모·아이가 공유하는 집계 컴포넌트
-src/app/api/think|answer|compare|reflect|game/route.ts   AI API (아이 프로필 선택 필요)
+src/app/api/message|answer|compare|reflect|game/route.ts   AI API (아이 프로필 선택 필요). message가 호출 1회로 종류·답·요약
 src/app/api/logs/question|game/route.ts          기록 저장 API
 src/db/schema.ts, index.ts  Drizzle 스키마와 드라이버 선택
 src/lib/auth.ts             비밀번호 해시, 세션 쿠키, 페이지 가드

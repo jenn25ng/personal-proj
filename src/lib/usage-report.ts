@@ -118,7 +118,7 @@ export async function buildOverview() {
     verifiedParents: parents.filter((p) => p.emailVerifiedAt).length,
     children: kids.length,
     questions: questions.length,
-    directQuestions: questions.filter((q) => q.mode === "direct").length,
+    directQuestions: questions.filter((q) => q.mode !== "think").length,
     games: games.length,
   };
 }

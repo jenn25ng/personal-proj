@@ -1,4 +1,5 @@
 import { checkQuota } from "@/lib/quota";
+import { getThreadForChild } from "@/lib/threads";
 import { compareAnswers } from "@/lib/ai";
 import { checkInput, checkOutput } from "@/lib/safety";
 import { MAX_FIELD_LEN, MAX_QUESTION_LEN, clean, errorResponse, requireChild } from "@/lib/api-utils";
@@ -14,11 +15,13 @@ const CONF = new Set(["high", "medium", "low"]);
 export async function POST(request: Request) {
   const auth = await requireChild();
   if ("response" in auth) return auth.response;
-  const limited = await checkQuota(auth.child, "question", false);
+  // 비교는 원가의 대부분이라 따로 센다.
+  const limited = await checkQuota(auth.child, "compare", true);
   if (limited) return limited;
   const body = await request.json().catch(() => ({}));
   const question = clean(body.question, MAX_QUESTION_LEN);
   if (question.length < 2) return Response.json({ error: "질문이 비어 있어요." }, { status: 400 });
+  const thread = typeof body.threadId === "string" ? await getThreadForChild(auth.child.id, body.threadId) : null;
 
   const p = body.primary ?? {};
   if (!PROVIDERS.has(p.provider) || typeof p.text !== "string") {
@@ -39,7 +42,7 @@ export async function POST(request: Request) {
   if (!input.ok) return Response.json({ error: input.message, code: "SAFETY" }, { status: 400 });
   try {
     const ctx = newContext(auth.child.id);
-    const result = await compareAnswers(question, prediction, priorKnowledge, body.mode === "direct" ? "direct" : "think", primary, ctx);
+    const result = await compareAnswers(question, prediction, priorKnowledge, body.mode === "think" ? "think" : "direct", primary, ctx, thread?.memory ?? "");
     const j = result.judge;
     const texts = [
       ...result.answers.filter((a) => a.ok).flatMap((a) => [a.text, ...a.uncertainParts]),

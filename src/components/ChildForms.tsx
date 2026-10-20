@@ -22,7 +22,8 @@ export function AddChildForm() {
       </div>
       <p className="text-[12px] leading-relaxed text-ink-soft">
         부모님은 아이가 몇 번 질문했는지, 먼저 생각했는지 같은 <span className="text-ink">숫자만</span> 볼 수 있어요. 질문 내용은
-        보이지 않아요. 아이도 같은 숫자를 봐요.
+        보이지 않아요. 아이도 같은 숫자를 봐요. 다만 아이가 자해나 위험을 뜻하는 말을 적으면 “힘든 마음을 표현했다”는 사실만 하루 한 번
+        메일로 알려요(가족 화면에서 끌 수 있어요).
       </p>
       <label className="flex items-start gap-2.5 rounded-xl bg-surface p-3 text-[12px] leading-relaxed text-ink-soft">
         <input type="checkbox" name="consent" required className="mt-0.5 accent-accent" />

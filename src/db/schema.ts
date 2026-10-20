@@ -1,5 +1,5 @@
 import { boolean, index, integer, jsonb, pgTable, text, timestamp, uniqueIndex, uuid } from "drizzle-orm/pg-core";
-import type { AnswerLog, GamePuzzle } from "@/lib/types";
+import type { AnswerLog, GamePuzzle, MessageKind } from "@/lib/types";
 
 /** 부모 계정 */
 export const parents = pgTable("parents", {
@@ -8,6 +8,10 @@ export const parents = pgTable("parents", {
   passwordHash: text("password_hash").notNull(),
   name: text("name").notNull(),
   emailVerifiedAt: timestamp("email_verified_at", { withTimezone: true }),
+  /** 아이가 힘든 신호(명시적 자해·위험 표현)를 보였을 때 부모에게 알릴지. 내용은 보내지 않는다. */
+  alertOnDistress: boolean("alert_on_distress").notNull().default(true),
+  /** 마지막으로 힘든 신호 알림을 보낸 날 (하루 한 번만) */
+  lastDistressAlertDay: text("last_distress_alert_day"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -61,6 +65,38 @@ export const children = pgTable(
   (t) => [index("children_parent_idx").on(t.parentId)],
 );
 
+/**
+ * 대화 스레드. 한 주제로 이어지는 메시지 묶음. 한도는 스레드(주제) 단위로 센다.
+ * memory는 모델이 답과 함께 갱신하는 짧은 요약이며, 질문 내용이므로 부모에게는 보이지 않는다.
+ */
+export const threads = pgTable(
+  "threads",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    childId: uuid("child_id")
+      .notNull()
+      .references(() => children.id, { onDelete: "cascade" }),
+    topicLabel: text("topic_label").notNull().default(""),
+    memory: text("memory").notNull().default(""),
+    turnCount: integer("turn_count").notNull().default(0),
+    /** 이 스레드에서 생각 단계를 보여 준 횟수 */
+    thinkCount: integer("think_count").notNull().default(0),
+    /** 마지막 생각 단계에서 아이가 예상을 적었는지. 적었으면 한 번 더 허용한다. */
+    thinkEngaged: boolean("think_engaged").notNull().default(false),
+    /** 아이가 생각 단계를 건너뛰었으면 이 스레드에서는 다시 걸지 않는다. */
+    thinkOff: boolean("think_off").notNull().default(false),
+    /** 스레드의 첫 바로 답에만 되묻는 질문·퍼즐을 붙인다. */
+    firstDirectDone: boolean("first_direct_done").notNull().default(false),
+    /** 어른과 이야기하라고 이미 권했는지 (스레드당 한 번) */
+    adultSuggested: boolean("adult_suggested").notNull().default(false),
+    lastAt: timestamp("last_at", { withTimezone: true }).notNull().defaultNow(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("threads_child_idx").on(t.childId, t.lastAt)],
+);
+
+export type Thread = typeof threads.$inferSelect;
+
 /** 질문 한 번의 기록 */
 export const questionLogs = pgTable(
   "question_logs",
@@ -69,9 +105,10 @@ export const questionLogs = pgTable(
     childId: uuid("child_id")
       .notNull()
       .references(() => children.id, { onDelete: "cascade" }),
+    threadId: uuid("thread_id").references(() => threads.id, { onDelete: "set null" }),
     question: text("question").notNull(),
-    /** "think": 생각 먼저 단계를 거친 질문, "direct": 바로 답한 질문 */
-    mode: text("mode").$type<"think" | "direct">().notNull().default("think"),
+    /** think: 생각 먼저 단계를 거침, direct: 바로 답, talk: 마음 이야기, task: 작업 지시 */
+    mode: text("mode").$type<MessageKind>().notNull().default("think"),
     topicLabel: text("topic_label").notNull().default(""),
     priorKnowledge: text("prior_knowledge").notNull().default(""),
     prediction: text("prediction").notNull().default(""),
@@ -117,7 +154,7 @@ export const aiUsage = pgTable(
     /** 같은 HTTP 요청에서 나간 호출을 묶는 id (예: 답변 3개 + 판정) */
     requestId: text("request_id").notNull(),
     childId: uuid("child_id").references(() => children.id, { onDelete: "set null" }),
-    purpose: text("purpose").$type<"think" | "answer" | "judge" | "reflect" | "game" | "safety">().notNull(),
+    purpose: text("purpose").$type<"think" | "respond" | "answer" | "judge" | "reflect" | "game" | "safety">().notNull(),
     provider: text("provider").notNull(),
     model: text("model").notNull(),
     inputTokens: integer("input_tokens").notNull().default(0),

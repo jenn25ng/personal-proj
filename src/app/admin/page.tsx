@@ -73,7 +73,7 @@ async function AdminContent({ searchParams }: { searchParams: Search }) {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <Tile label="부모 계정" value={num(overview.parents)} hint={`이메일 인증 ${num(overview.verifiedParents)}명`} />
           <Tile label="아이 프로필" value={num(overview.children)} />
-          <Tile label="질문" value={num(overview.questions)} hint={`그중 바로 답한 질문 ${num(overview.directQuestions)}건`} />
+          <Tile label="질문" value={num(overview.questions)} hint={`그중 생각 단계 없이 답한 것 ${num(overview.directQuestions)}건`} />
           <Tile label="게임" value={`${num(overview.games)}판`} />
           <Tile
             label="하루 한도 기본값 (아이당)"

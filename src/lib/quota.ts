@@ -3,8 +3,13 @@ import { and, count, eq, gte } from "drizzle-orm";
 import { getDb, schema } from "@/db";
 import type { Child } from "@/db/schema";
 
-/** 부모가 정하지 않았을 때의 하루 한도. 환경변수로 조정한다. */
+/**
+ * 부모가 정하지 않았을 때의 하루 한도. 환경변수로 조정한다.
+ * "질문"은 새 주제(스레드)를 센다. 한 주제 안에서 이어 묻는 건 세지 않고, 스레드당 턴 상한(THREAD_TURN_LIMIT)으로 막는다.
+ */
 export const DAILY_QUESTION_LIMIT = Math.max(1, Number(process.env.DAILY_QUESTION_LIMIT) || 10);
+/** 하루 비교 횟수. 비교가 원가의 대부분이라 따로 센다. */
+export const DAILY_COMPARE_LIMIT = Math.max(1, Number(process.env.DAILY_COMPARE_LIMIT) || 3);
 export const DAILY_GAME_LIMIT = Math.max(1, Number(process.env.DAILY_GAME_LIMIT) || 5);
 /** 부모가 올릴 수 있는 상한 (비용 보호) */
 export const MAX_DAILY_QUESTION_LIMIT = Math.max(DAILY_QUESTION_LIMIT, Number(process.env.MAX_DAILY_QUESTION_LIMIT) || 30);
@@ -28,6 +33,8 @@ export type Quota = {
   questionLimit: number;
   gamesUsed: number;
   gameLimit: number;
+  comparesUsed: number;
+  compareLimit: number;
   /** 부모가 오늘만 추가로 열어 준 수 */
   bonusQuestions: number;
   bonusGames: number;
@@ -87,7 +94,7 @@ export async function grantTodayBonus(
   return { ok: true, questionLimit: base.questionLimit + nextQ, gameLimit: base.gameLimit + nextG };
 }
 
-async function usedToday(childId: string, purpose: "think" | "game"): Promise<number> {
+async function usedToday(childId: string, purpose: "judge" | "game"): Promise<number> {
   const db = await getDb();
   const [row] = await db
     .select({ n: count() })
@@ -96,11 +103,22 @@ async function usedToday(childId: string, purpose: "think" | "game"): Promise<nu
   return Number(row?.n ?? 0);
 }
 
-/** 질문은 "생각 단계" 호출을, 게임은 "문제 생성" 호출을 센다. 둘 다 한 번의 시작에 정확히 한 번 일어난다. */
+/** 오늘 시작한 스레드(주제) 수 */
+async function threadsToday(childId: string): Promise<number> {
+  const db = await getDb();
+  const [row] = await db
+    .select({ n: count() })
+    .from(schema.threads)
+    .where(and(eq(schema.threads.childId, childId), gte(schema.threads.createdAt, dayStart())));
+  return Number(row?.n ?? 0);
+}
+
+/** 질문은 오늘 시작한 주제(스레드)를, 게임은 "문제 생성" 호출을, 비교는 "판정" 호출을 센다. */
 export async function getQuota(child: ChildLimits): Promise<Quota> {
-  const [questionsUsed, gamesUsed, bonus] = await Promise.all([
-    usedToday(child.id, "think"),
+  const [questionsUsed, gamesUsed, comparesUsed, bonus] = await Promise.all([
+    threadsToday(child.id),
     usedToday(child.id, "game"),
+    usedToday(child.id, "judge"),
     getTodayBonus(child.id),
   ]);
   const base = limitsFor(child);
@@ -108,6 +126,8 @@ export async function getQuota(child: ChildLimits): Promise<Quota> {
   return {
     questionsUsed,
     gamesUsed,
+    comparesUsed,
+    compareLimit: DAILY_COMPARE_LIMIT,
     questionLimit: base.questionLimit + bonus.extraQuestions,
     gameLimit: base.gameLimit + bonus.extraGames,
     bonusQuestions: bonus.extraQuestions,
@@ -117,18 +137,19 @@ export async function getQuota(child: ChildLimits): Promise<Quota> {
 }
 
 export const LIMIT_MESSAGE = {
-  question: `오늘 질문은 다 썼어요. 내일 다시 열려요. 궁금한 건 공책에 적어 뒀다가 내일 물어봐요! 꼭 지금 물어보고 싶으면 부모님께 말해 봐요.`,
+  question: `오늘 새 주제는 다 썼어요. 하던 주제는 이어서 물어볼 수 있고, 새 주제는 내일 다시 열려요. 꼭 지금 물어보고 싶으면 부모님께 말해 봐요.`,
   game: `오늘 게임은 여기까지예요. 내일 다시 할 수 있어요. 더 하고 싶으면 부모님께 말해 봐요.`,
+  compare: `오늘 다른 AI와 비교하기는 다 썼어요. 내일 다시 할 수 있어요. 대신 교과서나 선생님께 확인해 봐요.`,
 };
 
 /**
  * 한도 검사. `starting`이면 새로 시작하는 호출(생각 단계, 게임 생성)이라 "사용 >= 한도"에서 막고,
  * 아니면 이미 시작한 질문의 후속 호출(답, 비교, 정리)이라 "사용 > 한도"에서만 막는다.
  */
-export async function checkQuota(child: ChildLimits, kind: "question" | "game", starting: boolean): Promise<Response | null> {
+export async function checkQuota(child: ChildLimits, kind: "question" | "game" | "compare", starting: boolean): Promise<Response | null> {
   const q = await getQuota(child);
-  const used = kind === "question" ? q.questionsUsed : q.gamesUsed;
-  const limit = kind === "question" ? q.questionLimit : q.gameLimit;
+  const used = kind === "question" ? q.questionsUsed : kind === "game" ? q.gamesUsed : q.comparesUsed;
+  const limit = kind === "question" ? q.questionLimit : kind === "game" ? q.gameLimit : q.compareLimit;
   const blocked = starting ? used >= limit : used > limit;
   if (!blocked) return null;
   return Response.json({ error: LIMIT_MESSAGE[kind], code: "LIMIT", quota: q }, { status: 429 });

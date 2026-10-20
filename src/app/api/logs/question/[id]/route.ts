@@ -1,11 +1,11 @@
 import { and, eq } from "drizzle-orm";
 import { getDb, schema } from "@/db";
-import { requireChild } from "@/lib/api-utils";
+import { MAX_FIELD_LEN, clean, requireChild } from "@/lib/api-utils";
 import type { AnswerLog, CompareResult } from "@/lib/types";
 
 const AGREEMENTS = new Set(["agree", "partly", "disagree"]);
 
-/** 바로 답한 질문은 답이 오자마자 기록되므로, 비교를 눌렀을 때 비교 결과를 덧붙인다. */
+/** 답이 오자마자 서버가 기록하므로, 비교·정리는 나중에 덧붙인다. */
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const auth = await requireChild();
   if ("response" in auth) return auth.response;
@@ -19,13 +19,15 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
   const comparison = body.comparison && typeof body.comparison === "object" ? (body.comparison as CompareResult) : null;
   const answers: AnswerLog | null = existing.answers ? { ...existing.answers, comparison: comparison ?? existing.answers.comparison } : null;
-  await db
-    .update(schema.questionLogs)
-    .set({
-      comparedModels: body.comparedModels === true,
-      agreement: typeof body.agreement === "string" && AGREEMENTS.has(body.agreement) ? body.agreement : null,
-      answers,
-    })
-    .where(where);
+  const set: Partial<typeof schema.questionLogs.$inferInsert> = {};
+  if (comparison) {
+    set.comparedModels = true;
+    set.agreement = typeof body.agreement === "string" && AGREEMENTS.has(body.agreement) ? body.agreement : null;
+    set.answers = answers;
+  }
+  if (typeof body.reflection === "string") set.reflection = clean(body.reflection, MAX_FIELD_LEN);
+  if (typeof body.doubtedAi === "boolean") set.doubtedAi = body.doubtedAi;
+  if (Object.keys(set).length === 0) return Response.json({ ok: true });
+  await db.update(schema.questionLogs).set(set).where(where);
   return Response.json({ ok: true });
 }

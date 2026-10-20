@@ -22,7 +22,7 @@ export function ChildLimitsForm({
     <form action={action} className="space-y-3">
       <input type="hidden" name="childId" value={childId} />
       <div className="flex flex-wrap gap-3">
-        <Field label="하루 질문 수" className="w-28">
+        <Field label="하루 주제 수" className="w-28">
           <input
             name="dailyQuestionLimit"
             type="number"
@@ -46,8 +46,7 @@ export function ChildLimitsForm({
         </Field>
       </div>
       <p className="text-[12px] leading-relaxed text-ink-soft">
-        비우면 기본값(질문 {defaults.question}, 게임 {defaults.game})이에요. 최대 질문 {max.question}, 게임 {max.game}까지. 한국 시간
-        자정에 다시 채워져요.
+        주제는 “새로 꺼낸 이야깃거리”예요. 한 주제 안에서 이어 묻는 건 세지 않아요. 비우면 기본값(주제 {defaults.question}, 게임 {defaults.game})이에요. 최대 주제 {max.question}, 게임 {max.game}까지. 한국 시간 자정에 다시 채워져요.
       </p>
       <FormNotice state={state} />
       <Button type="submit" variant="secondary" disabled={pending}>

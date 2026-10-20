@@ -26,8 +26,9 @@ export async function POST(request: Request) {
     .insert(schema.questionLogs)
     .values({
       childId: auth.child.id,
+      threadId: typeof body.threadId === "string" && /^[0-9a-f-]{36}$/.test(body.threadId) ? body.threadId : null,
       question,
-      mode: body.mode === "direct" ? "direct" : "think",
+      mode: (["think", "direct", "talk", "task"] as const).find((k) => k === body.mode) ?? "think",
       topicLabel: clean(body.topicLabel, 60),
       priorKnowledge,
       prediction,

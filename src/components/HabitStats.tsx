@@ -31,7 +31,7 @@ export function HabitStats({ logs, games }: { logs: QuestionLog[]; games: GameRe
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Stat label="질문 수" value={String(n)} hint={direct > 0 ? `그중 바로 답한 질문 ${direct}개` : undefined} />
+        <Stat label="질문 수" value={String(n)} hint={direct > 0 ? `그중 생각 단계 없이 답한 것 ${direct}개` : undefined} />
         <Stat label="먼저 예상한 비율" value={predictedPct} hint="생각이 필요한 질문 중, 묻기 전에 자기 생각을 적은 비율" />
         <Stat label="다른 AI와 비교" value={pct(compared)} hint="비교 버튼을 눌러 본 횟수" />
         <Stat label="AI 답을 의심" value={pct(doubted)} hint="확인하고 싶은 부분이 있었다고 표시" />
