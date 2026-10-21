@@ -78,7 +78,7 @@ export async function POST(request: Request) {
     const out = await respond(message, tctx, ctx);
     let result = out.result;
 
-    // 출력 필터: 규칙 + 모델. 걸리면 답을 비우고 안내로 바꾼다.
+    // 출력 필터: 규칙은 항상, 별도 모델 검사는 OUTPUT_FILTER=model 일 때만 (기본은 답 호출의 자기 검사로 끝난다).
     const texts = [
       result.redirect,
       result.clarify,

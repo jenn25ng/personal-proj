@@ -10,8 +10,14 @@ import { reportError } from "./monitor";
 
 export { SAFETY_MESSAGE } from "./safety-rules";
 
-/** 출력 모델 필터: "model"(기본) | "off". 규칙 필터는 항상 켜져 있다. */
-const OUTPUT_FILTER = process.env.OUTPUT_FILTER === "off" ? "off" : "model";
+/**
+ * 출력 필터 모드. 규칙 필터는 항상 켜져 있다.
+ * - "self"(기본): 답을 만든 호출이 같은 호출에서 스스로 검사한다(okForKid). 별도 호출 없음.
+ * - "model": 그 위에 Haiku로 한 번 더 검사한다(라우트당 호출 1회 추가). 안전을 비용보다 앞세울 때.
+ * - "off": 규칙만.
+ */
+export const OUTPUT_FILTER: "self" | "model" | "off" =
+  process.env.OUTPUT_FILTER === "off" ? "off" : process.env.OUTPUT_FILTER === "model" ? "model" : "self";
 
 type EventInput = {
   childId?: string;
@@ -64,7 +70,8 @@ reason은 safe=false일 때만 한 문장으로.`;
 const outputSchema = z.object({ safe: z.boolean(), reason: z.string() });
 
 /**
- * AI 출력 검사. 규칙 필터 뒤에 모델 필터(Haiku, 라우트당 1회)를 돌린다.
+ * AI 출력 검사. 규칙 필터는 항상, 별도 모델 검사는 OUTPUT_FILTER=model 일 때만.
+ * 기본 모드(self)에서는 답을 만든 호출이 okForKid로 스스로 검사했으므로(ai.ts에서 강제) 여기서는 규칙만 본다.
  * 걸리면 false를 돌려주고, 호출한 쪽이 안전한 대체 응답을 만든다.
  */
 export async function checkOutput(
@@ -77,7 +84,7 @@ export async function checkOutput(
     await recordSafetyEvent({ childId: ctx.childId, stage: "output", route: ctx.route, detector: "rules", category: rules.category, excerpt: texts.join(" ") });
     return false;
   }
-  if (opts.model === false || OUTPUT_FILTER === "off" || MOCK_AI) return true;
+  if (opts.model === false || OUTPUT_FILTER !== "model" || MOCK_AI) return true;
   const helper = getHelperModel();
   if (!helper) return true;
   try {
@@ -103,3 +110,8 @@ export async function checkOutput(
 
 /** 출력이 막혔을 때 아이에게 보여 줄 말 */
 export const BLOCKED_OUTPUT_MESSAGE = "이번 답은 보여 줄 수 없었어요. 다른 말로 다시 물어보거나, 부모님이나 선생님께 물어봐요.";
+
+/** 답을 만든 모델이 okForKid=false 라고 스스로 표시했을 때. 기록하고 호출한 쪽이 답을 비운다. */
+export async function recordSelfBlock(ctx: { childId?: string }, route: string, excerpt: string): Promise<void> {
+  await recordSafetyEvent({ childId: ctx.childId, stage: "output", route, detector: "model", category: "self-check", excerpt });
+}

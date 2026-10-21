@@ -33,6 +33,8 @@ export function mockRespond(message: string, thread: ThreadContext) {
   const memory = `주제: ${topic}. 턴 ${thread.turnCount + 1}. 확정된 사실: 목 모드 예시.`;
   const done = (r: Partial<RespondResult>, suggestedAdult = false) => ({ result: { ...base, ...r }, memory, suggestedAdult, provider: "claude" as const, model: "mock-claude" });
   if (/뭐라고\?/.test(text)) return done({ clarify: "혹시 '달까지 거리'를 말하는 거예요?" });
+  // 목 모드에서 자기 검사 막힘을 흉내 내는 트리거
+  if (/자기검사실패/.test(text)) return done({ kind: "direct", safe: false, redirect: "이번 답은 보여 줄 수 없었어요. 다른 말로 다시 물어보거나, 부모님이나 선생님께 물어봐요." });
   if (/사라지고 싶|없어졌으면/.test(text)) {
     return done({ kind: "talk", care: true, redirect: "많이 힘들었구나. 그런 마음이 들 땐 혼자 두지 말고 믿을 수 있는 어른에게 꼭 말해요. 청소년 상담전화 1388은 언제든 받아 줘요." });
   }

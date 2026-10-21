@@ -13,6 +13,7 @@ import { mockAnswer, mockCompare, mockGame, mockReflect, mockRespond } from "./m
 import { contextToPrompt, EMPTY_CONTEXT, type ThreadContext } from "./threads";
 import { newContext, recordMock, tracked, type CallContext } from "./usage";
 import { reportError } from "./monitor";
+import { BLOCKED_OUTPUT_MESSAGE, recordSelfBlock } from "./safety";
 import type {
   AnswerResult,
   CompareResult,
@@ -52,6 +53,7 @@ const respondSchema = z.object({
   puzzles: z.array(puzzleSchema).max(1),
   suggestCompare: z.boolean(),
   suggestedAdult: z.boolean(),
+  okForKid: z.boolean(),
   memory: z.string(),
 });
 
@@ -59,6 +61,7 @@ const answerSchema = z.object({
   answer: z.string(),
   selfConfidence: z.enum(["high", "medium", "low"]),
   uncertainParts: z.array(z.string()).max(2),
+  okForKid: z.boolean(),
   memory: z.string(),
 });
 
@@ -103,6 +106,27 @@ export async function respond(message: string, thread: ThreadContext = EMPTY_CON
     }),
   );
   const kind = object.kind === "think" && !thread.thinkAllowed ? "direct" : object.kind;
+  // 자기 검사: 모델이 자기 답을 아이에게 보여도 된다고 하지 않으면 답을 비우고 안내로 바꾼다. 별도 검사 호출 없이 같은 호출에서 끝난다.
+  if (!object.okForKid) {
+    await recordSelfBlock(ctx, "message", [object.answer, object.guide, object.clarify].filter(Boolean).join(" "));
+    const blockedResult: RespondResult = {
+      kind: kind === "think" ? "direct" : kind,
+      newTopic: object.newTopic,
+      topic: object.topic,
+      safe: false,
+      care: false,
+      redirect: BLOCKED_OUTPUT_MESSAGE,
+      clarify: "",
+      guide: "",
+      predict: "",
+      hint: "",
+      answer: null,
+      followUps: [],
+      puzzles: [],
+      suggestCompare: false,
+    };
+    return { result: blockedResult, memory: thread.memory, suggestedAdult: false, provider, model };
+  }
   const hasAnswer = object.safe && !object.care && !object.clarify && kind !== "think" && object.answer.trim().length > 0;
   const result: RespondResult = {
     kind,
@@ -156,6 +180,15 @@ async function askOne(
         providerOptions: answerProviderOptions(provider),
       }),
     );
+    if (!object.okForKid) {
+      await recordSelfBlock(ctx, "answer", object.answer);
+      return {
+        answer: { provider, model, ok: false, text: "", selfConfidence: "low", uncertainParts: [], error: "blocked" },
+        followUps: [],
+        puzzles: [],
+        memory: "",
+      };
+    }
     return {
       answer: {
         provider,
